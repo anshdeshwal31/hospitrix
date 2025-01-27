@@ -171,6 +171,7 @@ const Appointment:React.FC = () => {
               doctors.map((doctorItem ) => { 
                 return (
                   (doctorItem.speciality === docInfo?.speciality && doctorItem._id != docInfo._id) && (
+                    
                     <DoctorCard name={doctorItem.name} image={doctorItem.image} speciality={doctorItem.speciality} _id = {doctorItem._id}/>
                   )
                 )
