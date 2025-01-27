@@ -1,0 +1,25 @@
+import { DoctorCardType } from "../types/Types"
+import { Link } from "react-router-dom"
+
+const DoctorCard = ({ name, image , speciality,_id}:DoctorCardType) => {
+  return (
+    <div className="border border-blue-200 rounded-lg transform  hover:-translate-y-3 transition duration-500 ">
+        <Link to = {`/appointment/${_id}`}>
+        <div className="bg-blue-100 ">
+            <img src={image} alt="" className="h-[250px]"/>
+        </div>
+
+        <div className="py-4 px-4">
+        <div className="text-green-400 flex gap-2">
+            <p className="w-2 h-2 rounded-full bg-green-400 self-center"></p>
+            <span>Available</span> 
+        </div>
+        <div className="text-xl font-medium">{name}</div>
+        <div className="font-light text-gray-600">{speciality}</div>
+        </div>
+        </Link>
+    </div>
+  )
+}
+
+export default DoctorCard
