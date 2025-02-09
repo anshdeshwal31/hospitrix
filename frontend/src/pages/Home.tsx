@@ -20,7 +20,7 @@ const Home = () => {
 
                 <div>
                     <Link to = "/"  >
-                        <button className='bg-primary-pink text-white rounded-full flex gap-2 py-4 px-7 hover:scale-125 transition duration-300 mt-3 text-lg' >
+                        <button className='bg-primary-pink text-white rounded-full flex gap-2 py-4 px-7 hover:bg-black transition duration-500 mt-3 text-lg' >
                             Book appointment 
                             <img src={assets.arrow_icon} alt="" className='self-center' />
                         </button>

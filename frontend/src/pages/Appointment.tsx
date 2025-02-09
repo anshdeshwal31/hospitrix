@@ -17,7 +17,7 @@ const Appointment:React.FC = () => {
       const [docInfo, setDocInfo] = useState<doctorInfoType | undefined>(undefined) // making them a state because we want to use them outside of useEffect but we don't need  them to reinitialize each time the compoent re-renders
 
       const {docId} = useParams <{docId:string}>()
-      const {doctors, assets , specialityData , currencySymbol} = useContext(AppContext)
+      const {doctors, assets ,  currencySymbol} = useContext(AppContext)
       count++;
       
 
