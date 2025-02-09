@@ -1,15 +1,15 @@
 import express, {Router} from "express"
-import { LoginController } from "../controllers/loginController"
-import { BookAppointmentController } from "../controllers/bookAppointmentController";
-import { CancelAppointmentController } from "../controllers/cancelAppointmentController";
-import { PayOnlineController } from "../controllers/payOnlineController";
-import { SaveInformationController } from "../controllers/saveInformationController";
+import { UserLoginController } from "../controllers/userControllers/loginController";
+import { PayOnlineController } from "../controllers/userControllers/payOnlineController";
+import { CancelAppointmentController } from "../controllers/userControllers/cancelAppointmentController";
+import { SaveInformationController } from "../controllers/userControllers/saveInformationController";
+import { BookAppointmentController } from "../controllers/userControllers/bookAppointmentController";
 
 
 export const userRouter:Router = express.Router()
 
 // authorization routes
-userRouter.post("/login",LoginController);
+userRouter.post("/login",UserLoginController);
 
 // usablity routes
 userRouter.post("/bookAppointment",BookAppointmentController);

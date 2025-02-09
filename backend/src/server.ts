@@ -5,6 +5,7 @@ import { userRouter } from "./routes/userRouter.js";
 import { adminRouter } from "./routes/adminRouter.js";
 import { doctorRouter } from "./routes/doctorRouter.js";
 import { connectDB } from "./config/mongodb.js";
+import { connectCloudinary } from "./config/cloudinary.js";
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(cors())
 // connecting to DB 
 try{
     await connectDB(process.env.MONGODB_URI || "")
+    await connectCloudinary()
     console.log("connected to DB")
 }catch(error){
     console.log("MongoDB connnection error:", error);

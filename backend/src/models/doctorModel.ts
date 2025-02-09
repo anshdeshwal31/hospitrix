@@ -1,22 +1,19 @@
-import { executionAsyncId } from "async_hooks";
 import mongoose, {Schema} from "mongoose";
 
 const DoctorSchema  = new Schema({
-    docId: {type:Number, unique:true , required:true },
     email:{type:String , unique:true , required:true},
-    password :{type:String , unique:true , required:true},
+    password :{type:String , required:true},
     name:{type:String , required:true},
-    image:String ,
+    image:{type:String , required:true},
     speciality: {type:String , required:true },
-    degree:{type:Number , required: true},
-    experience : {type:Number , required:true} ,
+    degree:{type:String , required: true},
+    experience : {type:String , required:true} ,
     about : { type:String , required:true} ,
+    available: {type:Boolean, required:true},
     fees: {type:Number , required:true },
-    address:{type:{
-        line1: String,
-        line2: String
-    }, required:true}
+    address: {type:Object , required:true},
+    date: {type:Number , required: true},
+    slots_booked : {type:Object , default: {}}
+},{minimize:false})
 
-})
-
-export const DoctorModel = mongoose.model("Doctor", DoctorSchema);
+export const DoctorModel = mongoose.models.Doctor || mongoose.model("Doctor", DoctorSchema);
