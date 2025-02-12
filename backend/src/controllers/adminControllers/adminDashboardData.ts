@@ -7,7 +7,6 @@ import { Response , Request  , NextFunction
 // API to get dashboard data for admin panel
 export const AdmindDashboardData = async (req:Request , res:Response) => {
     try {
-
         const doctors = await DoctorModel.find({})
         const users = await UserModel.find({})
         const appointments = await AppointmentModel.find({})

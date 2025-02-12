@@ -3,7 +3,6 @@ import { AppointmentModel } from "../../models/appointmentsModel";
 
 export const AppointmentList = async (req:Request, res:Response , next : NextFunction) => {
     try {
-
         const appointments = await AppointmentModel.find({})
         res.json({ success: true, appointments })
 
