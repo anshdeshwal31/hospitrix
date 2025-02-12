@@ -1,7 +1,8 @@
 import { AppointmentModel } from "../../models/appointmentsModel"
 import { Request , Response , NextFunction } from "express"
-import {Types} from "mongoose"
+import {deleteModel, Types} from "mongoose"
 import { z} from "zod"
+import { DoctorModel } from "../../models/doctorModel"
 
 export const CancelAppointmentController = async (req:Request , res:Response , next : NextFunction) => { 
     const cancelAppointmentInfoFormat = z.object({
@@ -12,10 +13,14 @@ export const CancelAppointmentController = async (req:Request , res:Response , n
 
     if(parsedDataWithSuccess.success){
         try {
-            AppointmentModel.deleteMany({
-                appointmentId : new Types.ObjectId(parsedDataWithSuccess.data.appointmentId)
+            AppointmentModel.deleteOne({
+                _id : new Types.ObjectId(parsedDataWithSuccess.data.appointmentId)
             })
 
+            DoctorModel.updateOne(
+                {_id: parsedDataWithSuccess.data.appointmentId},
+                {$unset:{[`slots_booke.${parsedDataWithSuccess.data.appointmentId}`]:""}}
+            )
             res.json({
                 success: true , 
                 message: "appointment cancelled successfully"

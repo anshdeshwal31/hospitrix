@@ -11,7 +11,7 @@ const UserSchema = new Schema({
         line2:''
     }},
     gender:{type:String , default: "Not Selected"},
-    dateOfBirth: {type:String , default: "Not Selected"},
+    dateOfBirth: {type:Date , default: "Not Selected"},
     phoneNumber : {type:String , default:"000000000"}
 })
 

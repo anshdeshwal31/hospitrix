@@ -5,16 +5,17 @@ import bcrypt from "bcrypt"
 
 export const SaveInformationController = async (req:Request, res:Response, next:NextFunction) =>{ 
     const userAccountInfoFormat = z.object({
-        fullname: z.string().min(5),
+        name: z.string().min(5),
         email: z.string().min(5).email(),
         password: z.string().min(5),
-        phoneNumber: z.number().length(10),
-        address:{
+        image: z.string(),
+        address:z.object({
             line1:z.string().min(5),
             line2:z.string().min(5)
-        },
+        }),
         gender: z.string(),
-        dateOfBirth: z.date(),
+        dateOfBirth: z.string().datetime(),
+        phoneNumber: z.string().regex(/^\d{10}$/),
         
     })
 
@@ -23,16 +24,16 @@ export const SaveInformationController = async (req:Request, res:Response, next:
     if(parsedDataWithSuccess){
 
         try{
-            const hashedPassword = bcrypt.hash(req.body.password,5);
+            const hashedPassword = await bcrypt.hash(req.body.password,5);
             await UserModel.create({
-                fullname:req.body.fullname,
+                name:req.body.fullname,
                 email: req.body.email,
                 password: hashedPassword,
                 phoneNumber : req.body.phoneNumber,
                 address: req.body.address,
                 gender: req.body.gender,
-                dateOfBirth: req.body.dateOfBirth,
-                profilePhoto: req.body.profilePhoto
+                dateOfBirth: new Date(req.body.dateOfBirth),
+                image: req.body.profilePhoto
             })
 
             res.json({

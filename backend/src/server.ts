@@ -21,18 +21,17 @@ app.use(cors())
 try{
     await connectDB(process.env.MONGODB_URI || "")
     await connectCloudinary()
-    console.log("connected to DB")
 }catch(error){
     console.log("MongoDB connnection error:", error);
     process.exit(1)
 }
 // api endpoints
 app.get('/',(req,res) => { 
-    res.send("hello")
-    res.json({
-        success:true,
-        message:"backend is working"
-    })
+    res.status(200).send("hello")
+    // res.json({
+    //     success:true,
+    //     message:"backend is working"
+    // })
  })
 
 app.use("/user", userRouter);
