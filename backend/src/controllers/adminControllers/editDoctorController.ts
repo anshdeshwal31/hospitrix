@@ -27,7 +27,9 @@ export const EditDoctorController = async (req:Request , res:Response , next : N
 
     if (parsedDataWithSuccess.success) {
         try {
-            DoctorModel.updateOne({_id:parsedDataWithSuccess.data.doctorId} , {$set:parsedDataWithSuccess.data})
+            DoctorModel.updateOne(
+                {_id:parsedDataWithSuccess.data.doctorId}, 
+                {$set:parsedDataWithSuccess.data})
 
             res.status(200).json({
                 success: true  ,

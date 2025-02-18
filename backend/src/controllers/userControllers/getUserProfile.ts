@@ -8,14 +8,14 @@ export const GetProfile = async (req:Request, res:Response , next : NextFunction
     
     if(parsedDataWithSuccess.success){
         try {
-            const userData = await UserModel.findOneAndUpdate(
+            const userInfo = await UserModel.findOneAndUpdate(
                 {_id:parsedDataWithSuccess.data.userId}
             )
-            res.json({ success: true, userData })
+            res.status(200).json({ success: true, userInfo })
 
         } catch (error) {
             console.log(error)
-            res.json({ success: false, error })
+            res.status(500).json({ success: false, error })
         }
     }
     else{
