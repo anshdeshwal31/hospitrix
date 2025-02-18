@@ -14,7 +14,7 @@ export const CancelAppointmentController = async (req:Request, res:Response , ne
     if(parsedDataWithSuccess.success){
         try {
             const appointmentToDelete = await AppointmentModel.findOne({
-                appointmentId: new Types.ObjectId(parsedDataWithSuccess.data.appointmentId)
+                _id: new Types.ObjectId(parsedDataWithSuccess.data.appointmentId)
             })
 
             if (!appointmentToDelete) {
@@ -31,7 +31,7 @@ export const CancelAppointmentController = async (req:Request, res:Response , ne
 
             // deleting the respective slot from the doctor model
             await DoctorModel.updateMany(
-                {doctorId: appointmentToDelete.doctor},
+                {doctorId: appointmentToDelete.doctorId},
                 {$unset: {[`slots_booked.${parsedDataWithSuccess.data.appointmentId}`]:""}}
             )
             res.status(200).json({

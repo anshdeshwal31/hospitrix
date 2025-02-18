@@ -9,26 +9,27 @@ import dotenv from "dotenv"
 export const UserLoginController = async (req:Request, res:Response, next:NextFunction) => { 
     const loginInfoFormat = z.object({
         email:z.string().min(5).email(),
-        password:z.string().min(5)
+        password:z.string().min(5),
+        userId: z.string().regex(/^[a-fA-F0-9]{24}$/)
     })
 
     const parsedDataWithSuccess = await loginInfoFormat.safeParse(req.body)
 
-    if(parsedDataWithSuccess){
+    if(parsedDataWithSuccess.success){
         try{
             const user = await UserModel.findOne({
                 email: req.body.email,
             })
             if(user){
-                const validatedPassword = await bcrypt.compare(req.body.password,user.password)
+                const { email, password , userId} = parsedDataWithSuccess.data
+                const validatedPassword = await bcrypt.compare(password,user.password)
 
                 if(validatedPassword){
                     // send jwt
                     dotenv.config();
                     const jwtSecret = process.env.JWT_SECRET_KEY || 'fallback-secret'
                     const token = await jwt.sign({
-                        email:req.body.email,
-                        password: req.body.password
+                        userId
                     },jwtSecret)
 
                     res.json({

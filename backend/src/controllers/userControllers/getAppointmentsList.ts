@@ -1,7 +1,6 @@
 import { Request, Response ,NextFunction } from "express";
 import { AppointmentModel } from "../../models/appointmentsModel";
 import {z} from 'zod'
-import { parse } from "path";
 
 export const ListAppointment = async (req:Request, res:Response , next:NextFunction) => {
     const parsedDataWithSuccess = z.object({userId:z.string().regex(/^[0-9a-fA-F]{24}$/)}).safeParse(req.body)
