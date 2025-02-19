@@ -4,7 +4,7 @@ import { z } from "zod";
 import bcrypt from "bcrypt"
 import  jwt from "jsonwebtoken";
 
-export const LoginDoctor = async (req:Request , res:Response, next:NextFunction) => {
+export const DoctorLoginController = async (req:Request , res:Response, next:NextFunction) => {
     const parsedDataWithSuccess = z.object({
         email: z.string().email(), 
         password:z.string().min(5),

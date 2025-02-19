@@ -2,7 +2,7 @@ import { Request, Response ,NextFunction } from "express";
 import { AppointmentModel } from "../../models/appointmentsModel";
 import {z} from 'zod'
 
-export const ListAppointment = async (req:Request, res:Response , next:NextFunction) => {
+export const GetAppointmentList = async (req:Request, res:Response , next:NextFunction) => {
     const parsedDataWithSuccess = z.object({userId:z.string().regex(/^[0-9a-fA-F]{24}$/)}).safeParse(req.body)
     if(parsedDataWithSuccess.success){
         try {

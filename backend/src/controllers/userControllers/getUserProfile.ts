@@ -2,7 +2,7 @@ import { UserModel } from "../../models/userModel"
 import { Response , Request , NextFunction } from "express";
 import { z } from "zod";
 
-export const GetProfile = async (req:Request, res:Response , next : NextFunction) => {
+export const GetUserProfile = async (req:Request, res:Response , next : NextFunction) => {
 
     const parsedDataWithSuccess = z.object({userId:z.string().regex(/^[0-9a-fA-F]{24}$/)}).safeParse(req.body)
     

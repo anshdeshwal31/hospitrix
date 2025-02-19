@@ -1,9 +1,9 @@
 import { DoctorModel } from "../../models/doctorModel"
 import { Request , Response ,NextFunction } from "express";
 
-export const DoctorsList = async (req:Request, res:Response , next:NextFunction) => {
+export const GetDoctorsList = async (req:Request, res:Response , next:NextFunction) => {
     try {
-        const doctors = await DoctorModel.find({}).select('-password')
+        const doctors = await DoctorModel.find().select('-password')
         res.json({ success: true, doctors })
 
     } catch (error) {
