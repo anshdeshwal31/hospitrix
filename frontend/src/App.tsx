@@ -21,6 +21,7 @@ const App = () => {
           {
           path: '/',
           element: <Home/>},
+          
           {
             path:"/contact",
             element:<Contact/>
