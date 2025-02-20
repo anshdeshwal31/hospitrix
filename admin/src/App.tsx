@@ -10,7 +10,14 @@ const App = () => {
     {
       path:"/",
       element:<Navbar/>,
+      errorElement: <div className=' text-center font-semibold text-3xl'>
+                        Error loading page
+                    </div>,
       children:[
+        {
+          index:true,
+          element:<AdminDashboard/>
+        },
         {
           path:"/admin-dashboard",
           element:<AdminDashboard/>

@@ -3,10 +3,10 @@ import { Link } from "react-router-dom"
 
 const DoctorCard = ({ name, image , speciality,_id}:DoctorCardType) => {
   return (
-    <div className="border border-blue-200 rounded-lg transform  hover:-translate-y-3 transition duration-500 ">
+    <div className="border border-blue-200 rounded-lg  ">
         <Link to = {`/appointment/${_id}`}>
-        <div className="bg-blue-100 ">
-            <img src={image} alt="" className="h-[250px]"/>
+        <div className="bg-black overflow-hidden ">
+            <img src={image} alt="" className="h-[250px] hover:scale-110 transition-all duration-500 rounded-t-lg"/>
         </div>
 
         <div className="py-4 px-4">
