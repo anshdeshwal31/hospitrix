@@ -33,6 +33,7 @@ export interface doctorProfileType{
     available : boolean,
     fees: number,
     address: Record<string,addressType>,
+    date:string
     slots_booked: Record<string, slotType>
 }
 
