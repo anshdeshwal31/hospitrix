@@ -1,18 +1,18 @@
 import { createContext, useState } from "react";
 import axios  from "axios";
 import { toast } from "react-toastify";
-import { appointmentType, dashboardDataType, doctorProfileType } from "../types/Types";
+import { appointmentType, doctorDashboardDataType, doctorProfileType } from "../types/Types";
 
 const DoctorContext =  createContext<any>(undefined) 
 
 export const AdminContextProvider :React.FC<{children:React.ReactNode}> =   ({children}) => { 
 
     
-    const backendUrl = import.meta.env.VITE_BACKEND_URL
+    const backendUrl:string = import.meta.env.VITE_BACKEND_URL
     
     const [dToken , setDToken] = useState<string|null>(localStorage.getItem("dToken")?localStorage.getItem("dToken"):"")
     const [appointments, setAppointments] = useState<appointmentType[]>([])
-    const [dashboardData, setDashboardData] = useState<dashboardDataType[]>([])
+    const [doctorDashboardData, setDoctorDashboardData] = useState<doctorDashboardDataType[]>([])
     const [doctorProfileData , setDoctorProfileData] = useState<doctorProfileType>()
     const[doctorList,setDoctorList] = useState<doctorProfileType[]>([])
 
@@ -68,7 +68,7 @@ export const AdminContextProvider :React.FC<{children:React.ReactNode}> =   ({ch
     }
     
     
-    const getDashData = async () => { 
+    const getDoctorDashData = async () => { 
         try {
             const response = await axios.post(backendUrl+"/api/doctor/getDoctorDashboard",{} , {headers:
                 {
@@ -77,7 +77,7 @@ export const AdminContextProvider :React.FC<{children:React.ReactNode}> =   ({ch
             })
     
             if (response.data.success) {
-                setDashboardData(response.data.dashboardData);
+                setDoctorDashboardData(response.data.doctorDashboardData);
             
             } else {
                 toast.error(response.data.error.message,{
@@ -108,7 +108,7 @@ export const AdminContextProvider :React.FC<{children:React.ReactNode}> =   ({ch
                     className:"bg-green-500 text-white"
                 })
                 getAppointments()
-                getDashData()
+                getDoctorDashData()
             } else {
                 toast.error(response.data.error.message,{
                     className:"bg-red-500 text-white"
@@ -137,7 +137,7 @@ export const AdminContextProvider :React.FC<{children:React.ReactNode}> =   ({ch
                     className:"bg-green-500 text-white"
                 })
                 getAppointments()
-                getDashData()
+                getDoctorDashData()
             } else {
                 toast.error(response.data.error.message,{
                     className:"bg-red-500 text-white"
@@ -159,6 +159,8 @@ export const AdminContextProvider :React.FC<{children:React.ReactNode}> =   ({ch
             })
             if (response.data.success) {
                 localStorage.setItem("dToken",response.data.token)
+                setDToken(localStorage.getItem("dToken"))
+
                 toast.success(response.data.message,{
                     className:"bg-green-500 text-white"
                 })
@@ -180,21 +182,7 @@ export const AdminContextProvider :React.FC<{children:React.ReactNode}> =   ({ch
     const editDoctor = async (doc:doctorProfileType) => { 
 
         try {
-            const response = await axios.post(backendUrl+"/api/doctor/editDoctorProfile",{
-                doctorId:doc._id,
-                email:doc.email,
-                password:doc.password,
-                name: doc.name,
-                image:doc.image,
-                speciality:doc.speciality,
-                degree:doc.degree,
-                experience: doc.experience,
-                about : doc.about,
-                available : doc.available,
-                address:doc.address,
-                date:doc.date,
-                slots_booked:doc.slots_booked
-            },
+            const response = await axios.post(backendUrl+"/api/doctor/editDoctorProfile",doc,
             {headers:
                 {
                     authorization:`Bearer ${dToken}`
@@ -276,21 +264,19 @@ export const AdminContextProvider :React.FC<{children:React.ReactNode}> =   ({ch
         }
     }
 
-
     
     const value = {
         dToken, setDToken,backendUrl,
         appointments,
-        completeAppointment, cancelAppointment,getAppointments, getDashData , getDoctorProfileData,
-        dashboardData,
+        completeAppointment, cancelAppointment,getAppointments, getDoctorDashData , getDoctorProfileData,
+        doctorDashboardData,
         doctorProfileData, setDoctorProfileData,
         doctorLogin, editDoctor, changeDoctorAvailablity, getDoctorList, doctorList
-
     }
+
     return(
         <DoctorContext.Provider value={value}>
             {children}
         </DoctorContext.Provider>
     )
     }
-    

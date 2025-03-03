@@ -37,10 +37,18 @@ export interface doctorProfileType{
     slots_booked: Record<string, slotType>
 }
 
+export interface DoctorProfileWithoutId extends Omit<doctorProfileType,"_id">{}
 
-export interface dashboardDataType{
+export interface doctorDashboardDataType{
     earnings: number,
     appointmentInfo:number,
     patients: number,
     latestAppointments: appointmentType[]    
+}
+
+export interface adminDashboardDataType{
+    doctors:number,
+    appointments: number,
+    patients:number,
+    latestAppointments:appointmentType[]
 }
