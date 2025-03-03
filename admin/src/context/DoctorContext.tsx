@@ -5,7 +5,7 @@ import { appointmentType, doctorDashboardDataType, doctorProfileType } from "../
 
 const DoctorContext =  createContext<any>(undefined) 
 
-export const AdminContextProvider :React.FC<{children:React.ReactNode}> =   ({children}) => { 
+export const DoctorContextProvider :React.FC<{children:React.ReactNode}> =   ({children}) => { 
 
     
     const backendUrl:string = import.meta.env.VITE_BACKEND_URL

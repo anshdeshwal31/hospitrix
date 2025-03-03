@@ -4,7 +4,7 @@ import {toast} from "react-toastify"
 import axios from "axios"
 
 
-const AdminContext = createContext<any>(undefined)
+export const AdminContext = createContext<any>(undefined)
 
 export const AdminContextProvider:React.FC<{children:React.ReactNode}> = ({children}) => { 
 
