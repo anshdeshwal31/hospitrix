@@ -26,7 +26,8 @@ export const DeleteDoctorController = async (req:Request , res:Response , next :
     } else {
         res.status(400).json({
             success: false ,
-            message: "incorrect format , try again"
+            message: "incorrect format , try again",
+            error:parsedDataWithSuccess.error.errors
         })
     }
 }

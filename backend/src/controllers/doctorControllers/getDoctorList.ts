@@ -3,11 +3,11 @@ import { DoctorModel } from "../../models/doctorModel"
 
 export const GetDoctorList = async (req:Request , res:Response , next:NextFunction) => { 
     try{
-        const doctorsList = await DoctorModel.find().select('-password');
+        const doctorList = await DoctorModel.find().select('-password');
 
         res.status(200).json({
             success:true ,
-            doctorsList
+            doctorList
         })
     }catch(error){
         console.log(error)

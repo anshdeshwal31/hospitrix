@@ -3,6 +3,7 @@ import {z} from "zod"
 import { Types } from "mongoose"
 import {Request, Response, NextFunction} from "express"
 import { DoctorModel } from "../../models/doctorModel"
+import { parse } from "path"
 
 
 export const BookAppointmentController = async (req:Request, res:Response, next:NextFunction) => { 
@@ -42,7 +43,8 @@ export const BookAppointmentController = async (req:Request, res:Response, next:
     else{
         res.json({
             success:false,
-            message: "incorrect format , try again"
+            message: "incorrect format , try again",
+            error:parsedDataWithSuccess.error.errors
         })
     }
 }

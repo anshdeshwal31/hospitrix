@@ -4,7 +4,7 @@ import { AppointmentModel } from "../../models/appointmentsModel";
 
 export const GetDoctorDashboard = async (req:Request , res:Response , next:NextFunction) => { 
     const parsedDataWithSuccess = await z.object({
-        doctorId: z.string().regex(/^[0-9a-f-A-F$]{24}/),
+        doctorId: z.string().regex(/^[0-9-a-f-A-F-$]{24}/),
     }).safeParse(req.body)
 
     if (parsedDataWithSuccess.success) {

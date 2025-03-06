@@ -20,13 +20,16 @@ export const SaveInformationController = async (req:Request, res:Response, next:
     })
 
     const parsedDataWithSuccess = await userAccountInfoFormat.safeParse(req.body)
-
-    if(parsedDataWithSuccess){
-
+    console.log("khabib")
+    if(parsedDataWithSuccess.success){
+        
         try{
-            const hashedPassword = await bcrypt.hash(req.body.password,5);
+            console.log("khabib")
+            console.log(req.body.name)
+
+            const hashedPassword = await bcrypt.hash(req.body.password,10);
             await UserModel.create({
-                name:req.body.fullname,
+                name:req.body.name,
                 email: req.body.email,
                 password: hashedPassword,
                 phoneNumber : req.body.phoneNumber,
@@ -50,7 +53,8 @@ export const SaveInformationController = async (req:Request, res:Response, next:
     else{
         res.json({
             success:false,
-            error: "the format of the info was incorrect, try again with the correct format"
+            error:parsedDataWithSuccess.error.errors,
+            message: "the format of the info was incorrect, try again with the correct format"
         })
     }
 

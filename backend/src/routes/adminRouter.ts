@@ -24,8 +24,8 @@ adminRouter.post("/deleteDoctor",DeleteDoctorController)
 
 adminRouter.post("/editDoctor", EditDoctorController)
 
-adminRouter.get("/getDoctorsList", GetDoctorsList)
+adminRouter.post("/getDoctorsList", GetDoctorsList)
 
-adminRouter.get("/getAdminDashboardData", GetAdminDashboardData)
+adminRouter.post("/getAdminDashboardData", GetAdminDashboardData)
 
-adminRouter.get("/getAppointmentList", GetAppointmentList)
+adminRouter.post("/getAppointmentList", GetAppointmentList)

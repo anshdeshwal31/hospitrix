@@ -14,7 +14,7 @@ export const AuthAdminMiddleware = async (req:Request , res:Response, next:NextF
 
         const token = authHeader.split(' ')[1]
 
-        const jwtSecret = process.env.JWT_SECRET || "fallback-secret"
+        const jwtSecret = process.env.JWT_SECRET_KEY || "fallback-secret"
         const decoded  = jwt.verify(token , jwtSecret)
 
         if (decoded) {

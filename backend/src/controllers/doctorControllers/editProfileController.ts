@@ -9,7 +9,7 @@ export const EditDoctorController = async (req: Request , res:Response , next:Ne
         password:z.string().min(5),
         name: z.string().min(5),
         image: z.string(),
-        specialiaty: z.string(),
+        speciality: z.string(),
         degree: z.string(),
         experience: z.string(),
         about: z.string(),
@@ -32,7 +32,8 @@ export const EditDoctorController = async (req: Request , res:Response , next:Ne
 
             res.status(200).json({
                 success: true  ,
-                message: "doctor info updated successfully"
+                message: "doctor info updated successfully",
+                updatedDoctorData:parsedDataWithSuccess.data
             })
         } catch (error) {
             res.status(500).json({

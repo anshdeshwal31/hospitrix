@@ -18,7 +18,7 @@ export const CancelAppointmentController = async (req:Request, res:Response , ne
             })
 
             if (!appointmentToDelete) {
-                return res.status(404).json({
+                res.status(404).json({
                   success: false,
                   message: "Appointment not found"
                 });
@@ -26,12 +26,12 @@ export const CancelAppointmentController = async (req:Request, res:Response , ne
 
             // deletign the appointment from the appoinment model
             await AppointmentModel.deleteMany({
-                appointmentId: new Types.ObjectId(parsedDataWithSuccess.data.appointmentId)
+                _id: new Types.ObjectId(parsedDataWithSuccess.data.appointmentId)
             })
 
             // deleting the respective slot from the doctor model
             await DoctorModel.updateMany(
-                {doctorId: appointmentToDelete.doctorId},
+                {_id: appointmentToDelete?.doctorId},
                 {$unset: {[`slots_booked.${parsedDataWithSuccess.data.appointmentId}`]:""}}
             )
             res.status(200).json({
@@ -49,7 +49,8 @@ export const CancelAppointmentController = async (req:Request, res:Response , ne
     else{
         res.json({
             success:false ,
-            message:"the format was incorrect , try again."
+            message:"the format was incorrect , try again.",
+            error:parsedDataWithSuccess.error.errors
         })
     }
 }

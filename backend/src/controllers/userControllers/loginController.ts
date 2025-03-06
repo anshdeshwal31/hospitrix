@@ -10,7 +10,6 @@ export const UserLoginController = async (req:Request, res:Response, next:NextFu
     const loginInfoFormat = z.object({
         email:z.string().min(5).email(),
         password:z.string().min(5),
-        userId: z.string().regex(/^[a-fA-F0-9]{24}$/)
     })
 
     const parsedDataWithSuccess = await loginInfoFormat.safeParse(req.body)
@@ -21,7 +20,7 @@ export const UserLoginController = async (req:Request, res:Response, next:NextFu
                 email: req.body.email,
             })
             if(user){
-                const { email, password , userId} = parsedDataWithSuccess.data
+                const { email, password } = parsedDataWithSuccess.data
                 const validatedPassword = await bcrypt.compare(password,user.password)
 
                 if(validatedPassword){
@@ -29,7 +28,7 @@ export const UserLoginController = async (req:Request, res:Response, next:NextFu
                     dotenv.config();
                     const jwtSecret = process.env.JWT_SECRET_KEY || 'fallback-secret'
                     const token = await jwt.sign({
-                        userId
+                        email,password
                     },jwtSecret)
 
                     res.json({

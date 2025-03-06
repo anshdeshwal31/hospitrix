@@ -11,14 +11,14 @@ export const GetAdminDashboardData = async (req:Request , res:Response) => {
         const users = await UserModel.find({})
         const appointments = await AppointmentModel.find({})
 
-        const dashboardData = {
+        const adminDashboardData = {
             doctors: doctors.length,
             appointments: appointments.length,
             patients: users.length,
             latestAppointments: appointments.reverse()
         }
 
-        res.json({ success: true, dashboardData })
+        res.json({ success: true, adminDashboardData })
 
     } catch (error) {
         console.log(error)

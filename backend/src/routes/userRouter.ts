@@ -13,6 +13,7 @@ import { AuthUserMiddleware } from "../middlewares/authUser";
 export const userRouter:Router = express.Router()
 
 // authorization routes
+userRouter.post("/saveInformation", SaveInformationController);
 userRouter.post("/login",UserLoginController);
 
 userRouter.use(AuthUserMiddleware)
@@ -24,10 +25,9 @@ userRouter.post("/payOnline",PayOnlineController);
 
 userRouter.post("/cancelAppointment",CancelAppointmentController );
 
-userRouter.post("/saveInformation", SaveInformationController);
 
 userRouter.post("/editUser", EditUserController)
 
-userRouter.get("/getUserProfile", GetUserProfile)
+userRouter.post("/getUserProfile", GetUserProfile)
 
-userRouter.get("/getAppointmentLists",GetAppointmentList)
+userRouter.post("/getAppointmentList",GetAppointmentList)

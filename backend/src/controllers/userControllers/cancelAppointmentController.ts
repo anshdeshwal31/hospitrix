@@ -13,11 +13,11 @@ export const CancelAppointmentController = async (req:Request , res:Response , n
 
     if(parsedDataWithSuccess.success){
         try {
-            AppointmentModel.deleteOne({
+            await AppointmentModel.deleteOne({
                 _id : new Types.ObjectId(parsedDataWithSuccess.data.appointmentId)
             })
 
-            DoctorModel.updateOne(
+            await DoctorModel.updateOne(
                 {_id: parsedDataWithSuccess.data.appointmentId},
                 {$unset:{[`slots_booke.${parsedDataWithSuccess.data.appointmentId}`]:""}}
             )

@@ -21,6 +21,7 @@ export const GetUserProfile = async (req:Request, res:Response , next : NextFunc
     else{
         res.status(400).json({
             success: false ,
+            error:parsedDataWithSuccess.error.errors,
             message: "incorrect format , try again"
         })
     }

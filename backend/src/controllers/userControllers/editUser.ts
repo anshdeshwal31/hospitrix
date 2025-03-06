@@ -42,7 +42,8 @@ export const EditUserController = async (req:Request, res:Response, next:NextFun
     } else {
         res.status(400).json({
             success: false,
-            error: "the format of the info was incorrect, try again with the correct format"
+            error:parsedDataWithSuccess.error.errors,
+            message: "the format of the info was incorrect, try again with the correct format"
         })
     }
 }
