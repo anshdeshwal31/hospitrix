@@ -16,7 +16,7 @@ export const DoctorLoginController = async (req:Request , res:Response, next:Nex
             const doctor = await DoctorModel.findOne({ email })
     
             if (!doctor) {
-                return res.json({ success: false, message: "Doctor doesn't exist" })
+                res.json({ success: false, message: "Doctor doesn't exist" })
             }
     
             const isMatch = await bcrypt.compare(password, doctor.password)

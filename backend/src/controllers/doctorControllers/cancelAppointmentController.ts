@@ -21,9 +21,19 @@ export const CancelAppointmentController = async (req:Request , res: Response , 
                 })
                 return;
             }
-        
-            await AppointmentModel.deleteOne({
+            
+            if(appointmentToDelete.isCompleted || appointmentToDelete.isCancelled){
+                res.status(400).json({
+                    success:false , 
+                    message: "Appointment is already completed or cancelled, can't cancel it now ."
+                })
+                return;
+            }
+
+            await AppointmentModel.updateOne({
                 _id: new Types.ObjectId(parsedDataWithSuccess.data.appointmentId)
+            },{
+                $set:{isCancelled:true}
             })
 
             const doctorId = appointmentToDelete.doctorId

@@ -15,7 +15,7 @@ if (parsedDataWithSuccess.success) {
                 {_id:new Types.ObjectId(parsedDataWithSuccess.data.appointmentId)},
                 {$set:{isCompleted:true , isPending:false }}
             )
-            return res.status(200).json({
+            res.status(200).json({
                 success: true,
                 message: "Appointment marked as completed"
             })
@@ -31,7 +31,8 @@ if (parsedDataWithSuccess.success) {
     } else {
         res.status(400).json({
             success:false ,
-            message: "incorrect format , try again"
+            message: "incorrect format , try again",
+            error:parsedDataWithSuccess.error.errors
         })
     }
 }

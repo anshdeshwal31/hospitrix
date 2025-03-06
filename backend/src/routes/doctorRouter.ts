@@ -26,10 +26,10 @@ doctorRouter.post("/editDoctorProfile",EditDoctorController)
 doctorRouter.post("/changeDoctorAvailablity",ChangeDoctorAvailablity)
 
 
-doctorRouter.get("/getAppointmentList",GetAppointmentList)
+doctorRouter.post("/getAppointmentList",GetAppointmentList)
 
-doctorRouter.get("/getDoctorProfile",GetDoctorProfile)
+doctorRouter.post("/getDoctorProfile",GetDoctorProfile)
 
-doctorRouter.get("/getDoctorList",GetDoctorList)
+doctorRouter.post("/getDoctorList",GetDoctorList)
 
-doctorRouter.get("/getDoctorDashboard",GetDoctorDashboard)
+doctorRouter.post("/getDoctorDashboard",GetDoctorDashboard)

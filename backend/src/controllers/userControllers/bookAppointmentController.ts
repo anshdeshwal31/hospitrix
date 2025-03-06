@@ -25,7 +25,7 @@ export const BookAppointmentController = async (req:Request, res:Response, next:
                 doctorId: new Types.ObjectId(parsedDataWithSuccess.data.doctorId)
             })
 
-            DoctorModel.updateOne(
+            await DoctorModel.updateOne(
                 {_id: parsedDataWithSuccess.data.doctorId},
                 {$set:{[`slots_booked.${createdAppointment._id}`]: {time:parsedDataWithSuccess.data.time , date: parsedDataWithSuccess.data.date}}}
             )

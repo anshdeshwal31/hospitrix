@@ -2,6 +2,7 @@ import {Request , Response,  NextFunction } from "express"
 import { z } from "zod";
 import { DoctorModel } from "../../models/doctorModel";
 import { Types } from "mongoose";
+import { error } from "console";
 
 export const ChangeDoctorAvailablity = async (req:Request , res:Response , next:NextFunction) => { 
     const parsedDataWithSuccess = await z.object({
@@ -13,10 +14,11 @@ export const ChangeDoctorAvailablity = async (req:Request , res:Response , next:
             const doctor = await DoctorModel.findById(parsedDataWithSuccess.data.doctorId)
             
             if (!doctor) {
-                return res.status(404).json({
+                res.status(404).json({
                     success: false,
                     message: "Doctor not found"
                 })
+                return;
             }
     
             // Toggle the availability
@@ -24,13 +26,21 @@ export const ChangeDoctorAvailablity = async (req:Request , res:Response , next:
                 { _id: new Types.ObjectId(parsedDataWithSuccess.data.doctorId) },
                 { $set: { available: !doctor.available } }
             )
+
+            res.status(200).json({
+                success: true,
+                message: "Doctor availability updated successfully",
+                isAvailable: !doctor.available
+            })
+            return 
         } catch (error) {
             
         }   
     } else {
         res.status(400).json({
             success:false ,
-            message: "incorrect format , try again"
+            message: "incorrect format , try again",
+            error:parsedDataWithSuccess.error.errors
         })
     }
 }

@@ -16,11 +16,10 @@ export const EditDoctorController = async (req: Request , res:Response , next:Ne
         available: z.boolean(),
         fees: z.number(),
         address: z.object({
-            line1: z.string().length(5),
-            line2: z.string().length(5)
+            line1: z.string().min(5),
+            line2: z.string().min(5)
         }),
         date: z.string().datetime() , 
-        slots_booked: z.object({})
     }
     )
 
@@ -28,7 +27,7 @@ export const EditDoctorController = async (req: Request , res:Response , next:Ne
 
     if (parsedDataWithSuccess.success) {
         try {
-            DoctorModel.updateOne({_id:parsedDataWithSuccess.data.doctorId} , {$set:parsedDataWithSuccess.data})
+            await DoctorModel.updateOne({_id:parsedDataWithSuccess.data.doctorId} , {$set:parsedDataWithSuccess.data})
 
             res.status(200).json({
                 success: true  ,
@@ -44,7 +43,8 @@ export const EditDoctorController = async (req: Request , res:Response , next:Ne
     } else {
         res.status(400).json({
             success: false ,
-            message: "incorrect format , try again"
+            message: "incorrect format , try again",
+            error:parsedDataWithSuccess.error.errors
         })
     }
 }
