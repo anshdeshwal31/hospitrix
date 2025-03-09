@@ -20,24 +20,45 @@ export const AdminContextProvider:React.FC<{children:React.ReactNode}> = ({child
             const response  = await axios.post(backendUrl+"/api/admin/login",{
                 email,password
             })
+
+            console.log("Login Response: ", response.data)
+        
             if (response.data.success) {
                 localStorage.setItem("aToken",response.data.token)
                 setAToken(localStorage.getItem("aToken"))
-                toast.success(response.data.message,{
-                    className:"bg-green-500 text-white"
+
+                // console.log("before showing the success toast")
+                
+                toast.success(response?.data?.message,{
+                    className:"bg-green-400 text-white"
                 })
                 
+                // console.log("after showing the success toast")
+                
             } else {
-                toast.error(response.data.error.message,{
-                    className:"bg-red-500 text-white"
+
+                console.log("before showing the error toast")
+                
+                toast.error(response.data.message,{
+                    className:"bg-red-400 text-white"
                 })
+                
+                console.log("after showing the error toast")
             }
+            return response;
 
         } catch (error) {
             console.log(error)
-            toast.error("there was some error",{
+
+            // console.log("the message before showing the toast of the catch block ")
+
+            toast.error((error as Error).message,{
                 className:"bg-red-500 text-white"
             })
+
+            // console.log("the message after showing the toast of the catch block ")
+
+            return { data: { success: false, message: "Login failed" } };
         }
     }
 
@@ -100,12 +121,22 @@ export const AdminContextProvider:React.FC<{children:React.ReactNode}> = ({child
 
     const getAdminDashData = async () => { 
         try {
-            const response = await axios.post(backendUrl+"/api/doctor/getDoctorDashboard",{} , {headers:
+            console.log("Fetching admin dashboard data with token:", aToken)
+
+            if (!aToken) {
+                throw new Error("No authentication token")
+            }
+
+            console.log("before making the request to the backend")
+
+            const response = await axios.post(backendUrl+"/api/admin/getAdminDashboardData",{} , {headers:
                 {
                     authorization:`Bearer ${aToken}`
                 }
             })
-    
+
+            console.log("Dashboard data response:",response.data)
+            
             if (response.data.success) {
                 setAdminDashData(response.data.adminDashboardData);
             
@@ -116,12 +147,12 @@ export const AdminContextProvider:React.FC<{children:React.ReactNode}> = ({child
             }
         } catch (error) {
             console.log(error)
-            toast.error("there was some error",{
+            toast.error((error as Error).message,{
                 className : "bg-red-500 text-white"
             })   
         }
         
-     }
+    }
      
      
      const value =  {

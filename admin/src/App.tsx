@@ -1,25 +1,42 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Navigate} from 'react-router-dom'
 import { Navbar } from './components/Navbar'
-import { AdminDashboard } from './pages/adminDashboard'
-import { AppointmentList } from './pages/appointmentList'
-import { DoctorList } from './pages/doctorList'
-import { AddDoctor } from './pages/addDoctor'
+import { AdminDashboard } from './pages/AdminDashboard'
+import { AddDoctor } from './pages/AddDoctor'
+import { DoctorList } from './pages/DoctorList'
+import { AppointmentList } from './pages/AppointmentList'
+import { AdminLogin } from './pages/AdminLogin'
+import { ReactNode, useContext } from 'react'
+import { AdminContext } from './context/AdminContext'
+import { ToastContainer } from 'react-toastify'
+
+const ProtectedRoute = ({children}:{children:ReactNode}) => { 
+  const{aToken} = useContext(AdminContext)
+  if(!aToken) {
+    return <Navigate to="/login" replace/>
+  }
+  return children
+ }
 
 const App = () => {
   const router = createBrowserRouter([
     {
+      path:"login",
+      element:<AdminLogin/>
+    },
+    {
       path:"/",
+      // element:<ProtectedRoute><Navbar/></ProtectedRoute>,
       element:<Navbar/>,
       errorElement: <div className=' text-center font-semibold text-3xl'>
                         Error loading page
                     </div>,
       children:[
+        // {
+        //   index:true,
+        //   element:<AdminDashboard/>
+        // },
         {
-          index:true,
-          element:<AdminDashboard/>
-        },
-        {
-          path:"/admin-dashboard",
+          path:"admin-dashboard",
           element:<AdminDashboard/>
         },
         {
@@ -40,6 +57,7 @@ const App = () => {
   return (
     <div>
       <RouterProvider router= {router}/>
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   )
 }
