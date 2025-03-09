@@ -35,7 +35,7 @@ export const DoctorContextProvider:React.FC<{children:React.ReactNode}> =   ({ch
             }
         } catch (error) {
             console.log(error)
-            toast("there was some error",{
+            toast((error as Error).message,{
                 className : "bg-red-500 text-white"
             })
             

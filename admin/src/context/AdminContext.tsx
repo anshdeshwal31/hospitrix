@@ -2,7 +2,6 @@ import { createContext, useState } from "react";
 import { adminDashboardDataType, DoctorProfileWithoutId } from "../types/Types";
 import {toast} from "react-toastify"
 import axios from "axios"
-import { data } from "react-router-dom";
 
 
 export const AdminContext = createContext<any>(undefined)
@@ -11,10 +10,45 @@ export const AdminContextProvider:React.FC<{children:React.ReactNode}> = ({child
 
 
     const backendUrl:string  = import.meta.env.VITE_BACKEND_URL
-
+    const[doctorList,setDoctorList] = useState([])
+    const [allAppointment , setAllAppointment] = useState([])
     const [adminDashData , setAdminDashData] = useState<adminDashboardDataType| undefined>(undefined)
     const [aToken , setAToken] = useState<string|null>(localStorage.getItem("aToken")?localStorage.getItem("aToken"):"")
     
+
+
+    const getAllAppointmentList = async () => { 
+        try {
+
+            if (!aToken) {
+                throw new Error("No authentication token")
+            }
+            const response =  await axios.post(backendUrl+"/api/admin/getAppointmentList",{},{
+                headers:{
+                    authorization:`Bearer ${aToken}`
+                }
+            }
+            )
+
+            if (response.data.success) {
+                toast.success(response.data.message,{
+                    className:"bg-green-400 text-white"
+                })
+                setAllAppointment(response.data.appointments)
+            } else {
+                toast.error(response.data.message,{
+                    className:"bg-red-400 text-white"
+                })
+            }
+            
+        } catch (error) {
+            toast.error((error as Error).message,{
+                className:"bg-red-400 text-white"
+            })
+        }
+    }
+
+
     const adminLogin = async ( email:string , password:string) => { 
 
         try {
@@ -191,7 +225,37 @@ export const AdminContextProvider:React.FC<{children:React.ReactNode}> = ({child
         }
     }
      
+
+    const getDoctorList = async () => { 
+        try {
+            const response = await axios.post(backendUrl+"/api/admin/getDoctorList",{},{headers:
+                {
+                    authorization:`Bearer ${aToken}`
+                }
+            })
+            if (response.data.success) {
+                setDoctorList(response.data.doctorList)
+                toast.success(response.data.message,{
+                    className:"bg-green-500 text-white"
+                })
+            } else {
+                toast.error(response.data.message||response.data.error,{
+                    className:"bg-red-500 text-white"
+                })
+            }
+        } catch (error) {
+            toast.error("there was some error",{
+                className:"bg-red-500 text-white"
+            })
+  
+        }
+    }
+    
      const value =  {
+        getDoctorList,
+        doctorList,
+        allAppointment,
+        getAllAppointmentList,
         cancelAppointment,
         adminDashData, getAdminDashData,
         adminLogin,

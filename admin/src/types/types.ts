@@ -52,3 +52,10 @@ export interface adminDashboardDataType{
     patients:number,
     latestAppointments:appointmentType[]
 }
+
+export interface DoctorCardType{
+    _id: string ,
+    name: string ,
+    image: string ,
+    speciality: string 
+}
