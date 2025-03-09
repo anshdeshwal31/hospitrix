@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react"
 import { AdminContext} from "../context/AdminContext"
-// import { AppContext } from "../context/AppContext"
 import { assets } from "../assets/admin/assets"
 let count:number  = 0;
 
@@ -10,7 +9,7 @@ export const AdminDashboard = () => {
   console.log("count",count)
   const [loading , setLoading] = useState(false)
   const [error , setError] = useState<Error| null>(null)
-  const {adminDashData , getAdminDashData} = useContext(AdminContext)
+  const {adminDashData , getAdminDashData , cancelAppointment} = useContext(AdminContext)
   // const { slotDateFormat } = useContext(AppContext)
   
   useEffect(() => { 
@@ -34,39 +33,64 @@ export const AdminDashboard = () => {
      if (!adminDashData) return <div className="p-6 text-center">No dashboard data available</div>
      
     return (
-      <div>
-        <div className="flex">
+      <div className="">
+        <div className="flex gap-4 m-7">
         
           
-          <div className="">
+          <div className="flex rounded-md w-[220px] p-5 bg-blue-100 gap-3">
             <span className=""><img src={assets.doctor_icon} alt="" /></span>
             <span className="">
-              <div className="">{adminDashData.doctors}</div>
+              <div className="text-2xl">{adminDashData.doctors}</div>
               <div className="">Doctors</div>
             </span>
           </div>
 
   
-          <div className="">
+          <div className="flex rounded-md w-[220px] p-5 bg-blue-100 gap-3">
             <span className=""><img src={assets.appointments_icon} alt="" /></span>
             <span className="">
-              <div className="">{adminDashData.appointments}</div>
+              <div className="text-2xl">{adminDashData.appointments}</div>
               <div className="">Appointments</div>
             </span>
           </div>
 
 
-          <div className="">
+          <div className="flex rounded-md w-[220px] p-5 bg-blue-100 gap-3">
             <span className=""><img src={assets.patients_icon} alt="" /></span>
             <span className="">
-              <div className="">{adminDashData.patients}</div>
+              <div className="text-2xl">{adminDashData.patients}</div>
               <div className="">Patients</div>
             </span>
           </div>
 
         </div>
 
-        <div className=""></div>
+        <div className=" ml-7 mt-3">
+          <div className="flex text-xl font-medium mb-3 "><img src={assets.list_icon} className="mr-2"  />Latest Appointments</div>
+          <div className="flex flex-col gap-3 ">
+            {adminDashData.latestAppointments.map((appointment:any) => { 
+              return(
+                <div className="flex justify-between bg-blue-100 rounded-md border" key={appointment._id}>
+
+                <div className="flex">
+
+                  <div className=""><img src={appointment.doctorId.image} className="w-10 border rounded-l-md mr-2"/></div>
+
+                  <div className="">
+                    <div className="">Dr. {appointment.doctorId.name}</div>
+                    {/* console.log(Booking on {appointment.doctorId[`slots_booked${appointment._id}`].time}) */}
+                    {/* <div className="">Booking on {appointment.doctorId[`slots_booked.${appointment._id}`].time} </div> */}
+                    <div className="">Booking on {appointment.doctorId.slots_booked?.[appointment._id]?.time || 'No time available'}, {appointment.doctorId.slots_booked?.[appointment._id]?.date.split("T")[0]}</div>
+                  </div>
+                </div>
+
+                  <div className="hover:cursor-pointer mt-1"><img src={assets.cancel_icon} alt=""  onClick={() =>  cancelAppointment(appointment._id) }/></div>
+                  
+                </div>
+              )
+             })}
+          </div>
+        </div>
       </div>
     )
 }

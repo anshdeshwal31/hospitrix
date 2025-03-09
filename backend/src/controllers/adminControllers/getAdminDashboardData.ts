@@ -9,13 +9,15 @@ export const GetAdminDashboardData = async (req:Request , res:Response) => {
     try {
         const doctors = await DoctorModel.find({})
         const users = await UserModel.find({})
-        const appointments = await AppointmentModel.find({})
+        const appointments = await AppointmentModel.find({}).populate("doctorId")
 
         const adminDashboardData = {
             doctors: doctors.length,
             appointments: appointments.length,
             patients: users.length,
-            latestAppointments: appointments.reverse()
+            latestAppointments: [...appointments].reverse()
+            // latestAppointments: appointments.slice().reverse()
+            // latestAppointments: appointments.reverse()
         }
 
         res.json({ success: true, adminDashboardData })

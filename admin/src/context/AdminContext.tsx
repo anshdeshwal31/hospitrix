@@ -2,6 +2,7 @@ import { createContext, useState } from "react";
 import { adminDashboardDataType, DoctorProfileWithoutId } from "../types/Types";
 import {toast} from "react-toastify"
 import axios from "axios"
+import { data } from "react-router-dom";
 
 
 export const AdminContext = createContext<any>(undefined)
@@ -154,8 +155,44 @@ export const AdminContextProvider:React.FC<{children:React.ReactNode}> = ({child
         
     }
      
+    const cancelAppointment = async (appointmentId:string) => { 
+        console.log("start of the cancel appointment function")
+        try {
+
+            console.log("before making the request to the backend to cancel appointment")
+
+            const response = await axios.post(backendUrl+"/api/admin/cancelAppointment", {
+                appointmentId
+            },{
+                headers:{
+                    authorization: `Bearer ${aToken}`
+                }
+            })
+            
+            console.log("Response from the backend", response)
+            console.log("after making the request to the backend to cancel appointment")
+            
+            if (response.data.success) {
+                toast.success(response.data.message,{
+                    className:"bg-green-500 text-white"
+                })
+                getAdminDashData()
+            } else {
+                toast.error(response.data.error.message,{
+                    className:"bg-red-500 text-white"
+                })
+            }
+        } catch (error) {
+            console.log(error)
+            toast.error("there was some error",{
+                className : "bg-red-500 text-white"
+            })
+            
+        }
+    }
      
      const value =  {
+        cancelAppointment,
         adminDashData, getAdminDashData,
         adminLogin,
         addDoctor,

@@ -8,8 +8,8 @@ const AppointmentSchema = new Schema({
     isCancelled: {type:Boolean , default:false},
     isCompleted: {type:Boolean , default:false},
     isPending: {type:Boolean , default:true},
-    doctorId: {type:objectId ,ref:"doctors"},
-    userId: {type:objectId , ref:"users"}
+    doctorId: {type:objectId ,ref:"Doctor"},
+    userId: {type:objectId , ref:"User"}
 })
 
 export const AppointmentModel = mongoose.model("Appointment", AppointmentSchema)

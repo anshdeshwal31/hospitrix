@@ -3,9 +3,9 @@ import axios  from "axios";
 import { toast } from "react-toastify";
 import { appointmentType, doctorDashboardDataType, doctorProfileType } from "../types/Types";
 
-const DoctorContext =  createContext<any>(undefined) 
+export const DoctorContext =  createContext<any>(undefined) 
 
-export const DoctorContextProvider :React.FC<{children:React.ReactNode}> =   ({children}) => { 
+export const DoctorContextProvider:React.FC<{children:React.ReactNode}> =   ({children}) => { 
 
     
     const backendUrl:string = import.meta.env.VITE_BACKEND_URL
