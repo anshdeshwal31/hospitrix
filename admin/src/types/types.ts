@@ -57,5 +57,6 @@ export interface DoctorCardType{
     _id: string ,
     name: string ,
     image: string ,
-    speciality: string 
+    speciality: string,
+    availablity:boolean
 }

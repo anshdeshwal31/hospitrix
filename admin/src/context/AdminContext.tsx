@@ -234,7 +234,9 @@ export const AdminContextProvider:React.FC<{children:React.ReactNode}> = ({child
                 }
             })
             if (response.data.success) {
-                setDoctorList(response.data.doctorList)
+                setDoctorList(response.data.doctors)
+                console.log("doctors list ",doctorList)
+                console.log("response", response)
                 toast.success(response.data.message,{
                     className:"bg-green-500 text-white"
                 })
