@@ -1,6 +1,8 @@
 import {z} from "zod"
 import { Request, Response, NextFunction } from "express"
 import jwt from "jsonwebtoken" 
+import { error } from "console"
+import { parse } from "path"
  
 export const AdminLoginController = async (req:Request, res:Response, next:NextFunction) => { 
     const jwtSecret = process.env.JWT_SECRET_KEY || 'fallback-secret'
@@ -16,16 +18,19 @@ export const AdminLoginController = async (req:Request, res:Response, next:NextF
 
         if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
             const token = jwt.sign({email , password}, jwtSecret)
-            res.json({ success: true, token })
+            res.json({ success: true, token , message:"Logged in successfully" })
+            // res.status(200).json({ success: true, token })
         } else {
             res.json({ success: false, message: "Invalid credentials" })
+            // res.status(200).json({ success: false, message: "Invalid credentials" })
         }
         
     }
     else{
         res.json({
             success: false,
-            error: "Invalid login format"
+            error:parsedDataWithSuccess.error.errors,
+            message: "Invalid login format"
         });
     }
  

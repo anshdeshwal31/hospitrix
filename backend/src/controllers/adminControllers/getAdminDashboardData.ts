@@ -22,6 +22,6 @@ export const GetAdminDashboardData = async (req:Request , res:Response) => {
 
     } catch (error) {
         console.log(error)
-        res.json({ success: false, error })
+        res.json({ success: false, error, message:"there was some error on the backend" })
     }
 }

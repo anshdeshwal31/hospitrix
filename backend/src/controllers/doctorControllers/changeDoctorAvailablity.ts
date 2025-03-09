@@ -2,7 +2,6 @@ import {Request , Response,  NextFunction } from "express"
 import { z } from "zod";
 import { DoctorModel } from "../../models/doctorModel";
 import { Types } from "mongoose";
-import { error } from "console";
 
 export const ChangeDoctorAvailablity = async (req:Request , res:Response , next:NextFunction) => { 
     const parsedDataWithSuccess = await z.object({
