@@ -100,16 +100,19 @@ export const AdminContextProvider:React.FC<{children:React.ReactNode}> = ({child
 
     const addDoctor = async (doc:DoctorProfileWithoutId) => { 
         try {
+            console.log("Before making a call to the backend")
             const response = await axios.post(backendUrl+"/api/admin/addDoctor",doc,{
                 headers:{
                     authorization: `Bearer ${aToken}`
                 }
             })
-
+            console.log("after making a call to the backend")
+            console.log("Response", response)
             if (response.data.success) {
                 toast.success(response.data.message,{
                     className:"bg-green-500 text-white"
                 })
+                console.log("response",response)
             } else {
                 toast.error(response.data.error.message,{
                     className : "bg-red-500 text-white"
@@ -117,7 +120,7 @@ export const AdminContextProvider:React.FC<{children:React.ReactNode}> = ({child
             }
         } catch (error) {
             console.log(error)
-            toast("there was some error",{
+            toast((error as Error).message,{
                 className : "bg-red-500 text-white"
             })
         }
@@ -194,7 +197,7 @@ export const AdminContextProvider:React.FC<{children:React.ReactNode}> = ({child
         try {
 
             console.log("before making the request to the backend to cancel appointment")
-
+            window.confirm("Are you sure you want to cancel the appointment?")
             const response = await axios.post(backendUrl+"/api/admin/cancelAppointment", {
                 appointmentId
             },{

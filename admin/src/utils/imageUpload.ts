@@ -1,13 +1,11 @@
-import { useState } from "react"
 
 
-const[postImage, setPostImage] = useState<any>(undefined)
 export const ImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => { 
     const file= e?.target?.files?.[0]
     
     if (file) {
         const base64 = await convertToBase64(file) 
-        setPostImage(base64)
+        return base64;
         
     } else {
        throw new Error("couldn't upload the image try again") 
@@ -28,5 +26,3 @@ export const convertToBase64 =  (file:any) => {
          }
      })
  }
-
- export {postImage , setPostImage}

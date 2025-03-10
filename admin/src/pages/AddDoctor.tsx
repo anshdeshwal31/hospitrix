@@ -1,47 +1,120 @@
-import { useState } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
+import { ImageUpload } from "../utils/imageUpload";
+import { assets } from "../assets/admin/assets";
+import { AdminContext } from "../context/AdminContext";
+import { MdVisibility , MdVisibilityOff} from "react-icons/md";
 
 
 export const AddDoctor = () => {
 
-
-  const [Image , setImage]  = useState<boolean>(false);
+  const {addDoctor} = useContext(AdminContext)
   const [Email , setEmail] = useState<string>("");
   const [Name  , setName] = useState<string>("");
   const [Password, setPassword] = useState<string>("");
-  const [experience , setExperience] = useState<number| null>(null)
+  const [experience , setExperience] = useState<string>("")
   const [fees , setFees] = useState<number| null>(null);
   const [speciality , setSpeciality] = useState<string>("");
   const[about , setAbout] = useState<string>("");
   const [ degree , setDegree] = useState<string>("")
   const [address1 , setAddress1] = useState<string>("")
   const [address2 , setAddress2] = useState<string>("")
+  const[postImage , setPostImage] = useState<string>("")
+  const imageRef = useRef<HTMLInputElement>(null)
+  const[passwordVisible, setPasswordVisible] = useState<boolean>(false)
 
+
+  const [doc, setDoc] = useState<any>({
+                                      email:Email,
+                                      password:Password,
+                                      name:Name,
+                                      image:postImage,
+                                      speciality,
+                                      degree ,
+                                      experience,
+                                      about ,
+                                      available:true,
+                                      fees,
+                                      address:{
+                                        line1:address1,
+                                        line2:address2
+                                      },
+                                      dateAdded: new Date().toISOString()
+                                    }) 
+
+
+  useEffect(() => {
+    setDoc({
+      email: Email,
+      password: Password,
+      name: Name,
+      image: postImage,
+      speciality,
+      degree,
+      experience,
+      about,
+      available: true,
+      fees,
+      address: {
+        line1: address1,
+        line2: address2
+      },
+      dateAdded: new Date().toISOString()
+    });
+  }, [Email, Password, Name, postImage, speciality, degree, experience, about, fees, address1, address2]);
+
+  const handleImageUpload = async (e:React.ChangeEvent<HTMLInputElement>) => { 
+    try {
+      const base64 = await ImageUpload(e)
+      setPostImage(base64 as string)
+    } catch (error) {
+      console.log("Failed to upload image: ", error)
+    }
+  }
+  
+  const handleSubmit = async (e:React.FormEvent<HTMLFormElement>) => { 
+    console.log("preventing the window from reloadingn 1")
+    e.preventDefault()
+    console.log("preventing the window from reloading 2")
+    await addDoctor(doc)
+    console.log("preventing the window from reloading 3")
+   }
+  
   return (
-    <div className="w-full m-8">
+    <div className="w-fit m-8">
+
+      
       <div className="text-xl font-medium mb-6">Add Doctor </div>
-      <form action="" className="border rounded-md p-4 text-lg text-slate-600 w-[70%]">
+      <form action="" className="border rounded-md p-4 text-lg text-slate-600 w-[800px]" onSubmit={handleSubmit}>
+        <div className="mb-5">
+          <label>
+            <img src={postImage?postImage:assets.upload_area} className="h-[70px] my-2 ml-3" />
+            {/* <img src={imageRef?.current?.value?imageRef.current.value:assets.upload_area} className="h-[70px] my-2 ml-3" /> */}
+            <input type="file" ref={imageRef} onChange={handleImageUpload} className="ml-4"/>
+          </label>
+        </div>
 
         <div className=" flex gap-6 w-full justify-around">
           <div className="flex flex-col gap-4 w-[45%]">
 
             <label htmlFor="" className="flex flex-col">
               Your name
-              <input type="text" id="doctorname" name="doctorname" placeholder="Name" className="border rounded-md px-3 py-2"/>
+              <input required type="text" id="doctorname" name="doctorname" placeholder="Name" className="border rounded-md px-3 py-2" onChange={(e) => setName(e.target.value) }/>
             </label>
 
             <label htmlFor="" className="flex flex-col">
               Doctor Email
-              <input type="text" className="border rounded-md px-3 py-2" placeholder="Email" id="doctoremail"/>
+              <input required type="text" className="border rounded-md px-3 py-2" placeholder="Email" id="doctoremail" onChange={(e) => setEmail(e.target.value) }/>
             </label>
 
             <label htmlFor="" className="flex flex-col">
-              Set Password
-              <input type="password" className="border rounded-md px-3 py-2" id="password" placeholder="Password" />
+              Set Password 
+              <input required type={passwordVisible?"text":"password"} className="border rounded-md px-3 py-2" id="password" placeholder="Password" onChange={(e) => setPassword(e.target.value) }/>
+              <span className="relative bottom-[32px] left-[315px] hover:cursor-pointer" onClick={() => { setPasswordVisible(!passwordVisible) }}>{passwordVisible?<MdVisibilityOff size={22}/>:<MdVisibility size={22}/>}</span>
             </label>
 
             <label htmlFor="" className="flex flex-col">
               Experience
-              <select name="experience" id="experience" className="border rounded-md px-3 py-2">
+              <select name="experience" id="experience" className="border rounded-md px-3 py-2 hover:cursor-pointer" onChange={(e) => setExperience(e.target.value)} defaultValue="1 year" >
                 <option value="1 year">1 year</option>
                 <option value="2 years">2 years</option>
                 <option value="3 years">3 years</option>
@@ -57,7 +130,7 @@ export const AddDoctor = () => {
 
             <label htmlFor="" className="flex flex-col">
               Fees
-              <input type="number" className="border rounded-md px-3 py-2" placeholder="Fees"/>
+              <input required type="number" className="border rounded-md px-3 py-2" placeholder="Fees" onChange={(e) => setFees(parseInt(e.target.value))}/>
             </label>
 
 
@@ -67,7 +140,7 @@ export const AddDoctor = () => {
 
             <label htmlFor="" className="flex flex-col">
               Speciality
-              <select name="speciality" id="speciality" className="border rounded-md px-3 py-2">
+              <select name="speciality" id="speciality" className="border rounded-md px-3 py-2 hover:cursor-pointer" onChange={(e) => setSpeciality(e.target.value)} defaultValue="General Physician" >
                 <option value="General Physician">General Physician</option>
                 <option value="Gynecologist">Gynecologist</option>
                 <option value="Dermatologist">Dermatologist</option>
@@ -79,13 +152,13 @@ export const AddDoctor = () => {
 
             <label htmlFor="" className="flex flex-col">
               Degree
-              <input type="text" className="border rounded-md px-3 py-2" placeholder="Degree"  />
+              <input required type="text" className="border rounded-md px-3 py-2" placeholder="Degree" onChange={(e) => setDegree(e.target.value)} />
             </label>
 
             <label htmlFor="" className="flex flex-col">
               Address
-              <input type="text" className="border rounded-md px-3 py-2 mb-2"  placeholder="Address 1" />
-              <input type="text" className="border rounded-md px-3 py-2" placeholder="Address 2" />
+              <input required type="text" className="border rounded-md px-3 py-2 mb-2"  placeholder="Address 1" onChange={(e) => setAddress1(e.target.value)}/>
+              <input required type="text" className="border rounded-md px-3 py-2" placeholder="Address 2" onChange={(e) => setAddress2(e.target.value)} />
             </label>
 
           </div>
@@ -94,12 +167,12 @@ export const AddDoctor = () => {
         <div className=" mt-4">
           <label htmlFor="" className="flex flex-col ml-3 gap-2">
             About Doctor
-            <textarea name="about" id="about" rows={6} cols={10} placeholder="Write  about the doctor" className="border rounded-md p-3"></textarea>
+            <textarea name="about" id="about" rows={6} cols={10} placeholder="Write  about the doctor" className="border rounded-md p-3" required onChange={(e) => setAbout(e.target.value)}></textarea>
           </label>
         </div>
 
         <div className="ml-3 mt-6">
-          <button className="bg-primary-blue py-3 px-9 text-white hover:bg-black transition-all duration-500 rounded-full">Add Doctor</button>
+          <button type="submit" className="bg-primary-blue py-3 px-9 text-white hover:bg-black transition-all duration-500 rounded-full" >Add Doctor</button>
         </div>
 
       </form>
