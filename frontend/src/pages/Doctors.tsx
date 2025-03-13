@@ -1,13 +1,22 @@
 
 import { NavLink, useParams, useNavigate } from "react-router-dom"
-import { specialityData, doctors } from "../assets/frontend/assets"
+import { specialityData } from "../assets/frontend/assets"
 import { v4 as uuidv4 } from 'uuid';
 import DoctorCard from "../components/DoctorCard";
+import { useContext, useEffect } from "react";
+import { UserContext } from "../context/UserContext";
 
 const Doctors = () => {
+
+    const {doctorList, getDoctorList} = useContext(UserContext)
+    
     const navigate = useNavigate()
 
     const {speciality} = useParams()
+
+    useEffect(() => { 
+        getDoctorList()
+     },[])
 
     const handleSpecialityClick  = (clickedSpeciality:string,event: React.MouseEvent
     ):void => { 
@@ -46,7 +55,7 @@ const Doctors = () => {
 
             <div className="flex flex-wrap gap-x-6 gap-y-7">
                 {
-                    doctors.filter((doctorItem) => speciality? doctorItem.speciality === speciality:true ).map((doctorItem) => { 
+                    doctorList.filter((doctorItem:any) => speciality? doctorItem.speciality.toLowerCase() === speciality.toLowerCase():true).map((doctorItem:any) => { 
                     return (
                         <DoctorCard 
                             key={doctorItem._id} 
