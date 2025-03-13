@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { UserContext } from '../context/UserContext'
 
 const Login = () => {
-
+  const {userLogin} = useContext(UserContext)
   const [state, setState] = useState('Sign Up')
 
   const [name, setName] = useState('')
@@ -10,9 +11,18 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
 
-  const onSubmitHandler = async (event:React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
+  const onSubmitHandler = async (e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    if(state == "Sign Up"){
+      navigate("/my-profile",{state:{
+        name,email,password
+      }})
+    } else {
+      userLogin()
+      navigate("/home")
+    } 
+    
   }
   return (
     <form onSubmit={onSubmitHandler} className='min-h-[80vh] flex items-center'>
@@ -26,7 +36,7 @@ const Login = () => {
           </div>
         
         }
-        <div className='w-full '>
+        <div className='w-full'>
           <p>Email</p>
           <input onChange={(e) => setEmail(e.target.value)} value={email} className='border border-[#DADADA] rounded w-full p-2 mt-1' type="email" required />
         </div>
@@ -34,7 +44,7 @@ const Login = () => {
           <p>Password</p>
           <input onChange={(e) => setPassword(e.target.value)} value={password} className='border border-[#DADADA] rounded w-full p-2 mt-1' type="password" required />
         </div>
-        <button className='bg-primary-blue text-white w-full py-2 my-2 rounded-md text-base hover:bg-primary-pink transition duration-500' onClick={()=>navigate("/my-profile")}>{state === 'Sign Up' ? 'Create account' : 'Login'}</button>
+        <button className='bg-primary-blue text-white w-full py-2 my-2 rounded-md text-base hover:bg-primary-pink transition duration-500' type='submit'>{state === 'Sign Up' ? 'Create account' : 'Login'}</button>
         {state === 'Sign Up'
           ? <p>Already have an account? <span onClick={() => setState('Login')} className='text-primary-blue underline cursor-pointer'>Login here</span></p>
           : <p>Create an new account? <span onClick={() => setState('Sign Up')} className='text-primary-blue underline cursor-pointer'>Click here</span></p>

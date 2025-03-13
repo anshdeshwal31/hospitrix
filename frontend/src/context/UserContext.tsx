@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { user } from "../types/Types";
 
 export const UserContext = createContext<any>(null)
 
@@ -8,7 +9,8 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
     const backendUrl:string = import.meta.env.VITE_BACKEND_URL
     const [uToken , setUToken] = useState<string|null>(localStorage.getItem("uToken")?localStorage.getItem("uToken"):"")
     const [appointmentList , setAppointmentList] = useState([])
-    const [userProfile , setUserProfile] = useState([])
+    const [userProfile , setUserProfile] = useState<any[]>([])
+    const [doctorList , setDoctorList] = useState<any[]>([])
 
     
     const userLogin = async (email:string , password:string) => { 
@@ -36,7 +38,7 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
         }
     }
     
-    const saveInformation = async (user:any) => { 
+    const saveInformation = async (user:user) => { 
         try {
             const response = await axios.post(backendUrl+"/api/user/saveInformation",user,{
                 headers:{
@@ -246,9 +248,24 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
         
      }
 
+    const getDoctorList = async () => { 
+        try {
+            const response = await axios.post(backendUrl+"/api/user/getDoctorList")
+            console.log("Request successfull")
+            console.log("Response",response)
+            setDoctorList(response.data.doctors)
+            
+        } catch (error) {
+            console.log("there was some error")
+            toast.error((error as Error).message,{
+                className:"bg-red-400 text-white"
+            })
+            
+        }
+     }
     
     const value = {
-        userProfile , appointmentList, userLogin,bookAppointment, payOnline, cancelAppointment , saveInformation , editUser , getUserProfile , getAppointmentList
+        userProfile , appointmentList, userLogin,bookAppointment, payOnline, cancelAppointment , saveInformation , editUser , getUserProfile , getAppointmentList, doctorList, getDoctorList
     }
 
     return (

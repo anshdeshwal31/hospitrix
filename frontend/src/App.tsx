@@ -9,6 +9,7 @@ import Doctors from './pages/Doctors';
 import Login from './pages/Login';         
 // import CreateAccount from './pages/CreateAccount'; 
 import Appointment from './pages/Appointment';
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 const App = () => {
       const router = createBrowserRouter([{
@@ -19,7 +20,7 @@ const App = () => {
                       </div>,
         children: [
           {
-          path: '/',
+          path: '/home',
           element: <Home/>},
           
           {
@@ -44,11 +45,11 @@ const App = () => {
           // },
           {
             path:"/my-appointments",
-            element:<MyAppointments/>
+            element:<ProtectedRoute><MyAppointments/></ProtectedRoute>
           },
           {
             path:"/my-profile",
-            element:<MyProfile/>
+            element:<ProtectedRoute><MyProfile/></ProtectedRoute>
           },
           {
             path: "/doctors/:speciality",

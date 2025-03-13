@@ -1,24 +1,32 @@
 import  { useContext, useState } from 'react'
 import { AppContext } from '../context/AppContext'
+import { useLocation } from 'react-router-dom'
+import { UserContext } from '../context/UserContext'
 
 const MyProfile = () => {
+
+    const{saveInformation}  = useContext(UserContext)
+    const location = useLocation()
+    const {name , email ,password} = location.state
+
     const {assets} = useContext(AppContext)
     const [isEdit, setIsEdit] = useState(false)
     const [userData, setUserData] = useState({
-      name: "Edward Vincent",
-      image: assets.profile_pic,
-      email: 'richardjameswap@gmail.com',
-      phone: '+1 123 456 7890',
-      address: {
-          line1: "57th Cross, Richmond",
-          line2: "Circle, Church Road, London"
-      },
-      gender: 'Male',
-      dob: '2000-01-20'
-  });
+        name,
+        email,
+        password,
+        image: assets.profile_pic,
+        address: {
+            line1: "",
+            line2: ""
+        },
+        gender: 'Male',
+        dateOfBirth: '0-00-00',
+        phoneNumber: '000-000-0000',
+});
 
     return userData ? (
-        <div className='max-w-lg flex flex-col gap-2  pt-5 ml-44'>
+        <div className='max-w-lg flex flex-col gap-2 pt-5 ml-44'>
 
             <img className='w-36 rounded' src={userData.image} alt="" />
             
@@ -38,8 +46,8 @@ const MyProfile = () => {
                     <p className='font-medium'>Phone:</p>
 
                     {isEdit
-                        ? <input className='bg-blue-100 py-1 max-w-52 border rounded-lg' type="text" onChange={(e) => setUserData(prev => ({ ...prev, phone: e.target.value }))} value={userData.phone} />
-                        : <p className='text-blue-500'>{userData.phone}</p>
+                        ? <input className='bg-blue-100 py-1 max-w-52 border rounded-lg' type="text" onChange={(e) => setUserData(prev => ({ ...prev, phoneNumber: e.target.value }))} value={userData.phoneNumber} />
+                        : <p className='text-blue-500'>{userData.phoneNumber}</p>
                     }
 
                     <p className='font-medium'>Address:</p>
@@ -71,8 +79,8 @@ const MyProfile = () => {
                     <p className='font-medium'>Birthday:</p>
 
                     {isEdit
-                        ? <input className='w-36 bg-blue-100 px-2 py-1 border rounded-full' type='date' onChange={(e) => setUserData(prev => ({ ...prev, dob: e.target.value }))} value={userData.dob} />
-                        : <p className='text-gray-500'>{userData.dob}</p>
+                        ? <input className='w-36 bg-blue-100 px-2 py-1 border rounded-full' type='date' onChange={(e) => setUserData(prev => ({ ...prev, dob: e.target.value }))} value={userData.dateOfBirth} />
+                        : <p className='text-gray-500'>{userData.dateOfBirth}</p>
                     }
 
                 </div>
@@ -80,8 +88,8 @@ const MyProfile = () => {
             <div className='mt-10'>
 
                 {isEdit
-                    ? <button className='  text-white bg-primary-blue border-2 px-8 py-2 rounded-full hover:bg-primary hover:text-white hover:bg-primary-pink transition  duration-500 hover:border-white'>Save information</button>
-                    : <button onClick={() => setIsEdit(true)} className='border-2  text-white bg-primary-blue px-8 py-2 rounded-full hover:bg-primary hover:text-white hover:bg-primary-pink hover:border-white transition duration-500 '>Edit</button>
+                    ? <button className='  text-white bg-primary-blue border-2 px-8 py-2 rounded-full hover:bg-primary hover:text-white hover:bg-primary-pink transition  duration-500 hover:border-white' onClick={() => { saveInformation(userData) }}>Save information</button>
+                    : <button onClick={() => setIsEdit(true)} className='border-2 text-white bg-primary-blue px-8 py-2 rounded-full hover:bg-primary hover:text-white hover:bg-primary-pink hover:border-white transition duration-500'>Edit</button>
                 }
 
             </div>

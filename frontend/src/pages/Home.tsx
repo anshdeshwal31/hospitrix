@@ -1,10 +1,19 @@
-import { assets, specialityData , doctors} from '../assets/frontend/assets'
+import { assets, specialityData} from '../assets/frontend/assets'
 import { Link } from 'react-router-dom'
 import { SpecialityType } from '../types/Types'
 import { v4 as uuidv4 } from 'uuid'
 import DoctorCard from '../components/DoctorCard'
+import { useContext, useEffect } from 'react'
+import { UserContext } from '../context/UserContext'
 
 const Home = () => {
+
+    const {doctorList , getDoctorList} = useContext(UserContext)
+
+    useEffect(() => { 
+        getDoctorList()
+     },[])
+    
   return (
     <div className='w-full flex flex-col items-center mt-2 p-3 h-full'>
         <div className='w-[80%] bg-primary-blue rounded-xl flex px-12 justify-between text-white'>
@@ -55,7 +64,7 @@ const Home = () => {
         
 
         <div className='flex gap-x-4 gap-y-8 flex-wrap justify-center w-[82%] mt-7 '>
-            {doctors.slice(0,10).map((doctorItem) => { 
+            {doctorList.slice(0,10).map((doctorItem:any) => { 
                 return (
                 <div key={doctorItem._id}>
                     <DoctorCard name = {doctorItem.name} image = {doctorItem.image} speciality={doctorItem.speciality} _id = {doctorItem._id}/>
