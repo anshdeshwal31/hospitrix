@@ -8,6 +8,7 @@ import { GetUserProfile } from "../controllers/userControllers/getUserProfile";
 import { GetAppointmentList } from "../controllers/userControllers/getAppointmentList";
 import { EditUserController } from "../controllers/userControllers/editUser";
 import { AuthUserMiddleware } from "../middlewares/authUser";
+import { GetDoctorList } from "../controllers/userControllers/getDoctorList";
 
 
 export const userRouter:Router = express.Router()
@@ -31,3 +32,5 @@ userRouter.post("/editUser", EditUserController)
 userRouter.post("/getUserProfile", GetUserProfile)
 
 userRouter.post("/getAppointmentList",GetAppointmentList)
+
+userRouter.post("getDoctorList", GetDoctorList)

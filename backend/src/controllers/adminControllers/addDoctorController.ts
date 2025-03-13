@@ -22,7 +22,7 @@ export const AddDoctorController = async (req:Request, res:Response , next: Next
             line1: z.string().min(5),
             line2: z.string().min(5)
         }),
-        date: z.string().datetime() , 
+        dateAdded: z.string().datetime()
     })
 
     req.body.password = hashedPassword
