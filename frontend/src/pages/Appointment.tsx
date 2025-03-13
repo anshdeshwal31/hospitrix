@@ -5,6 +5,7 @@ import { AppContext } from "../context/AppContext"
 import { doctorInfoType, DateItemType , timeSlotType} from "../types/Types"
 import { v4 as uuidv4 } from 'uuid';
 import DoctorCard from "../components/DoctorCard";
+import { UserContext } from "../context/UserContext";
 
 let count:number  = 0 ;
 const Appointment:React.FC = () => {
@@ -17,14 +18,14 @@ const Appointment:React.FC = () => {
       const [docInfo, setDocInfo] = useState<doctorInfoType | undefined>(undefined) // making them a state because we want to use them outside of useEffect but we don't need  them to reinitialize each time the compoent re-renders
 
       const {docId} = useParams <{docId:string}>()
-      const {doctors, assets ,  currencySymbol} = useContext(AppContext)
+      const { assets ,  currencySymbol} = useContext(AppContext)
+      const {doctorList} = useContext(UserContext)
       count++;
       
 
       useEffect(() => { 
-
         const getDocInfo = () => { 
-          const foundDoc  = doctors.find((doctorItem : doctorInfoType) => doctorItem._id === docId )
+          const foundDoc  = doctorList.find((doctorItem : doctorInfoType) => doctorItem._id === docId )
           setDocInfo(foundDoc);
         }
 
@@ -82,7 +83,7 @@ const Appointment:React.FC = () => {
         setDateTimeArray(tempDateTimeArray);
         console.log(dateTimeArray);
         
-      },[doctors , docId])
+      },[doctorList , docId])
 
 
       console.log(dateTimeArray);
@@ -168,7 +169,7 @@ const Appointment:React.FC = () => {
 
           <div className="flex flex-wrap gap-6  w-full">
             {
-              doctors.map((doctorItem ) => { 
+              doctorList.map((doctorItem ) => { 
                 return (
                   (doctorItem.speciality === docInfo?.speciality && doctorItem._id != docInfo._id) && (
                     <DoctorCard name={doctorItem.name} image={doctorItem.image} speciality={doctorItem.speciality} _id = {doctorItem._id}/>
