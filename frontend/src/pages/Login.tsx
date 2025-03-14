@@ -1,11 +1,12 @@
 import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
+import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 
 const Login = () => {
   const {userLogin} = useContext(UserContext)
   const [state, setState] = useState('Sign Up')
-
+  const [passwordVisible , setPasswordVisible] = useState(false)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -13,14 +14,17 @@ const Login = () => {
 
   const onSubmitHandler = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+    console.log("executing on submit handler ")
     if(state == "Sign Up"){
       navigate("/my-profile",{state:{
-        name,email,password
+        name,email,password,
+        navigatedFromCreateAccount:true
       }})
+      console.log("navigating to the my-profile page")
     } else {
+      console.log("executing the user login function")
       userLogin()
-      navigate("/home")
+      navigate("/")
     } 
     
   }
@@ -42,7 +46,8 @@ const Login = () => {
         </div>
         <div className='w-full '>
           <p>Password</p>
-          <input onChange={(e) => setPassword(e.target.value)} value={password} className='border border-[#DADADA] rounded w-full p-2 mt-1' type="password" required />
+          <input onChange={(e) => setPassword(e.target.value)} value={password} className='border border-[#DADADA] rounded w-full p-2 mt-1' type={passwordVisible?"text":"password"} required />
+          <span className='relative -top-8 left-[290px]' onClick={() => { setPasswordVisible(!passwordVisible) }}>{passwordVisible?<MdVisibilityOff size={20}/>:<MdVisibility size={20}/>}</span>
         </div>
         <button className='bg-primary-blue text-white w-full py-2 my-2 rounded-md text-base hover:bg-primary-pink transition duration-500' type='submit'>{state === 'Sign Up' ? 'Create account' : 'Login'}</button>
         {state === 'Sign Up'

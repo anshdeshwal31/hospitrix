@@ -54,3 +54,18 @@ export interface user {
     dateOfBirth:string ,
     phoneNumber:string
 }
+
+export interface editUserType{
+    userId:string ,
+    name:string ,
+    email:string,
+    password:string,
+    image:string ,
+    address:{
+        line1:string ,
+        line2:string
+    },
+    gender:string ,
+    dateOfBirth:string ,
+    phoneNumber:string
+}

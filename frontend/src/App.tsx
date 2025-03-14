@@ -20,7 +20,7 @@ const App = () => {
                       </div>,
         children: [
           {
-          path: '/home',
+          path: '/',
           element: <Home/>},
           
           {
@@ -49,7 +49,8 @@ const App = () => {
           },
           {
             path:"/my-profile",
-            element:<ProtectedRoute><MyProfile/></ProtectedRoute>
+            // element:<ProtectedRoute><MyProfile/></ProtectedRoute>
+            element:<MyProfile/>
           },
           {
             path: "/doctors/:speciality",

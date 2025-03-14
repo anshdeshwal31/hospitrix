@@ -2,35 +2,51 @@ import  { useContext, useState } from 'react'
 import { AppContext } from '../context/AppContext'
 import { useLocation } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
+import { ImageUpload } from '../utils/imageUpload'
+import { toast } from 'react-toastify'
+
 
 const MyProfile = () => {
 
-    const{saveInformation}  = useContext(UserContext)
+    const{saveInformation , editUser, userId}  = useContext(UserContext)
     const location = useLocation()
     const {name , email ,password} = location.state
 
     const {assets} = useContext(AppContext)
+    const [imageToUpload , setImageToUpload] = useState<string>("")
     const [isEdit, setIsEdit] = useState(false)
     const [userData, setUserData] = useState({
         name,
         email,
         password,
-        image: assets.profile_pic,
+        image: imageToUpload,
         address: {
             line1: "",
             line2: ""
         },
         gender: 'Male',
-        dateOfBirth: '0-00-00',
-        phoneNumber: '000-000-0000',
+        dateOfBirth: new Date().toISOString(),
+        phoneNumber: '0000000000',
 });
+
+    const handleImageUpload =  async (e:any) => { 
+        try {
+            const base64 = await ImageUpload(e)
+            setImageToUpload(base64 as string )
+        } catch (error) {
+            toast.error((error as Error).message,{
+                className:"bg-red-400 text-white"
+            })
+
+        }
+     }
 
     return userData ? (
         <div className='max-w-lg flex flex-col gap-2 pt-5 ml-44'>
 
-            <img className='w-36 rounded' src={userData.image} alt="" />
+            <img className='w-36 rounded' src={imageToUpload?imageToUpload:assets.upload_area} alt="" />
             
-
+            {isEdit?<input type="file" onChange={handleImageUpload}/>:null}
             {isEdit
                 ? <input className='bg-gray-50 text-3xl font-medium max-w-60' type="text" onChange={(e) => setUserData(prev => ({ ...prev, name: e.target.value }))} value={userData.name} />
                 : <p className='font-medium text-3xl text-[#262626] mt-4'>{userData.name}</p>
@@ -79,7 +95,13 @@ const MyProfile = () => {
                     <p className='font-medium'>Birthday:</p>
 
                     {isEdit
-                        ? <input className='w-36 bg-blue-100 px-2 py-1 border rounded-full' type='date' onChange={(e) => setUserData(prev => ({ ...prev, dob: e.target.value }))} value={userData.dateOfBirth} />
+                        ? <input className='w-36 bg-blue-100 px-2 py-1 border rounded-full' type='date' onChange={(e) => { 
+                            const date = new Date(e.target.value)
+                            setUserData(prev => {
+                                return {...prev , dateOfBirth:date.toISOString()}
+                        })
+                            
+                         }} value={userData.dateOfBirth.split('T')[0]} />
                         : <p className='text-gray-500'>{userData.dateOfBirth}</p>
                     }
 
@@ -88,7 +110,7 @@ const MyProfile = () => {
             <div className='mt-10'>
 
                 {isEdit
-                    ? <button className='  text-white bg-primary-blue border-2 px-8 py-2 rounded-full hover:bg-primary hover:text-white hover:bg-primary-pink transition  duration-500 hover:border-white' onClick={() => { saveInformation(userData) }}>Save information</button>
+                    ? <button className='  text-white bg-primary-blue border-2 px-8 py-2 rounded-full hover:bg-primary hover:text-white hover:bg-primary-pink transition  duration-500 hover:border-white' onClick={() => userId?editUser({userId,...userData}):saveInformation(userData) }>Save information</button>
                     : <button onClick={() => setIsEdit(true)} className='border-2 text-white bg-primary-blue px-8 py-2 rounded-full hover:bg-primary hover:text-white hover:bg-primary-pink hover:border-white transition duration-500'>Edit</button>
                 }
 

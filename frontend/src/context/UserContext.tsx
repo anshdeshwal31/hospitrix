@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { user } from "../types/Types";
+import { editUserType, user } from "../types/Types";
 
 export const UserContext = createContext<any>(null)
 
@@ -11,6 +11,7 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
     const [appointmentList , setAppointmentList] = useState([])
     const [userProfile , setUserProfile] = useState<any[]>([])
     const [doctorList , setDoctorList] = useState<any[]>([])
+    const [userId , setUserId] = useState<string>("")
 
     
     const userLogin = async (email:string , password:string) => { 
@@ -45,17 +46,19 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
                     authorization:`Bearer ${uToken}`
                 }
             })
-            
+            console.log(response)
             if (response.data.success) {
                 toast.success(response.data.message,{
                     className:"bg-green-400 text-white"
                 })
+                setUserId(response.data.userId)
             } else {
                 toast.error(response.data.message,{
                     className:"bg-red-400 text-white"
                 })
             }
         } catch (error) {
+            console.log(error)
             toast.error((error as Error).message,{
                 className:"bg-red-400 text-white"
             })
@@ -152,22 +155,12 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
     
     
     
-    const editUser = async (userId:string , name:string , email:string , password:string , image:string , address:{line1:string , line2:string}, gender:string , dateOfBirth:string , phoneNumber:string) => { 
+    const editUser = async (user:editUserType) => { 
         try {
             if(!uToken){
                 throw new Error("No authentication token")
             } 
-            const response = await axios.post(backendUrl+"/api/user/editUser",{
-                userId,
-                name,
-                email, 
-                password ,
-                image,
-                address,
-                gender ,
-                dateOfBirth,
-                phoneNumber
-            },{
+            const response = await axios.post(backendUrl+"/api/user/editUser",user,{
                 headers:{
                     authorization:`Bearer ${uToken}`
                 }
@@ -265,7 +258,7 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
      }
     
     const value = {
-        userProfile , appointmentList, userLogin,bookAppointment, payOnline, cancelAppointment , saveInformation , editUser , getUserProfile , getAppointmentList, doctorList, getDoctorList
+        userProfile , appointmentList, userLogin,bookAppointment, payOnline, cancelAppointment , saveInformation , editUser , getUserProfile , getAppointmentList, doctorList, getDoctorList , userId
     }
 
     return (
