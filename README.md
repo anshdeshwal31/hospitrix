@@ -1,2 +1,2 @@
 # prescripto
-doctor appointment application 
+hospital management system
