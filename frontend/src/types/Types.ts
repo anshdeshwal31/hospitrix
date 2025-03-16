@@ -58,7 +58,6 @@ export interface user {
 export interface editUserType{
     userId:string ,
     name:string ,
-    email:string,
     password:string,
     image:string ,
     address:{

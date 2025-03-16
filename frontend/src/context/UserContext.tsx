@@ -47,6 +47,9 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
                 }
             })
             console.log(response)
+            console.log("calling save information")
+            console.log("user id:", userId)
+
             if (response.data.success) {
                 toast.success(response.data.message,{
                     className:"bg-green-400 text-white"
@@ -157,14 +160,19 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
     
     const editUser = async (user:editUserType) => { 
         try {
+
             if(!uToken){
                 throw new Error("No authentication token")
             } 
+            console.log("calling edit user")
+            console.log("user id:", userId)
             const response = await axios.post(backendUrl+"/api/user/editUser",user,{
                 headers:{
                     authorization:`Bearer ${uToken}`
                 }
             })
+            console.log(response)
+
             if (response.data.success) {
                 toast.success(response.data.message,{
                     className:"bg-green-400 text-white"
@@ -188,6 +196,7 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
             if(!uToken){
                 throw new Error("No authentication token")
             } 
+
             const response = await axios.post(backendUrl+"/api/user/getUserProfile",{userId},{
                 headers:{
                     authorization:`Bearer ${uToken}`

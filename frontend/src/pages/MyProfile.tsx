@@ -1,4 +1,4 @@
-import  { useContext, useState } from 'react'
+import  { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/AppContext'
 import { useLocation } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
@@ -15,9 +15,10 @@ const MyProfile = () => {
     const {assets} = useContext(AppContext)
     const [imageToUpload , setImageToUpload] = useState<string>("")
     const [isEdit, setIsEdit] = useState(false)
+
+    
     const [userData, setUserData] = useState({
         name,
-        email,
         password,
         image: imageToUpload,
         address: {
@@ -27,7 +28,15 @@ const MyProfile = () => {
         gender: 'Male',
         dateOfBirth: new Date().toISOString(),
         phoneNumber: '0000000000',
-});
+    });
+
+    const handleUserProfile = () => { 
+        if (userId) {
+            editUser({...userData , userId})
+        } else {
+            saveInformation({...userData , email})
+        }
+     }
 
     const handleImageUpload =  async (e:any) => { 
         try {
@@ -60,7 +69,7 @@ const MyProfile = () => {
                 <p className='text-gray-600 underline mt-3'>CONTACT INFORMATION</p>
                 <div className='grid grid-cols-[1fr_3fr] gap-y-2.5 mt-3 text-[#363636]'>
                     <p className='font-medium'>Email id:</p>
-                    <p className='text-blue-500'>{userData.email}</p>
+                    <p className='text-blue-500'>{email}</p>
                     <p className='font-medium'>Phone:</p>
 
                     {isEdit
@@ -112,8 +121,8 @@ const MyProfile = () => {
             <div className='mt-10'>
 
                 {isEdit
-                    ? <button className='  text-white bg-primary-blue border-2 px-8 py-2 rounded-full hover:bg-primary hover:text-white hover:bg-primary-pink transition  duration-500 hover:border-white' onClick={() => userId?editUser({userId,...userData}):saveInformation(userData) }>Save information</button>
-                    : <button onClick={() => setIsEdit(true)} className='border-2 text-white bg-primary-blue px-8 py-2 rounded-full hover:bg-primary hover:text-white hover:bg-primary-pink hover:border-white transition duration-500'>Edit</button>
+                    ? <button className='  text-white bg-primary-blue border-2 px-8 py-2 rounded-full hover:bg-primary hover:text-white hover:bg-primary-pink transition  duration-500 hover:border-white' onClick={handleUserProfile}>Save information</button>
+                    : <button onClick={() => setIsEdit(true)}  className='border-2 text-white bg-primary-blue px-8 py-2 rounded-full hover:bg-primary hover:text-white hover:bg-primary-pink hover:border-white transition duration-500'>Edit</button>
                 }
 
             </div>

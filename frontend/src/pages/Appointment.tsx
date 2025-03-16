@@ -34,7 +34,7 @@ const Appointment:React.FC = () => {
         const today: Date = new Date()
         const tempDateTimeArray:DateItemType[] = [];
 
-        let currentDate:Date = new Date()
+        const currentDate:Date = new Date()
         for (let i = 0 ; i<7; i++){
           
           currentDate.setDate(today.getDate() + i);

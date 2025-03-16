@@ -49,8 +49,8 @@ const App = () => {
           },
           {
             path:"/my-profile",
-            // element:<ProtectedRoute><MyProfile/></ProtectedRoute>
-            element:<MyProfile/>
+            element:<ProtectedRoute><MyProfile/></ProtectedRoute>
+            // element:<MyProfile/>
           },
           {
             path: "/doctors/:speciality",
