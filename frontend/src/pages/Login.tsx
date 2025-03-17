@@ -4,7 +4,7 @@ import { UserContext } from '../context/UserContext'
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 
 const Login = () => {
-  const {userLogin} = useContext(UserContext)
+  const {userLogin, createUserAccount} = useContext(UserContext)
   const [state, setState] = useState('Sign Up')
   const [passwordVisible , setPasswordVisible] = useState(false)
   const [name, setName] = useState('')
@@ -16,11 +16,19 @@ const Login = () => {
     e.preventDefault();
     console.log("executing on submit handler ")
     if(state == "Sign Up"){
-      navigate("/my-profile",{state:{
-        name,email,password,
-        navigatedFromCreateAccount:true
-      }})
-      console.log("navigating to the my-profile page")
+      const success = await createUserAccount(name, email , password);
+      if(success === true){
+        navigate("/",{state:{
+          name,email,password,
+          navigatedFromCreateAccount:true
+        }})
+        console.log("navigating to the my-profile page")
+      }
+      else{
+        console.log(success)
+        console.log("couldn't create the account")
+      }
+
     } else {
       console.log("executing the user login function")
       userLogin()

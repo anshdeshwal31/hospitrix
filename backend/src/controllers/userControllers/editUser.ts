@@ -6,7 +6,6 @@ export const EditUserController = async (req:Request, res:Response, next:NextFun
     const userAccountInfoFormat = z.object({
             userId: z.string().regex(/^[0-9a-fA-F]{24}$/),
             name: z.string().min(5),
-            email: z.string().min(5).email(),
             password: z.string().min(5),
             image: z.string(),
             address:z.object({

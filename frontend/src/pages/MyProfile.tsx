@@ -8,7 +8,7 @@ import { toast } from 'react-toastify'
 
 const MyProfile = () => {
 
-    const{saveInformation , editUser, userId}  = useContext(UserContext)
+    const{ editUser, userId}  = useContext(UserContext)
     const location = useLocation()
     const {name , email ,password} = location.state
 
@@ -30,15 +30,15 @@ const MyProfile = () => {
         phoneNumber: '0000000000',
     });
 
-    const handleUserProfile = () => { 
-        if (userId) {
-            editUser({...userData , userId})
-        } else {
-            saveInformation({...userData , email})
-        }
-     }
+    // const handleUserProfile = () => { 
+    //     if (userId) {
+    //         editUser({...userData , userId})
+    //     } else {
+    //         saveInformation({...userData , email})
+    //     }
+    //  }
 
-    const handleImageUpload =  async (e:any) => { 
+    const handleImageUpload =  async (e:React.ChangeEvent<HTMLInputElement>) => { 
         try {
             const base64 = await ImageUpload(e)
             setImageToUpload(base64 as string )
@@ -47,9 +47,7 @@ const MyProfile = () => {
                 className:"bg-red-400 text-white"
             })
 
-        }
-        
-         
+        }  
      }
 
     return userData ? (
@@ -121,7 +119,7 @@ const MyProfile = () => {
             <div className='mt-10'>
 
                 {isEdit
-                    ? <button className='  text-white bg-primary-blue border-2 px-8 py-2 rounded-full hover:bg-primary hover:text-white hover:bg-primary-pink transition  duration-500 hover:border-white' onClick={handleUserProfile}>Save information</button>
+                    ? <button className='  text-white bg-primary-blue border-2 px-8 py-2 rounded-full hover:bg-primary hover:text-white hover:bg-primary-pink transition  duration-500 hover:border-white' onClick={() => { editUser({userId,...userData}) }}>Save information</button>
                     : <button onClick={() => setIsEdit(true)}  className='border-2 text-white bg-primary-blue px-8 py-2 rounded-full hover:bg-primary hover:text-white hover:bg-primary-pink hover:border-white transition duration-500'>Edit</button>
                 }
 

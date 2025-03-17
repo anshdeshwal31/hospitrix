@@ -10,8 +10,8 @@ export const SaveInformationController = async (req:Request, res:Response, next:
         password: z.string().min(5),
         image: z.string(),
         address:z.object({
-            line1:z.string().min(5),
-            line2:z.string().min(5)
+            line1:z.string(),
+            line2:z.string()
         }),
         gender: z.string(),
         dateOfBirth: z.string().datetime(),
@@ -20,15 +20,14 @@ export const SaveInformationController = async (req:Request, res:Response, next:
     })
 
     const parsedDataWithSuccess = await userAccountInfoFormat.safeParse(req.body)
-    console.log("khabib")
     if(parsedDataWithSuccess.success){
-        
-        try{
-            console.log("khabib")
+        console.log("data parsed successfully")
+
+        try{ 
             console.log(req.body.name)
 
             const hashedPassword = await bcrypt.hash(req.body.password,10);
-            await UserModel.create({
+            const userData = await UserModel.create({
                 name:req.body.name,
                 email: req.body.email,
                 password: hashedPassword,
@@ -40,9 +39,11 @@ export const SaveInformationController = async (req:Request, res:Response, next:
             })
 
             res.json({
+                userId: userData._id,
                 success: true ,
                 message: "account created successfully"
             })
+            
         }catch(error){
             res.json({
                 success:false,
@@ -51,6 +52,7 @@ export const SaveInformationController = async (req:Request, res:Response, next:
         }
     }
     else{
+        console.log("data format didn't match")
         res.json({
             success:false,
             error:parsedDataWithSuccess.error.errors,

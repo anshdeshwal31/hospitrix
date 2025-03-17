@@ -4,13 +4,13 @@ import {toast} from "react-toastify"
 import axios from "axios"
 
 
-export const AdminContext = createContext<any>(undefined)
+export const AdminContext = createContext<any>(null)
 
 export const AdminContextProvider:React.FC<{children:React.ReactNode}> = ({children}) => { 
 
 
     const backendUrl:string  = import.meta.env.VITE_BACKEND_URL
-    const[doctorList,setDoctorList] = useState([])
+    const [doctorList,setDoctorList] = useState([])
     const [allAppointment , setAllAppointment] = useState([])
     const [adminDashData , setAdminDashData] = useState<adminDashboardDataType| undefined>(undefined)
     const [aToken , setAToken] = useState<string|null>(localStorage.getItem("aToken")?localStorage.getItem("aToken"):"")
@@ -52,6 +52,11 @@ export const AdminContextProvider:React.FC<{children:React.ReactNode}> = ({child
     const adminLogin = async ( email:string , password:string) => { 
 
         try {
+
+            // if (!aToken) {
+            //     throw new Error("No authentication token")
+            // }
+            
             const response  = await axios.post(backendUrl+"/api/admin/login",{
                 email,password
             })
@@ -100,6 +105,10 @@ export const AdminContextProvider:React.FC<{children:React.ReactNode}> = ({child
 
     const addDoctor = async (doc:DoctorProfileWithoutId) => { 
         try {
+
+            if (!aToken) {
+                throw new Error("No authentication token")
+            }
             console.log("Before making a call to the backend")
             const response = await axios.post(backendUrl+"/api/admin/addDoctor",doc,{
                 headers:{
@@ -130,6 +139,10 @@ export const AdminContextProvider:React.FC<{children:React.ReactNode}> = ({child
     
     const deleteDoctor = async (doctorId:string) => { 
         try {
+
+            if (!aToken) {
+                throw new Error("No authentication token")
+            }
             const response = await axios.post(backendUrl+"/api/admin/deleteDoctor",{
                 doctorId
             },{
@@ -196,6 +209,10 @@ export const AdminContextProvider:React.FC<{children:React.ReactNode}> = ({child
         console.log("start of the cancel appointment function")
         try {
 
+            if (!aToken) {
+                throw new Error("No authentication token")
+            }
+
             console.log("before making the request to the backend to cancel appointment")
             window.confirm("Are you sure you want to cancel the appointment?")
             const response = await axios.post(backendUrl+"/api/admin/cancelAppointment", {
@@ -231,6 +248,10 @@ export const AdminContextProvider:React.FC<{children:React.ReactNode}> = ({child
 
     const getDoctorList = async () => { 
         try {
+
+            if (!aToken) {
+                throw new Error("No authentication token")
+            }
             const response = await axios.post(backendUrl+"/api/admin/getDoctorList",{},{headers:
                 {
                     authorization:`Bearer ${aToken}`

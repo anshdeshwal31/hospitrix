@@ -9,13 +9,16 @@ import { GetAppointmentList } from "../controllers/userControllers/getAppointmen
 import { EditUserController } from "../controllers/userControllers/editUser";
 import { AuthUserMiddleware } from "../middlewares/authUser";
 import { GetDoctorList } from "../controllers/userControllers/getDoctorList";
+import { CreateAccountController } from "../controllers/userControllers/createAccountController";
 
 
 export const userRouter:Router = express.Router()
 
 // authorization routes
-userRouter.post("/saveInformation", SaveInformationController);
+// userRouter.post("/saveInformation", SaveInformationController);
 userRouter.post("/login",UserLoginController);
+userRouter.post("/getDoctorList", GetDoctorList)
+userRouter.post("/createAccount",CreateAccountController)
 
 userRouter.use(AuthUserMiddleware)
 
@@ -33,4 +36,3 @@ userRouter.post("/getUserProfile", GetUserProfile)
 
 userRouter.post("/getAppointmentList",GetAppointmentList)
 
-userRouter.post("getDoctorList", GetDoctorList)

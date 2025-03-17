@@ -10,6 +10,8 @@ import Login from './pages/Login';
 // import CreateAccount from './pages/CreateAccount'; 
 import Appointment from './pages/Appointment';
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import { UserContextProvider } from "./context/UserContext";
+import { AppContextProvider } from "./context/AppContext";
 
 const App = () => {
       const router = createBrowserRouter([{
@@ -66,7 +68,13 @@ const App = () => {
 
       return (
         <div>
-          <RouterProvider router = {router}/>
+          <UserContextProvider>
+            <AppContextProvider>
+
+              <RouterProvider router = {router}/>
+
+            </AppContextProvider>
+          </UserContextProvider>
         </div>
       )
 }

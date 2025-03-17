@@ -10,7 +10,7 @@ export const DoctorList = () => {
     console.log("After making the request to the backend")
   },[])
   return (
-    <div className="flex flex-wrap">
+    <div className="flex flex-wrap gap-5 mt-4 ml-4">
       {
         doctorList.map((doctor:any) => { 
           return (
