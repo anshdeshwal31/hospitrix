@@ -1,8 +1,7 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { createUserType, editUserType } from "../types/Types";
-import { Navigate, replace } from "react-router-dom";
+import { editUserType } from "../types/Types";
 
 export const UserContext = createContext<any>(null)
 
@@ -11,13 +10,31 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
     const backendUrl:string = import.meta.env.VITE_BACKEND_URL
     const [uToken , setUToken] = useState<string|null>(localStorage.getItem("uToken")?localStorage.getItem("uToken"):"")
     const [appointmentList , setAppointmentList] = useState([])
-    const [userProfile , setUserProfile] = useState<any[]>([])
+    const [userProfile , setUserProfile] = useState<any>({})
     const [doctorList , setDoctorList] = useState<any[]>([])
     const [userId , setUserId] = useState<string>("")
+    const [isLoggedIn , setIsLoggedIn] = useState<boolean>(localStorage.getItem("uToken")?true:false)
+    const [isHover , setIsHover] = useState<boolean>(false)
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password , setPassword] = useState("")
+
+    useEffect(() => {
+        const token = localStorage.getItem("uToken");
+        if (token) {
+            // Need to get userId from token or localStorage
+            // If you store userId in localStorage:
+            const storedUserId = localStorage.getItem("userId");
+                setUserId(storedUserId as string);
+                getUserProfile(storedUserId as string);
+        }
+    }, []);
 
     
     const userLogin = async (email:string , password:string) => { 
+        console.log("executing login function ")
         try {
+
             const response = await axios.post(backendUrl+"/api/user/login",{
                 email,password
             })
@@ -26,19 +43,34 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
                 toast.success(response.data.message,{
                     className:"bg-green-400 text-white"
                 })
+                console.log("login successfull")
+
                 localStorage.setItem("uToken",response.data.token)
+                localStorage.setItem("userId", response.data.userId);
+
+                console.log("uToken",uToken)
                 setUToken(localStorage.getItem("uToken"))
+                console.log("uToken",uToken)
+                setIsLoggedIn(true)
+                setUserId(response.data.userId)
+                getUserProfile(response.data.userId);
+                return true;
             } else {
                 toast.error(response.data.message,{
                     className:"bg-red-400 text-white"
                 })
+                console.log(response.data)
+                console.log(response.data.message)
+                console.log("login unsuccessful")
             }
             
         } catch (error) {
+            console.log("got an error while loggin in")
             toast.error((error as Error).message,{
                 className:"bg-red-400 text-white"
             })
         }
+        return false;
     }
     
     // const saveInformation = async (user:user) => { 
@@ -82,9 +114,14 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
                 toast.success(response.data.message,{
                     className:"bg-green-400 text-white"
                 })
+                setIsLoggedIn(true)
+                localStorage.setItem("uToken",response.data.token)
+                localStorage.setItem("userId", response.data.userId);
+
+                getUserProfile(response.data.userId)
                 return true;
-                // navigate("/")
-            } else {
+            } 
+            else {
                 console.log(response.data.error)
                 toast.error(response.data.message, {
                     className:"bg-green-400 text-white"
@@ -188,6 +225,7 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
     
     
     const editUser = async (user:editUserType) => { 
+        console.log("user data: ", user)
         try {
 
             if(!uToken){
@@ -222,13 +260,13 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
     
     const getUserProfile = async (userId:string) => { 
         try {
-            if(!uToken){
+            if(!localStorage.getItem("uToken")){
                 throw new Error("No authentication token")
             } 
 
             const response = await axios.post(backendUrl+"/api/user/getUserProfile",{userId},{
                 headers:{
-                    authorization:`Bearer ${uToken}`
+                    authorization:`Bearer ${localStorage.getItem("uToken")}`
                 }
             })
             if (response.data.success) {
@@ -296,7 +334,8 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
      }
     
     const value = {
-        userProfile , appointmentList, userLogin,bookAppointment, payOnline, cancelAppointment , createUserAccount, editUser , getUserProfile , getAppointmentList, doctorList, getDoctorList , userId
+        userProfile , appointmentList, userLogin,bookAppointment, payOnline, cancelAppointment , createUserAccount, editUser , getUserProfile , getAppointmentList, doctorList, getDoctorList , userId , isLoggedIn , setIsLoggedIn,
+        isHover , setIsHover , name , email , setName , setEmail , password , setPassword , uToken , setUToken , setUserId 
     }
 
     return (

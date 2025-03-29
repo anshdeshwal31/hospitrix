@@ -12,6 +12,7 @@ import Appointment from './pages/Appointment';
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { UserContextProvider } from "./context/UserContext";
 import { AppContextProvider } from "./context/AppContext";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
       const router = createBrowserRouter([{
@@ -72,7 +73,8 @@ const App = () => {
             <AppContextProvider>
 
               <RouterProvider router = {router}/>
-
+              <ToastContainer position="top-right" autoClose = {3000}/>
+              
             </AppContextProvider>
           </UserContextProvider>
         </div>

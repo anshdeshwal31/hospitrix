@@ -3,9 +3,9 @@ import { UserContext } from "../context/UserContext"
 import { Navigate } from "react-router-dom"
 
 export const ProtectedRoute = ({children}:{children:ReactNode}) => { 
-    const {uToken} = useContext(UserContext)
+    const {isLoggedIn} = useContext(UserContext)
 
-    if(!uToken){
+    if(!isLoggedIn){
         return <Navigate to="/login" replace/>
     }
 

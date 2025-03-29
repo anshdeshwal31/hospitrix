@@ -1,6 +1,5 @@
-import  { useContext, useEffect, useState } from 'react'
+import  { useContext, useState, useEffect } from 'react'
 import { AppContext } from '../context/AppContext'
-import { useLocation } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
 import { ImageUpload } from '../utils/imageUpload'
 import { toast } from 'react-toastify'
@@ -8,26 +7,25 @@ import { toast } from 'react-toastify'
 
 const MyProfile = () => {
 
-    const{ editUser, userId}  = useContext(UserContext)
-    const location = useLocation()
-    const {name , email ,password} = location.state
-
+    const{ editUser, userId , isHover , setIsHover ,userProfile , name , email , password , uToken , getUserProfile}  = useContext(UserContext)
     const {assets} = useContext(AppContext)
     const [imageToUpload , setImageToUpload] = useState<string>("")
     const [isEdit, setIsEdit] = useState(false)
 
     
     const [userData, setUserData] = useState({
-        name,
+        name:userProfile.name?userProfile.name:name,
         password,
-        image: imageToUpload,
+        image: imageToUpload?imageToUpload:"",
         address: {
-            line1: "",
-            line2: ""
+            // line1: "",
+            // line2:""
+            line1: userProfile.address?.line1?userProfile.address.line1:"",
+            line2: userProfile.address?.line2?userProfile.address.line2:""
         },
         gender: 'Male',
         dateOfBirth: new Date().toISOString(),
-        phoneNumber: '0000000000',
+        phoneNumber: userProfile.phoneNumber?userProfile.phoneNumber:'0000000000',
     });
 
     // const handleUserProfile = () => { 
@@ -38,11 +36,47 @@ const MyProfile = () => {
     //     }
     //  }
 
+    useEffect(() => {
+        if (imageToUpload) {
+            setUserData({...userData, image: imageToUpload})
+            // setUserData(prev => ({...prev, image: imageToUpload}))
+        }
+
+    }, [imageToUpload])
+
+    // useEffect(() => { 
+    //     if(uToken){
+    //         getUserProfile()
+    //     }
+    //  },[])
+    
+
+    const saveUserInfo = async () => { 
+        // console.log("name of the user: " , name )
+        // console.log("image the user uploaded: ", imageToUpload)
+
+        await editUser({userId,...userData})
+        setIsEdit(false)
+     } 
+
     const handleImageUpload =  async (e:React.ChangeEvent<HTMLInputElement>) => { 
         try {
             const base64 = await ImageUpload(e)
+
+            // console.log("inside handle image function")
+            // console.log("image: " , base64)
+
             setImageToUpload(base64 as string )
+            console.log("user data: ", userData)
+
+            // console.log("image state:" ,imageToUpload )
+            // console.log("image uploaded succesfully")
+            
+            toast.success("image uploaded successfully", {
+                className:"bg-green-400 text-white"
+            })
         } catch (error) {
+            console.log("getting error while uploading the image")
             toast.error((error as Error).message,{
                 className:"bg-red-400 text-white"
             })
@@ -53,12 +87,12 @@ const MyProfile = () => {
     return userData ? (
         <div className='max-w-lg flex flex-col gap-2 pt-5 ml-44'>
 
-            <img className='w-36 rounded' src={imageToUpload?imageToUpload:assets.upload_area} alt="" />
+            <img className='w-36 rounded' src={imageToUpload?imageToUpload:userProfile.image?userProfile.image:assets.upload_area} alt="" />
             
             {isEdit?<input type="file" onChange={handleImageUpload}/>:null}
             {isEdit
-                ? <input className='bg-gray-50 text-3xl font-medium max-w-60' type="text" onChange={(e) => setUserData(prev => ({ ...prev, name: e.target.value }))} value={userData.name} />
-                : <p className='font-medium text-3xl text-[#262626] mt-4'>{userData.name}</p>
+                ? <input className='bg-blue-100 text-3xl font-medium max-w-60' type="text" onChange={(e) => setUserData(prev => ({ ...prev, name: e.target.value }))} value={userProfile.name}/>
+                : <p className='font-medium text-3xl text-[#262626] mt-4'>{userProfile.name}</p>
             }
 
             <hr className='bg-[#ADADAD] h-[1px] border-none' />
@@ -67,22 +101,22 @@ const MyProfile = () => {
                 <p className='text-gray-600 underline mt-3'>CONTACT INFORMATION</p>
                 <div className='grid grid-cols-[1fr_3fr] gap-y-2.5 mt-3 text-[#363636]'>
                     <p className='font-medium'>Email id:</p>
-                    <p className='text-blue-500'>{email}</p>
+                    <p className='text-blue-500'>{userProfile.email?userProfile.email:email}</p>
                     <p className='font-medium'>Phone:</p>
 
                     {isEdit
                         ? <input className='bg-blue-100 py-1 max-w-52 border rounded-lg' type="text" onChange={(e) => setUserData(prev => ({ ...prev, phoneNumber: e.target.value }))} value={userData.phoneNumber} />
-                        : <p className='text-blue-500'>{userData.phoneNumber}</p>
+                        : <p className='text-blue-500'>{userProfile?.phoneNumber || "0000000000"}</p>
                     }
 
                     <p className='font-medium'>Address:</p>
 
                     {isEdit
                         ? <p>
-                            <input className='bg-blue-100 pt-1 px-2 border rounded-t-lg' type="text" onChange={(e) => setUserData(prev => ({ ...prev, address: { ...prev.address, line1: e.target.value } }))} value={userData.address.line1} />
+                            <input className='bg-blue-100 pt-1 px-2 border rounded-t-lg' type="text" onChange={(e) => setUserData(prev => ({ ...prev, address: { ...prev.address, line1: e.target.value } }))} value={userProfile.address?.line1||""} />
                             <br />
-                            <input className='bg-blue-100 pb-1 px-2 border rounded-b-lg' type="text" onChange={(e) => setUserData(prev => ({ ...prev, address: { ...prev.address, line2: e.target.value } }))} value={userData.address.line2} /></p>
-                        : <p className='text-gray-500'>{userData.address.line1} <br /> {userData.address.line2}</p>
+                            <input className='bg-blue-100 pb-1 px-2 border rounded-b-lg' type="text" onChange={(e) => setUserData(prev => ({ ...prev, address: { ...prev.address, line2: e.target.value } }))} value={userProfile.address?.line2 || ""} /></p>
+                        : <p className='text-gray-500'>{userProfile.address?.line1 || ""} <br /> {userProfile.address?.line2 || ""}</p>
                     }
 
                 </div>
@@ -98,7 +132,7 @@ const MyProfile = () => {
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select>
-                        : <p className='text-gray-500'>{userData.gender}</p>
+                        : <p className='text-gray-500'>{userProfile.gender}</p>
                     }
 
                     <p className='font-medium'>Birthday:</p>
@@ -119,7 +153,7 @@ const MyProfile = () => {
             <div className='mt-10'>
 
                 {isEdit
-                    ? <button className='  text-white bg-primary-blue border-2 px-8 py-2 rounded-full hover:bg-primary hover:text-white hover:bg-primary-pink transition  duration-500 hover:border-white' onClick={() => { editUser({userId,...userData}) }}>Save information</button>
+                    ? <button className='  text-white bg-primary-blue border-2 px-8 py-2 rounded-full hover:bg-primary hover:text-white hover:bg-primary-pink transition  duration-500 hover:border-white' onClick={ saveUserInfo }>Save information</button>
                     : <button onClick={() => setIsEdit(true)}  className='border-2 text-white bg-primary-blue px-8 py-2 rounded-full hover:bg-primary hover:text-white hover:bg-primary-pink hover:border-white transition duration-500'>Edit</button>
                 }
 

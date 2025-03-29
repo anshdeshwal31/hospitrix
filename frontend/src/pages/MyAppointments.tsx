@@ -1,9 +1,16 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { AppContext } from '../context/AppContext'
 import { doctorInfoType } from '../types/Types';
+import { UserContext } from '../context/UserContext';
 
 const MyAppointments:React.FC = () => {
   const {doctors}:{doctors:doctorInfoType[]} = useContext(AppContext);
+  const {appointmentList , getAppointmentList} = useContext(UserContext)
+
+  useEffect(() => { 
+    getAppointmentList()
+   },[])
+  
   return (
       <div className='w-full flex justify-center'>
         <div className=' w-[80%]'>

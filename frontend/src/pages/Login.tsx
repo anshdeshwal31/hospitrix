@@ -4,12 +4,10 @@ import { UserContext } from '../context/UserContext'
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 
 const Login = () => {
-  const {userLogin, createUserAccount} = useContext(UserContext)
+  const {userLogin, createUserAccount , name , email, setName , setEmail , password , setPassword} = useContext(UserContext)
   const [state, setState] = useState('Sign Up')
   const [passwordVisible , setPasswordVisible] = useState(false)
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+
   const navigate = useNavigate()
 
   const onSubmitHandler = async (e:React.FormEvent<HTMLFormElement>) => {
@@ -18,11 +16,12 @@ const Login = () => {
     if(state == "Sign Up"){
       const success = await createUserAccount(name, email , password);
       if(success === true){
+        
         navigate("/",{state:{
           name,email,password,
           navigatedFromCreateAccount:true
         }})
-        console.log("navigating to the my-profile page")
+        console.log("navigating to the home page")
       }
       else{
         console.log(success)
@@ -31,8 +30,9 @@ const Login = () => {
 
     } else {
       console.log("executing the user login function")
-      userLogin()
+      const loginSuccessfull:boolean = userLogin(email, password)
       navigate("/")
+      loginSuccessfull?navigate("/"):""
     } 
     
   }
