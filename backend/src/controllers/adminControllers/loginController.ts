@@ -8,7 +8,7 @@ export const AdminLoginController = async (req:Request, res:Response, next:NextF
     const jwtSecret = process.env.JWT_SECRET_KEY || 'fallback-secret'
     const loginInfoFormat = z.object({
         email:z.string().min(5).email(),
-        password:z.string().min(5),
+        password:z.string().min(3),
     })
 
     const parsedDataWithSuccess = await loginInfoFormat.safeParse(req.body)

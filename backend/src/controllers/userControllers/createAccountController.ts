@@ -2,12 +2,14 @@ import {Request , Response , NextFunction } from "express"
 import {z} from "zod"
 import { UserModel } from "../../models/userModel"
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
+import dotenv from "dotenv"
 
 export const CreateAccountController =  async (req:Request , res:Response , next:NextFunction) => { 
     const parsedDataWithSuccess = z.object({
-        name: z.string().min(5),
+        name: z.string().min(3),
         email: z.string().min(5).email(),
-        password: z.string().min(5),
+        password: z.string().min(3),
         image: z.string(),
         address:z.object({
             line1:z.string(),
@@ -33,10 +35,19 @@ export const CreateAccountController =  async (req:Request , res:Response , next
                 dateOfBirth: new Date(req.body.dateOfBirth),
                 image: req.body.profilePhoto
             })
+
+            dotenv.config();
+            const jwtSecret = process.env.JWT_SECRET_KEY || 'fallback-secret'
+            const token = await jwt.sign({
+                email:req.body.email,
+                userId: userData._id
+                
+            },jwtSecret)
             res.status(200).json({
                 success: true,
                 message: "Account created successfully",
-                userId: userData._id
+                userId: userData._id,
+                token
             })
         } catch (error) {
             res.json({

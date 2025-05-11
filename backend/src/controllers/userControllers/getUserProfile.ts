@@ -8,7 +8,7 @@ export const GetUserProfile = async (req:Request, res:Response , next : NextFunc
     
     if(parsedDataWithSuccess.success){
         try {
-            const userInfo = await UserModel.findOneAndUpdate(
+            const userInfo = await UserModel.findOne(
                 {_id:parsedDataWithSuccess.data.userId}
             )
             res.status(200).json({ success: true, userInfo })

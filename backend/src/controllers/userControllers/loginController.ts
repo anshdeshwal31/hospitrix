@@ -9,7 +9,7 @@ import dotenv from "dotenv"
 export const UserLoginController = async (req:Request, res:Response, next:NextFunction) => { 
     const loginInfoFormat = z.object({
         email:z.string().min(5).email(),
-        password:z.string().min(5),
+        password:z.string().min(3)
     })
 
     const parsedDataWithSuccess = await loginInfoFormat.safeParse(req.body)
@@ -28,7 +28,8 @@ export const UserLoginController = async (req:Request, res:Response, next:NextFu
                     dotenv.config();
                     const jwtSecret = process.env.JWT_SECRET_KEY || 'fallback-secret'
                     const token = await jwt.sign({
-                        email,password
+                        email,
+                        userId:user._id
                     },jwtSecret)
 
                     res.json({
@@ -62,7 +63,8 @@ export const UserLoginController = async (req:Request, res:Response, next:NextFu
     else{
         res.json({
             success: false,
-            error: "Invalid login format"
+            error: parsedDataWithSuccess.error.errors,
+            message: "Invalid login format"
         });
     }
 

@@ -7,7 +7,7 @@ export const GetAppointmentList = async (req:Request, res:Response , next:NextFu
     if(parsedDataWithSuccess.success){
         try {
             const { userId } = parsedDataWithSuccess.data
-            const appointments = await AppointmentModel.find({ userId })
+            const appointments = await AppointmentModel.find({ userId }).populate("doctorId")
 
             res.json({ success: true, appointments })
 

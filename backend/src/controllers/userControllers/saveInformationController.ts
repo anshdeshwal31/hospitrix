@@ -5,9 +5,9 @@ import bcrypt from "bcrypt"
 
 export const SaveInformationController = async (req:Request, res:Response, next:NextFunction) =>{ 
     const userAccountInfoFormat = z.object({
-        name: z.string().min(5),
+        name: z.string().min(3),
         email: z.string().min(5).email(),
-        password: z.string().min(5),
+        password: z.string().min(3),
         image: z.string(),
         address:z.object({
             line1:z.string(),

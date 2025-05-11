@@ -5,12 +5,12 @@ import { UserModel } from '../../models/userModel';
 export const EditUserController = async (req:Request, res:Response, next:NextFunction) => {
     const userAccountInfoFormat = z.object({
             userId: z.string().regex(/^[0-9a-fA-F]{24}$/),
-            name: z.string().min(5),
-            password: z.string().min(5),
+            name: z.string().min(3),
+            password: z.string().min(3),
             image: z.string(),
             address:z.object({
-                line1:z.string().min(5),
-                line2:z.string().min(5)
+                line1:z.string(),
+                line2:z.string()
             }),
             gender: z.string(),
             dateOfBirth: z.string().datetime(),
@@ -30,6 +30,10 @@ export const EditUserController = async (req:Request, res:Response, next:NextFun
                     name, image , address , gender , dateOfBirth: new Date(dateOfBirth) , phoneNumber
                 }}
             )
+            res.status(200).json({
+                success: true,
+                message: "User profile updated successfully"
+            })
 
         } catch (error) {
             res.json({

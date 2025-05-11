@@ -137,15 +137,25 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
         }
     }
     
-    const bookAppointment = async (date:string , time:string , userId:string , doctorId:string) => { 
+    const bookAppointment = async (date:string, time:string, userId:string, doctorId:string) => { 
+        console.log("book appointment function called")
+        console.log("date:", date)
+        console.log("time:", time)
+        console.log("userId:", userId)
+        console.log("doctorId:", doctorId)
         
         try {
+            console.log("inside try block")
             if(!uToken){
                 throw new Error("No authentication token")
-            } 
+            }
+            
+            if(!userId || !doctorId) {
+                throw new Error("User or doctor information missing");
+            }
             
             const response = await axios.post(backendUrl+"/api/user/bookAppointment",{
-                date , time , userId , doctorId
+                date, time, userId, doctorId
             },{
                 headers:{
                     authorization:`Bearer ${uToken}`
@@ -156,16 +166,18 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
                 toast.success(response.data.message,{
                     className:"bg-green-400 text-white"
                 })
+                return true; // Return true for successful booking
             } else {
                 toast.error(response.data.message,{
                     className:"bg-red-400 text-white"
                 })
+                return false;
             }
         } catch (error) {
             toast.error((error as Error).message,{
                 className:"bg-red-400 text-white"
             })
-            
+            return false;
         }
     }
     

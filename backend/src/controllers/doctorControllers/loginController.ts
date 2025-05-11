@@ -7,7 +7,7 @@ import  jwt from "jsonwebtoken";
 export const DoctorLoginController = async (req:Request , res:Response, next:NextFunction) => {
     const parsedDataWithSuccess = z.object({
         email: z.string().email(), 
-        password:z.string().min(5),
+        password:z.string().min(3),
      }).safeParse(req.body)
 
     if(parsedDataWithSuccess.success){

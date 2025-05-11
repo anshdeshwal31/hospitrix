@@ -6,6 +6,9 @@ import { doctorInfoType, DateItemType , timeSlotType} from "../types/Types"
 import { v4 as uuidv4 } from 'uuid';
 import DoctorCard from "../components/DoctorCard";
 import { UserContext } from "../context/UserContext";
+import {toast} from 'react-toastify'
+
+
 
 let count:number  = 0 ;
 const Appointment:React.FC = () => {
@@ -19,12 +22,17 @@ const Appointment:React.FC = () => {
 
       const {docId} = useParams <{docId:string}>()
       const { assets ,  currencySymbol} = useContext(AppContext)
-      const {doctorList} = useContext(UserContext)
+      const {doctorList, bookAppointment, userId , getDoctorList} = useContext(UserContext)
       count++;
       
+      // Add these new state variables to track selected date and time strings
+      const [selectedDate, setSelectedDate] = useState<string>("");
+      const [selectedTime, setSelectedTime] = useState<string>("");
 
       useEffect(() => { 
+        
         const getDocInfo = () => { 
+          getDoctorList();
           const foundDoc  = doctorList.find((doctorItem : doctorInfoType) => doctorItem._id === docId )
           setDocInfo(foundDoc);
         }
@@ -83,7 +91,7 @@ const Appointment:React.FC = () => {
         setDateTimeArray(tempDateTimeArray);
         console.log(dateTimeArray);
         
-      },[doctorList , docId])
+      },[ docId])
 
 
       console.log(dateTimeArray);
@@ -122,7 +130,15 @@ const Appointment:React.FC = () => {
               {
                 dateTimeArray.map((dateTimeItem) => { 
                   return (
-                    <div className={`flex flex-col hover:cursor-pointer transition duration-500 gap-1 py-6  px-4 border rounded-full w-[70px] text-xl justify-center items-center ${dateTimeItem.id === activeDateId?"bg-primary-blue text-white border-none":""}`} onClick={() => { setActiveDateId(dateTimeItem.id) }}>
+                    <div className={`flex flex-col hover:cursor-pointer transition duration-500 gap-1 py-6  px-4 border rounded-full w-[70px] text-xl justify-center items-center ${dateTimeItem.id === activeDateId?"bg-primary-blue text-white border-none":""}`} onClick={() => { 
+                      setActiveDateId(dateTimeItem.id);
+                      
+                      // Format the date as YYYY-MM-DD for backend
+                      const currentYear = new Date().getFullYear();
+                      const currentMonth = (new Date().getMonth() + 1).toString().padStart(2, '0');
+                      const formattedDate = dateTimeItem.date.toString().padStart(2, '0');
+                      setSelectedDate(`${currentYear}-${currentMonth}-${formattedDate}`);
+                    }}>
 
                       <div className="">{dateTimeItem.day}</div>
                       <div className="">{dateTimeItem.date}</div>
@@ -143,7 +159,10 @@ const Appointment:React.FC = () => {
                         {
                           dateTimeItem.time.map((timeItem) => { 
                             return(
-                              <div className={`px-5 py-2 w-[70px] flex justify-center text-slate-500 border rounded-full hover:cursor-pointer  transition duration-500 ${timeItem.id === activeTimeId? "bg-primary-blue text-white border-none ":""}`}onClick={() => { setActiveTimeID(timeItem.id) }}>
+                              <div className={`px-5 py-2 w-[70px] flex justify-center text-slate-500 border rounded-full hover:cursor-pointer  transition duration-500 ${timeItem.id === activeTimeId? "bg-primary-blue text-white border-none ":""}`}onClick={() => { 
+                                setActiveTimeID(timeItem.id);
+                                setSelectedTime(timeItem.time);
+                              }}>
                                 {timeItem.time}
                               </div>
                               )
@@ -157,19 +176,56 @@ const Appointment:React.FC = () => {
             </div>
 
             <div>
-              <button className=" text-lg py-4 px-14  bg-primary-pink rounded-full text-white hover:scale-110  transition duration-700">Book Appointment</button>
+              <button 
+                className="text-lg py-4 px-14 bg-primary-pink rounded-full text-white hover:scale-110 transition duration-700 hover:cursor-pointer" 
+                onClick={async () => { 
+                  if(!selectedDate || !selectedTime) {
+                    toast.error("Please select date and time!", {
+                      className: "bg-red-400 text-white"
+                    });
+                    return;
+                  }
+                  
+                  // Call bookAppointment and get result
+                  const bookingSuccess = await bookAppointment(selectedDate, selectedTime, userId, docId as string);
+                  
+                  // If booking was successful, remove the time slot from dateTimeArray
+                  if (bookingSuccess) {
+                    setDateTimeArray(prevArray => {
+                      return prevArray.map(dateItem => {
+                        // If this is the active date
+                        if (dateItem.id === activeDateId) {
+                          // Filter out the booked time slot
+                          return {
+                            ...dateItem,
+                            time: dateItem.time.filter(timeItem => timeItem.time !== selectedTime)
+                          };
+                        }
+                        return dateItem;
+                      });
+                    });
+                    
+                    // Reset the selected time and active time ID
+                    setSelectedTime("");
+                    setActiveTimeID(undefined);
+                  }
+                }}
+                disabled={!selectedDate || !selectedTime}
+              >
+                Book Appointment
+              </button>
             </div>
           </div>
           
         </div>
 
-        <div className="flex flex-col justify-center items-center w-[75%] gap-6 mt-20">
+        <div className="flex flex-col justify-center items-center w-[75%] gap-6 mt-20"></div>
           <div className="text-center w-full text-4xl font-medium">Related Doctors</div>
           <div className="text-center w-full">Simply browse through our extensive list of trusted doctors.</div>
 
-          <div className="flex flex-wrap gap-6  w-full">
+          <div className="flex flex-wrap gap-6  w-full ml-28 mt-8">
             {
-              doctorList.map((doctorItem ) => { 
+              doctorList.map((doctorItem) => { 
                 return (
                   (doctorItem.speciality === docInfo?.speciality && doctorItem._id != docInfo._id) && (
                     <DoctorCard name={doctorItem.name} image={doctorItem.image} speciality={doctorItem.speciality} _id = {doctorItem._id}/>
@@ -182,7 +238,7 @@ const Appointment:React.FC = () => {
 
 
 
-      </div>
+      // </div>
       )
 
 }

@@ -16,7 +16,7 @@ const MyAppointments:React.FC = () => {
         <div className=' w-[80%]'>
           <div className="self-start font-medium text-slate-600 text-xl mt-8">My appointments</div>
           <hr  className='my-2'/>
-          {doctors.slice(0,2).map((item,index)=>(
+          {appointmentList.doctorId.map((item,index)=>(
             <div className='grid grid-cols-[1fr_2fr] gap-4 w-full sm:flex text-lg sm:gap-6 py-2 border-b' key={index}>
               <div>
                 <img className='w-48 bg-indigo-50' src={item.image}  alt="" />

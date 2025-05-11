@@ -3,12 +3,12 @@ import {z} from "zod"
 import { Types } from "mongoose"
 import {Request, Response, NextFunction} from "express"
 import { DoctorModel } from "../../models/doctorModel"
-import { parse } from "path"
 
 
 export const BookAppointmentController = async (req:Request, res:Response, next:NextFunction) => { 
     const appointmentInfoFormat = z.object({
-        date:z.string().datetime(),
+        date:z.string(),
+        // date:z.string().datetime(),
         time : z.string(),
         userId: z.string().regex(/^[0-9a-fA-F]{24}$/),
         doctorId:z.string().regex(/^[0-9a-fA-F]{24}$/),

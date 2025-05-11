@@ -9,8 +9,8 @@ export const AddDoctorController = async (req:Request, res:Response , next: Next
     const hashedPassword = await bcrypt.hash(req.body.password,10)
     const docInfoFormat = z.object({
         email:z.string().email(),
-        password:z.string().min(5),
-        name: z.string().min(5),
+        password:z.string().min(3),
+        name: z.string().min(3),
         image: z.string(),
         speciality: z.string(),
         degree: z.string(),
@@ -19,8 +19,8 @@ export const AddDoctorController = async (req:Request, res:Response , next: Next
         available: z.boolean(),
         fees: z.number(),
         address: z.object({
-            line1: z.string().min(5),
-            line2: z.string().min(5)
+            line1: z.string(),
+            line2: z.string()
         }),
         dateAdded: z.string().datetime()
     })

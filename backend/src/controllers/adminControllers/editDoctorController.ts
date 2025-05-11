@@ -6,8 +6,8 @@ export const EditDoctorController = async (req:Request , res:Response , next : N
     const docInfoFormat = z.object({
         doctorId: z.string().regex(/^[0-9a-fA-F]{24}$/),
         email:z.string().email(),
-        password:z.string().min(5),
-        name: z.string().min(5),
+        password:z.string().min(3),
+        name: z.string().min(3),
         image: z.string(),
         speciality: z.string(),
         degree: z.string(),
@@ -16,8 +16,8 @@ export const EditDoctorController = async (req:Request , res:Response , next : N
         available: z.boolean(),
         fees: z.number(),
         address: z.object({
-            line1: z.string().min(5),
-            line2: z.string().min(5)
+            line1: z.string(),
+            line2: z.string()
         }),
         date: z.string().datetime() 
     })
