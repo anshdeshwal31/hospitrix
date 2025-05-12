@@ -8,7 +8,7 @@ import { Dropdown } from './Dropdown';
 const Navbar = () => {
     const {isLoggedIn , setIsHover , userProfile} = useContext(UserContext)
     console.log("user profile from the backend", userProfile)
-    console.log("user profile image from the backend",userProfile.image)
+    // console.log("user profile image from the backend",userProfile.image)
   return (
     <div className='flex flex-col'>
     <div className='flex gap-x-6 justify-around mt-5'>

@@ -33,11 +33,17 @@ const Appointment:React.FC = () => {
         
         const getDocInfo = () => { 
           getDoctorList();
-          const foundDoc  = doctorList.find((doctorItem : doctorInfoType) => doctorItem._id === docId )
+          const foundDoc = doctorList.find((doctorItem : doctorInfoType) => doctorItem._id === docId )
           setDocInfo(foundDoc);
         }
 
         getDocInfo()
+
+        // Only generate slots if the doctor is available
+        if (!docInfo?.available) {
+          setDateTimeArray([]);
+          return;
+        }
 
         const today: Date = new Date()
         const tempDateTimeArray:DateItemType[] = [];
@@ -49,11 +55,14 @@ const Appointment:React.FC = () => {
 
           const date:number = currentDate.getDate()
           const day:string = currentDate.toLocaleString('en-US', { weekday: 'short' })
-
+          const currentYear = new Date().getFullYear();
+          const currentMonth = (new Date().getMonth() + 1).toString().padStart(2, '0');
+          const formattedDate = date.toString().padStart(2, '0');
+          const fullDateString = `${currentYear}-${currentMonth}-${formattedDate}`;
 
           const time:timeSlotType[] = []
           
-          let currentHour:number  = currentDate.getHours()+1
+          let currentHour:number = currentDate.getHours()+1
 
           if(currentDate.toDateString() === today.toDateString()){
             currentHour<10 ? currentHour = 10: currentHour + 1
@@ -64,34 +73,61 @@ const Appointment:React.FC = () => {
 
           let completeHour:boolean = true 
           while(currentHour<20){
-            time.push({
-              time: currentHour.toString()+(completeHour?":00":":30"),
-              id:uuidv4()
-            })
-            completeHour = !completeHour
+            const timeString = currentHour.toString()+(completeHour?":00":":30");
             
-            time.push({
-              time: currentHour.toString()+(completeHour?":00":":30"),
-              id:uuidv4()
-            })
-            completeHour = !completeHour
+            // Check if this slot is already booked
+            const isSlotBooked = Object.values(docInfo?.slots_booked || {}).some(
+              slot => slot.date.split('T')[0] === fullDateString && slot.time === timeString
+            );
+
+            // Only add the time slot if it's not already booked
+            if (!isSlotBooked) {
+              time.push({
+                time: timeString,
+                id: uuidv4()
+              });
+            }
+            
+            completeHour = !completeHour;
+
+            // Check the next half-hour slot
+            if (!completeHour) {
+              const nextTimeString = currentHour.toString()+(completeHour?":00":":30");
+              
+              // Check if this slot is already booked
+              const isNextSlotBooked = Object.values(docInfo?.slots_booked || {}).some(
+                slot => slot.date.split('T')[0] === fullDateString && slot.time === nextTimeString
+              );
+
+              // Only add the time slot if it's not already booked
+              if (!isNextSlotBooked) {
+                time.push({
+                  time: nextTimeString,
+                  id: uuidv4()
+                });
+              }
+              
+              completeHour = !completeHour;
+            }
 
             currentHour+=1;
           }
 
-          tempDateTimeArray.push({
-            date, 
-            time,
-            day,
-            id:dateId
-          })
-          dateId = uuidv4()
+          // Only add dates that have available time slots
+          if (time.length > 0) {
+            tempDateTimeArray.push({
+              date, 
+              time,
+              day,
+              id: dateId
+            });
+          }
+          dateId = uuidv4();
         }
 
         setDateTimeArray(tempDateTimeArray);
-        console.log(dateTimeArray);
         
-      },[ docId])
+      }, [docId, docInfo])
 
 
       console.log(dateTimeArray);
@@ -126,95 +162,101 @@ const Appointment:React.FC = () => {
             </div>
 
             <div className="mt-4 text-slate-600 font-medium text-lg">Booking slots</div>
-            <div className="flex gap-5 w-full ">
-              {
-                dateTimeArray.map((dateTimeItem) => { 
-                  return (
-                    <div className={`flex flex-col hover:cursor-pointer transition duration-500 gap-1 py-6  px-4 border rounded-full w-[70px] text-xl justify-center items-center ${dateTimeItem.id === activeDateId?"bg-primary-blue text-white border-none":""}`} onClick={() => { 
-                      setActiveDateId(dateTimeItem.id);
+            {docInfo && !docInfo.available ? (
+              <div className="text-red-500 text-lg">This doctor is currently not available for appointments.</div>
+            ) : (
+              <>
+                <div className="flex gap-5 w-full ">
+                  {
+                    dateTimeArray.map((dateTimeItem) => { 
+                      return (
+                        <div className={`flex flex-col hover:cursor-pointer transition duration-500 gap-1 py-6  px-4 border rounded-full w-[70px] text-xl justify-center items-center ${dateTimeItem.id === activeDateId?"bg-primary-blue text-white border-none":""}`} onClick={() => { 
+                          setActiveDateId(dateTimeItem.id);
+                          
+                          // Format the date as YYYY-MM-DD for backend
+                          const currentYear = new Date().getFullYear();
+                          const currentMonth = (new Date().getMonth() + 1).toString().padStart(2, '0');
+                          const formattedDate = dateTimeItem.date.toString().padStart(2, '0');
+                          setSelectedDate(`${currentYear}-${currentMonth}-${formattedDate}`);
+                        }}>
+
+                          <div className="">{dateTimeItem.day}</div>
+                          <div className="">{dateTimeItem.date}</div>
+
+                        </div>
+                      )
+                    })
+                  }
+
+                </div>
+
+                <div className="w-full">
+                  {
+                    dateTimeArray.map((dateTimeItem) => { 
+                      return (
+                        dateTimeItem.id === activeDateId && (
+                          <div className="flex gap-5 w-full overflow-auto [&::-webkit-scrollbar]:hidden">
+                            {
+                              dateTimeItem.time.map((timeItem) => { 
+                                return(
+                                  <div className={`px-5 py-2 w-[70px] flex justify-center text-slate-500 border rounded-full hover:cursor-pointer  transition duration-500 ${timeItem.id === activeTimeId? "bg-primary-blue text-white border-none ":""}`}onClick={() => { 
+                                    setActiveTimeID(timeItem.id);
+                                    setSelectedTime(timeItem.time);
+                                  }}>
+                                    {timeItem.time}
+                                  </div>
+                                  )
+                              })
+                            }
+                          </div>
+                        )
+                      )
+                    })
+                    }
+                </div>
+
+                <div>
+                  <button 
+                    className="text-lg py-4 px-14 bg-primary-pink rounded-full text-white hover:scale-110 transition duration-700 hover:cursor-pointer" 
+                    onClick={async () => { 
+                      if(!selectedDate || !selectedTime) {
+                        toast.error("Please select date and time!", {
+                          className: "bg-red-400 text-white"
+                        });
+                        return;
+                      }
                       
-                      // Format the date as YYYY-MM-DD for backend
-                      const currentYear = new Date().getFullYear();
-                      const currentMonth = (new Date().getMonth() + 1).toString().padStart(2, '0');
-                      const formattedDate = dateTimeItem.date.toString().padStart(2, '0');
-                      setSelectedDate(`${currentYear}-${currentMonth}-${formattedDate}`);
-                    }}>
-
-                      <div className="">{dateTimeItem.day}</div>
-                      <div className="">{dateTimeItem.date}</div>
-
-                    </div>
-                  )
-                })
-              }
-
-            </div>
-
-            <div className="w-full">
-              {
-                dateTimeArray.map((dateTimeItem) => { 
-                  return (
-                    dateTimeItem.id === activeDateId && (
-                      <div className="flex gap-5 w-full overflow-auto [&::-webkit-scrollbar]:hidden">
-                        {
-                          dateTimeItem.time.map((timeItem) => { 
-                            return(
-                              <div className={`px-5 py-2 w-[70px] flex justify-center text-slate-500 border rounded-full hover:cursor-pointer  transition duration-500 ${timeItem.id === activeTimeId? "bg-primary-blue text-white border-none ":""}`}onClick={() => { 
-                                setActiveTimeID(timeItem.id);
-                                setSelectedTime(timeItem.time);
-                              }}>
-                                {timeItem.time}
-                              </div>
-                              )
-                          })
-                        }
-                      </div>
-                    )
-                  )
-                })
-                }
-            </div>
-
-            <div>
-              <button 
-                className="text-lg py-4 px-14 bg-primary-pink rounded-full text-white hover:scale-110 transition duration-700 hover:cursor-pointer" 
-                onClick={async () => { 
-                  if(!selectedDate || !selectedTime) {
-                    toast.error("Please select date and time!", {
-                      className: "bg-red-400 text-white"
-                    });
-                    return;
-                  }
-                  
-                  // Call bookAppointment and get result
-                  const bookingSuccess = await bookAppointment(selectedDate, selectedTime, userId, docId as string);
-                  
-                  // If booking was successful, remove the time slot from dateTimeArray
-                  if (bookingSuccess) {
-                    setDateTimeArray(prevArray => {
-                      return prevArray.map(dateItem => {
-                        // If this is the active date
-                        if (dateItem.id === activeDateId) {
-                          // Filter out the booked time slot
-                          return {
-                            ...dateItem,
-                            time: dateItem.time.filter(timeItem => timeItem.time !== selectedTime)
-                          };
-                        }
-                        return dateItem;
-                      });
-                    });
-                    
-                    // Reset the selected time and active time ID
-                    setSelectedTime("");
-                    setActiveTimeID(undefined);
-                  }
-                }}
-                disabled={!selectedDate || !selectedTime}
-              >
-                Book Appointment
-              </button>
-            </div>
+                      // Call bookAppointment and get result
+                      const bookingSuccess = await bookAppointment(selectedDate, selectedTime, userId, docId as string);
+                      
+                      // If booking was successful, remove the time slot from dateTimeArray
+                      if (bookingSuccess) {
+                        setDateTimeArray(prevArray => {
+                          return prevArray.map(dateItem => {
+                            // If this is the active date
+                            if (dateItem.id === activeDateId) {
+                              // Filter out the booked time slot
+                              return {
+                                ...dateItem,
+                                time: dateItem.time.filter(timeItem => timeItem.time !== selectedTime)
+                              };
+                            }
+                            return dateItem;
+                          });
+                        });
+                        
+                        // Reset the selected time and active time ID
+                        setSelectedTime("");
+                        setActiveTimeID(undefined);
+                      }
+                    }}
+                    disabled={!selectedDate || !selectedTime}
+                  >
+                    Book Appointment
+                  </button>
+                </div>
+              </>
+            )}
           </div>
           
         </div>

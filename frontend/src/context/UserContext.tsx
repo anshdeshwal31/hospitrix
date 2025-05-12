@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { editUserType } from "../types/Types";
+import { editUserType, appointmentType } from "../types/Types";
 
 export const UserContext = createContext<any>(null)
 
@@ -220,6 +220,7 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
                 toast.success(response.data.message,{
                     className:"bg-green-400 text-white"
                 })
+                setAppointmentList(appointmentList.filter((item:appointmentType) =>  item._id != appointmentId ))
             } else {
                 toast.error(response.data.message,{
                     className:"bg-red-400 text-white"
@@ -301,7 +302,9 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
     }
     
     const getAppointmentList = async (userId:string) => { 
+        console.log("getAppointmentList function called");
         try {
+            console.log("inside the try block of the getAppointmentList function")
             if(!uToken){
                 throw new Error("No authentication token")
             } 
@@ -315,12 +318,17 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
                     className:"bg-green-400 text-white"
                 })
                 setAppointmentList(response.data.appointments)
+                console.log("appointment list: ", response.data.appointments)
             } else {
+                console.log("the request inside the getAppointmentList function failed")
+                console.log("error in format of the data sent to the backend: ", response.data.error)
                 toast.error(response.data.message,{
                     className:"bg-red-400 text-white"
                 })
             }
         } catch (error) {
+            console.log("inside the catch block of the getAppointmentList function ")
+            console.log("error:",error as Error)
             toast.error((error as Error).message,{
                 className:"bg-red-400 text-white"
             })

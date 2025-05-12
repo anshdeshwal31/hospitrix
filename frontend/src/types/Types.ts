@@ -1,6 +1,7 @@
 // type imageType = typeof 
 export interface SpecialityType{
-    speciality: string,
+    speciality: string
+    
     image: string 
 }
 
@@ -28,6 +29,8 @@ export interface doctorInfoType{
     fees:number,
     address:doctorsAddressType
 }
+
+
 
 export interface timeSlotType{
     time:string,
@@ -67,4 +70,16 @@ export interface editUserType{
     gender:string ,
     dateOfBirth:string ,
     phoneNumber:string
+}
+
+export interface appointmentType{
+    _id:string 
+     date:string
+     time:string 
+     feesPaid:number 
+     isCancelled:boolean
+     isCompleted:boolean 
+     isPending:boolean 
+     doctorId:doctorInfoType 
+     userId:string
 }

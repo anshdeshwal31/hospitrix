@@ -1,39 +1,46 @@
 import React, { useContext, useEffect } from 'react'
-import { AppContext } from '../context/AppContext'
-import { doctorInfoType } from '../types/Types';
+// import { AppContext } from '../context/AppContext'
+import { appointmentType } from '../types/Types';
 import { UserContext } from '../context/UserContext';
 
 const MyAppointments:React.FC = () => {
-  const {doctors}:{doctors:doctorInfoType[]} = useContext(AppContext);
-  const {appointmentList , getAppointmentList} = useContext(UserContext)
-
+  // const {doctors}:{doctors:doctorInfoType[]} = useContext(AppContext);
+  const {appointmentList , getAppointmentList , userId , cancelAppointment , payOnline} = useContext(UserContext)
+  console.log("inside the MyAppointments component")
   useEffect(() => { 
-    getAppointmentList()
-   },[])
+    console.log("inside the useEffect of the myAppointments page");
+    if (userId && userId.trim() !== "") {
+        getAppointmentList(userId.toString());
+    }
+  }, [userId]);
   
+
+
+
   return (
+
       <div className='w-full flex justify-center'>
         <div className=' w-[80%]'>
           <div className="self-start font-medium text-slate-600 text-xl mt-8">My appointments</div>
           <hr  className='my-2'/>
-          {appointmentList.doctorId.map((item,index)=>(
+          {appointmentList && appointmentList.map((item:appointmentType,index:number)=>(
             <div className='grid grid-cols-[1fr_2fr] gap-4 w-full sm:flex text-lg sm:gap-6 py-2 border-b' key={index}>
               <div>
-                <img className='w-48 bg-indigo-50' src={item.image}  alt="" />
+                <img className='w-48 bg-indigo-50 h-[210px] object-cover object-top' src={item.doctorId.image}  alt="" />
               </div>
               <div className='flex-1 text text-zinc-600'>
-                <p className='text-neutral-800 font-semibold'>{item.name}</p>
-                <p className='text-[17px]'>{item.speciality}</p>
+                <p className='text-neutral-800 font-semibold'>{item.doctorId.name}</p>
+                <p className='text-[17px]'>{item.doctorId.speciality}</p>
                 <p className='text-zinc-700 font-medium mt-1'>Address:</p>
-                <p className='text-sm'>{item.address.line1}</p>
-                <p className='text-sm'>{item.address.line2}</p>
+                <p className='text-sm'>{item.doctorId.address.line1}</p>
+                <p className='text-sm'>{item.doctorId.address.line2}</p>
                 <p className='text-xs mt-1'><span className='text- text-neutral-700 font-medium'></span></p>
-                <p className='text-base mt-3'><span className='mr-1 text-base font-semibold'>Date & Time:</span>25 July 2024 | 7:30 PM</p>
+                <p className='text-base mt-3'><span className='mr-1 text-base font-semibold'>Date & Time:</span>{item.date.split('T')[0]} | {item.time}</p>
               </div>
               <div></div>
               <div className='flex flex-col gap-2 justify-end mr-6 '>
-                <button className='bg-primary-blue font-light text-base p-2 text-white text-center sm:min-w-48 border rounded-md'>Pay Online</button>
-                <button className='bg-red-500 font-light text-base p-2 text-white text-center sm:min-w-48 border rounded-md'>Cancel</button>
+                <button className='bg-primary-blue font-light text-base p-2 text-white text-center sm:min-w-48 border rounded-md' onClick={payOnline}>Pay Online</button>
+                <button className='bg-red-500 font-light text-base p-2 text-white text-center sm:min-w-48 border rounded-md' onClick={() => { cancelAppointment(item._id) }}>Cancel</button>
               </div>
             </div>
           ))}
