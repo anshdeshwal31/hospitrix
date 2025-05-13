@@ -277,6 +277,32 @@ export const AdminContextProvider:React.FC<{children:React.ReactNode}> = ({child
         }
     }
     
+    const changeDoctorAvailablity = async (doctorId:string) => { 
+        try {
+            const response = await axios.post(backendUrl+"/api/admin/changeDoctorAvailablity",{doctorId},
+                {
+                    headers:{
+                        authorization: `Bearer ${aToken}`
+                    }
+                }
+            )
+            if(response.data.success){
+                toast.success(response.data.message,{
+                    className:"bg-green-400 text-white"
+                })
+            }
+            else{
+                toast.error(response.data.message,{
+                    className:"bg-red-500 text-white"
+                })
+            }
+        } catch (error) {
+            toast.error((error as Error).message,{
+                className:"bg-red-500 text-white"
+            })
+        }
+     }
+
      const value =  {
         getDoctorList,
         doctorList,
@@ -286,7 +312,8 @@ export const AdminContextProvider:React.FC<{children:React.ReactNode}> = ({child
         adminDashData, getAdminDashData,
         adminLogin,
         addDoctor,
-        deleteDoctor
+        deleteDoctor,
+        changeDoctorAvailablity
      }
      
     return (

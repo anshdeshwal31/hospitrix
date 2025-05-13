@@ -1,14 +1,3 @@
-export interface appointmentType{
-    _id:string,
-    date: Date ,
-    time:string,
-    feesPaid:number,
-    isCancelled: boolean,
-    isCompleted: boolean,
-    isPending: boolean,
-    doctorId:string,
-    userId:string
-}
 
 interface slotType{
     time: string ,
@@ -18,6 +7,18 @@ interface slotType{
 interface addressType {
     address1: string ,
     address2: string 
+}
+
+interface userProfileType{
+    _id:string ,
+    name: string , 
+    email: string , 
+    password: string , 
+    image: string , 
+    address:addressType,
+    gender : string, 
+    dateOfBirth: string, 
+    phoneNumber : string
 }
 
 export interface doctorProfileType{
@@ -53,10 +54,23 @@ export interface adminDashboardDataType{
     latestAppointments:appointmentType[]
 }
 
+
 export interface DoctorCardType{
     _id: string ,
     name: string ,
     image: string ,
     speciality: string,
     availablity:boolean
+}
+
+export interface appointmentType{
+    _id:string ,
+     date:string,
+     time:string ,
+     feesPaid:number ,
+     isCancelled:boolean,
+     isCompleted:boolean ,
+     isPending:boolean ,
+     doctorId:doctorProfileType ,
+     userId: userProfileType
 }
