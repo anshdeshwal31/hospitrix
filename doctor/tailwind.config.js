@@ -1,21 +1,20 @@
 /** @type {import('tailwindcss').Config} */
-export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+module.exports = {
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+  ],
   theme: {
     extend: {
       colors: {
-        "primary-blue": "#1E40AF", // Use your desired blue color here
+        "primary-blue": "rgb(95 111 255)",
         "primary-pink": "#FF70AB",
-        "secondary-pink": "rgb(255 112 171 / 10%)",
+        "secondary-pink": "rgb(255 112 171 / 10%)"
       },
-
+       
       fontFamily: {
-        outfit: ["Outfit", "sans-serif"],
-      },
+        "outfit":["Outfit",'sans-serif']
+      }
     },
   },
   plugins: [],
-  variants: {
-    scrollbar: ["rounded"],
-  },
-};
+}

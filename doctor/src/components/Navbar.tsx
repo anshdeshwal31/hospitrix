@@ -11,10 +11,10 @@ export const Navbar = () => {
             <div className="flex gap-3 items-center">
                 <NavLink to="/doctor-dashboard"><img src={assets.admin_logo} alt="" /></NavLink>
 
-                <div className="text-slate-600"><button className="border rounded-full px-2 ml-3">Doctor</button></div>
+                <div className="text-slate-600"><button className="border rounded-full px-2 ml-3 border-slate-400">Doctor</button></div>
             </div>
             <div className="">
-                <button className=" bg-blue-400 rounded-full py-3 px-11 text-white text-lg">Logout</button>
+                <button className=" bg-primary-blue rounded-full py-3 px-11 text-white text-lg hover:cursor-pointer">Logout</button>
             </div>
 
         </div>
