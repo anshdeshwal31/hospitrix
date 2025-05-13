@@ -8,6 +8,7 @@ import { GetDoctorsList } from "../controllers/adminControllers/getDoctorsList";
 import { GetAdminDashboardData } from "../controllers/adminControllers/getAdminDashboardData";
 import { GetAppointmentList } from "../controllers/adminControllers/getAppointmentsList";
 import { AuthAdminMiddleware } from "../middlewares/authAdmin";
+import { ChangeDoctorAvailablity } from "../controllers/doctorControllers/changeDoctorAvailablity";
 
 export const adminRouter:Router = express.Router();
 
@@ -29,3 +30,5 @@ adminRouter.post("/getDoctorList", GetDoctorsList)
 adminRouter.post("/getAdminDashboardData", GetAdminDashboardData)
 
 adminRouter.post("/getAppointmentList", GetAppointmentList)
+
+adminRouter.post("/changeDoctorAvailablity", ChangeDoctorAvailablity);
