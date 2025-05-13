@@ -6,7 +6,7 @@ const DoctorCard = ({ name, image , speciality,_id}:DoctorCardType) => {
     <div className="border border-blue-200 rounded-lg  ">
         <Link to = {`/appointment/${_id}`}>
         <div className="bg-blue-300 w-[250px] h-[250px] rounded-t-lg overflow-hidden">
-            <img src={image} alt="" className="w-full hover:scale-110 transition-all duration-500  rounded-lg"/>
+            <img src={image} alt="" className="w-full h-[250px] object-cover object-top hover:scale-110 transition-all duration-500  rounded-t-lg"/>
         </div>
 
         <div className="py-4 px-4">
