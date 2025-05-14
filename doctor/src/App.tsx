@@ -19,7 +19,7 @@ function App() {
     errorElement:<div className='text-center font-semibold text-3xl'>Error loading page</div>,
     children:[
       {
-        path:'/doctor-dashboard',
+        path:'doctor-dashboard',
         element:<DoctorDashboard/>
       },
       {

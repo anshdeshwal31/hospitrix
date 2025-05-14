@@ -4,7 +4,7 @@ import { assets } from "../assets/assets"
 
 export const Navbar = () => {
   return (
-    <div>
+    <div className="">
 
         <div className="flex justify-between items-center px-6 mx-8 my-4">
 
@@ -19,6 +19,7 @@ export const Navbar = () => {
 
         </div>
 
+        <hr  className="bg-black"/>
         <div className="flex">
             <Sidebar/>
             <Outlet/>

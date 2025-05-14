@@ -2,11 +2,13 @@ import { createContext, useState } from "react";
 import axios  from "axios";
 import { toast } from "react-toastify";
 import type { appointmentType, doctorDashboardDataType , doctorProfileType } from "../types/Types";
+import { useNavigate } from "react-router-dom";
 
 export const DoctorContext =  createContext<any>(undefined) 
 
 export const DoctorContextProvider:React.FC<{children:React.ReactNode}> =   ({children}) => { 
 
+    // const navigate = useNavigate()
     
     const backendUrl:string = import.meta.env.VITE_BACKEND_URL
     
@@ -15,6 +17,7 @@ export const DoctorContextProvider:React.FC<{children:React.ReactNode}> =   ({ch
     const [doctorDashboardData, setDoctorDashboardData] = useState<doctorDashboardDataType | null>(null)
     const [doctorProfileData , setDoctorProfileData] = useState<doctorProfileType>()
     const[doctorList,setDoctorList] = useState<doctorProfileType[]>([])
+    const [doctorId, setDoctorId] = useState<string>(localStorage.getItem("doctorId") || "")
 
     
 
@@ -68,24 +71,33 @@ export const DoctorContextProvider:React.FC<{children:React.ReactNode}> =   ({ch
     }
     
     
-    const getDoctorDashData = async () => { 
+    const getDoctorDashData = async (doctorId:string) => { 
         try {
-            const response = await axios.post(backendUrl+"/api/doctor/getDoctorDashboard",{} , {headers:
+            const response = await axios.post(backendUrl+"/api/doctor/getDoctorDashboard",{doctorId} , {headers:
                 {
                     authorization:`Bearer ${dToken}`
                 }
             })
+            console.log("dtoken: ", dToken)
     
             if (response.data.success) {
-                setDoctorDashboardData(response.data.doctorDashboardData);
+                setDoctorDashboardData(response.data.dashboardData);
+                console.log("request succcessfull")
+                console.log("dashboard data: ", response.data.doctorDashboardData)
+                console.log("response: ", response)
             
             } else {
-                toast.error(response.data.error.message,{
+                console.log("inside the getDoctorDashData")
+                console.log("request failed")
+                toast.error(response.data.message,{
                     className : "bg-red-500 text-white"
                 })
+                console.log(response.data.error)
             }
         } catch (error) {
-            console.log(error)
+            // console.log("there was some error")
+            // console.log("error message: ",(error as Error).message)
+            console.log("error: ", error)
             toast.error("there was some error",{
                 className : "bg-red-500 text-white"
             })
@@ -95,9 +107,37 @@ export const DoctorContextProvider:React.FC<{children:React.ReactNode}> =   ({ch
     }
     
     
-    const cancelAppointment = async () => { 
+    const cancelAppointment = async (appointmentId:string) => { 
         try {
-            const response = await axios.post(backendUrl+"/api/doctor/cancelAppointment", {},{
+            const response = await axios.post(backendUrl+"/api/doctor/cancelAppointment", {appointmentId},{
+                headers:{
+                    authorization: `Bearer ${dToken}`
+                }
+            })
+            console.log("response: ", response)
+            if (response.data.success) {
+                toast.error(response.data.message,{
+                    className:"bg-red-400 text-white"
+                })
+                getDoctorDashData(doctorId)
+            } else {
+                toast.error(response.data.error.message,{
+                    className:"bg-red-500 text-white"
+                })
+            }
+        } catch (error) {
+            console.log("error: ",error)
+            toast.error("there was some error",{
+                className : "bg-red-500 text-white"
+            })
+            
+        }
+    }
+    
+    
+    const completeAppointment = async (appointmentId:string) => { 
+        try {
+            const response = await axios.post(backendUrl+"/api/doctor/completeAppointment", {appointmentId},{
                 headers:{
                     authorization: `Bearer ${dToken}`
                 }
@@ -107,8 +147,7 @@ export const DoctorContextProvider:React.FC<{children:React.ReactNode}> =   ({ch
                 toast.success(response.data.message,{
                     className:"bg-green-500 text-white"
                 })
-                getAppointments()
-                getDoctorDashData()
+                getDoctorDashData(doctorId)
             } else {
                 toast.error(response.data.error.message,{
                     className:"bg-red-500 text-white"
@@ -122,48 +161,21 @@ export const DoctorContextProvider:React.FC<{children:React.ReactNode}> =   ({ch
             
         }
     }
-    
-    
-    const completeAppointment = async () => { 
-        try {
-            const response = await axios.post(backendUrl+"/api/doctor/completeAppointment", {},{
-                headers:{
-                    authorization: `Bearer ${dToken}`
-                }
-            })
-            
-            if (response.data.success) {
-                toast.success(response.data.message,{
-                    className:"bg-green-500 text-white"
-                })
-                getAppointments()
-                getDoctorDashData()
-            } else {
-                toast.error(response.data.error.message,{
-                    className:"bg-red-500 text-white"
-                })
-            }
-        } catch (error) {
-            console.log(error)
-            toast.error("there was some error",{
-                className : "bg-red-500 text-white"
-            })
-            
-        }
-    }
         
-    const doctorLogin = async (doctorId:string , email:string , password:string) => { 
+    const doctorLogin = async (email:string , password:string) => { 
         try {
             const response  = await axios.post(backendUrl+"/api/doctor/login",{
-                doctorId,email,password
+                email,password
             })
             if (response.data.success) {
                 localStorage.setItem("dToken",response.data.token)
+                localStorage.setItem("doctorId", response.data.doctorId)
                 setDToken(localStorage.getItem("dToken"))
-
+                setDoctorId(response.data.doctorId)
                 toast.success(response.data.message,{
                     className:"bg-green-500 text-white"
                 })
+                // navigate("/doctor-dashboard")
                 
             } else {
                 toast.error(response.data.error.message,{
@@ -271,7 +283,7 @@ export const DoctorContextProvider:React.FC<{children:React.ReactNode}> =   ({ch
         completeAppointment, cancelAppointment,getAppointments, getDoctorDashData , getDoctorProfileData,
         doctorDashboardData,
         doctorProfileData, setDoctorProfileData,
-        doctorLogin, editDoctor, changeDoctorAvailablity, getDoctorList, doctorList
+        doctorLogin, editDoctor, changeDoctorAvailablity, getDoctorList, doctorList,doctorId
     }
 
     return(

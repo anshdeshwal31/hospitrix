@@ -17,4 +17,7 @@ module.exports = {
     },
   },
   plugins: [],
+  variants: {
+    scrollbar: ['rounded']
+  },
 }
