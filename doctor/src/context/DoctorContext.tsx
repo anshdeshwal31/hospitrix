@@ -21,9 +21,9 @@ export const DoctorContextProvider:React.FC<{children:React.ReactNode}> =   ({ch
 
     
 
-    const getAppointments = async () => { 
+    const getAppointments = async (doctorId:string) => { 
         try {
-            const response = await axios.post(backendUrl+"/api/doctor/getAppointmentList",{} , {headers:
+            const response = await axios.post(backendUrl+"/api/doctor/getAppointmentList",{doctorId} , {headers:
                 {
                     authorization:`Bearer ${dToken}`
                 }
@@ -120,6 +120,7 @@ export const DoctorContextProvider:React.FC<{children:React.ReactNode}> =   ({ch
                     className:"bg-red-400 text-white"
                 })
                 getDoctorDashData(doctorId)
+                getAppointments(doctorId)
             } else {
                 toast.error(response.data.error.message,{
                     className:"bg-red-500 text-white"
@@ -148,6 +149,7 @@ export const DoctorContextProvider:React.FC<{children:React.ReactNode}> =   ({ch
                     className:"bg-green-500 text-white"
                 })
                 getDoctorDashData(doctorId)
+                getAppointments(doctorId)
             } else {
                 toast.error(response.data.error.message,{
                     className:"bg-red-500 text-white"
