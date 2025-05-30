@@ -9,13 +9,13 @@ import { ReactNode, useContext } from 'react'
 import { AdminContext } from './context/AdminContext'
 import { ToastContainer } from 'react-toastify'
 
-const ProtectedRoute = ({children}:{children:ReactNode}) => { 
-  const{aToken} = useContext(AdminContext)
-  if(!aToken) {
-    return <Navigate to="/login" replace/>
-  }
-  return children
- }
+// const ProtectedRoute = ({children}:{children:ReactNode}) => { 
+//   const{aToken} = useContext(AdminContext)
+//   if(!aToken) {
+//     return <Navigate to="/login" replace/>
+//   }
+//   return children
+//  }
 
 const App = () => {
   const router = createBrowserRouter([

@@ -33,7 +33,7 @@ export const CancelAppointmentController = async (req:Request , res: Response , 
             await AppointmentModel.updateOne({
                 _id: new Types.ObjectId(parsedDataWithSuccess.data.appointmentId)
             },{
-                $set:{isCancelled:true}
+                $set:{isCancelled:true, isPending:false}
             })
 
             const doctorId = appointmentToDelete.doctorId
@@ -53,7 +53,8 @@ export const CancelAppointmentController = async (req:Request , res: Response , 
         }
     }
     else{
-        res.status(400).json({
+        res.json({
+            status: 400,
             success:false ,
             message: "incorrect format , try again"
         })

@@ -4,14 +4,14 @@ import { AppointmentModel } from "../../models/appointmentsModel";
 
 export const GetDoctorDashboard = async (req:Request , res:Response , next:NextFunction) => { 
     const parsedDataWithSuccess = await z.object({
-        doctorId: z.string().regex(/^[0-9-a-f-A-F-$]{24}/),
+        doctorId: z.string().regex(/^[a-fA-F0-9]{24}$/),
     }).safeParse(req.body)
 
     if (parsedDataWithSuccess.success) {
         try {
             const appointmentInfo = await AppointmentModel.find(
                 {doctorId:parsedDataWithSuccess.data.doctorId}
-            )
+            ).populate("userId")
 
             let earnings:number = 0
             appointmentInfo.forEach((value) => { 
@@ -49,9 +49,11 @@ export const GetDoctorDashboard = async (req:Request , res:Response , next:NextF
         }
 
     } else {
-        res.status(400).json({
+        res.json({
+            status:400,
             success: false ,
-            message: "incorrect format , try again"
+            message: "incorrect format , try again",
+            error: parsedDataWithSuccess.error.errors
         })
     }
 }

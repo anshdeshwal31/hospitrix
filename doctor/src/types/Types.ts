@@ -37,6 +37,18 @@ export interface doctorProfileType{
     slots_booked: Record<string, slotType>
 }
 
+export interface updateDoctorProfileType{
+    doctorId:string,
+    image:string,
+    about:string,
+    available:boolean,
+    address:{
+        line1:string,
+        line2:string
+    },
+    fees: number
+}
+
 export interface DoctorProfileWithoutId extends Omit<doctorProfileType,"_id">{}
 
 export interface doctorDashboardDataType{

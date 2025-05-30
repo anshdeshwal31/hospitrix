@@ -1,8 +1,7 @@
 import { createContext, useState } from "react";
 import axios  from "axios";
 import { toast } from "react-toastify";
-import type { appointmentType, doctorDashboardDataType , doctorProfileType } from "../types/Types";
-import { useNavigate } from "react-router-dom";
+import type { appointmentType, doctorDashboardDataType , doctorProfileType, updateDoctorProfileType } from "../types/Types";
 
 export const DoctorContext =  createContext<any>(undefined) 
 
@@ -46,9 +45,9 @@ export const DoctorContextProvider:React.FC<{children:React.ReactNode}> =   ({ch
     }
     
 
-    const getDoctorProfileData = async () => { 
+    const getDoctorProfileData = async (doctorId:string) => { 
         try {
-            const response = await axios.post(backendUrl+"/api/doctor/getDoctorProfile",{} , {headers:
+            const response = await axios.post(backendUrl+"/api/doctor/getDoctorProfile",{doctorId} , {headers:
                 {
                     authorization:`Bearer ${dToken}`
                 }
@@ -62,7 +61,7 @@ export const DoctorContextProvider:React.FC<{children:React.ReactNode}> =   ({ch
                 })
             }
         } catch (error) {
-            console.log(error)
+            console.log("error: ",error)
             toast("there was some error",{
                 className : "bg-red-500 text-white"
             })
@@ -193,7 +192,7 @@ export const DoctorContextProvider:React.FC<{children:React.ReactNode}> =   ({ch
         }
     }
 
-    const editDoctor = async (doc:doctorProfileType) => { 
+    const editDoctor = async (doc:updateDoctorProfileType) => { 
 
         try {
             const response = await axios.post(backendUrl+"/api/doctor/editDoctorProfile",doc,

@@ -24,7 +24,9 @@ export const DoctorLoginController = async (req:Request , res:Response, next:Nex
             if (isMatch) {
                 const jwtSecret = process.env.JWT_SECRET_KEY || "fallback-secret"
                 const token = jwt.sign({email, password} , jwtSecret)
-                res.json({ success: true, token , message:"Logged in successfully"})
+                res.json({ success: true, token , message:"Logged in successfully",
+                    doctorId:doctor._id
+                })
             } else {
                 res.json({ success: false, message: "Incorrect password" })
             }

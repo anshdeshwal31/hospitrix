@@ -33,9 +33,11 @@ const Navbar = () => {
                 CONTACT
             </NavLink>
 
-            <NavLink to = "adminPanel" >
+            {/* <NavLink to = "adminPanel" > */}
+            <a href="http://localhost:5174/login">
                 <button className=' border rounded-2xl px-5 font-normal text-sm py-1'>Admin Panel</button>
-            </NavLink>
+            </a>
+            {/* </NavLink> */}
     
         </div>
 

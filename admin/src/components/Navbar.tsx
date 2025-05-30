@@ -1,7 +1,6 @@
 import { assets } from "../assets/admin/assets"
-import { NavLink } from "react-router-dom"
+import { NavLink, Outlet } from "react-router-dom"
 import { Sidebar } from "./Sidebar"
-import { Outlet } from "react-router-dom"
 
 export const Navbar = () => {
   return (

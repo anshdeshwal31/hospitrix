@@ -37,7 +37,9 @@ const Login = () => {
     
   }
   return (
-    <form onSubmit={onSubmitHandler} className='min-h-[80vh] flex items-center'>
+    <div className='flex flex-col items-center'>
+
+    <form onSubmit={onSubmitHandler} className='mt-[120px] mb-[20px] flex items-center'>
       <div className='flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-md shadow-lg '>
         <p className='text-2xl font-semibold text-black'>{state === 'Sign Up' ? 'Create Account' : 'Login'}</p>
         <p>Please {state === 'Sign Up' ? 'sign up' : 'log in'} to book appointment</p>
@@ -64,6 +66,12 @@ const Login = () => {
         }
       </div>
     </form>
+
+    <div className='flex gap-3'>
+      <a href="http://localhost:5175/login"><button className='border rounded-lg px-8 py-3  text-slate-400 bg-black'>Doctor Login</button></a>
+      <a href="http://localhost:5174/login"><button className='border rounded-lg px-8 py-3  text-slate-400 bg-black'>Admin Login</button></a>
+    </div>
+    </div>
   )
 }
 
