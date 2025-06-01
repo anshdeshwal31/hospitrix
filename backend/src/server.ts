@@ -26,14 +26,6 @@ try{
     console.log("MongoDB connnection error:", error);
     process.exit(1)
 }
-// api endpoints
-app.get('/',(req,res) => { 
-    res.status(200).send("hello")
-    // res.json({
-    //     success:true,
-    //     message:"backend is working"
-    // })
- })
 
 app.use("/api/user", userRouter);
 app.use("/api/admin", adminRouter);

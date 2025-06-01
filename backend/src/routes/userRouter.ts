@@ -1,7 +1,7 @@
 import express, {Router} from "express"
 import { UserLoginController } from "../controllers/userControllers/loginController";
 import { BookAppointmentController } from "../controllers/userControllers/bookAppointmentController";
-import { PayOnlineController } from "../controllers/userControllers/payOnlineController";
+import { PayOnlineController, verifyPayment } from "../controllers/userControllers/payOnlineController";
 import { CancelAppointmentController } from "../controllers/userControllers/cancelAppointmentController";
 import { SaveInformationController } from "../controllers/userControllers/saveInformationController";
 import { GetUserProfile } from "../controllers/userControllers/getUserProfile";
@@ -26,6 +26,8 @@ userRouter.use(AuthUserMiddleware)
 userRouter.post("/bookAppointment",BookAppointmentController);
 
 userRouter.post("/payOnline",PayOnlineController);
+
+userRouter.post("verifyPayment",verifyPayment)
 
 userRouter.post("/cancelAppointment",CancelAppointmentController );
 
