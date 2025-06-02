@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react'
 // import { AppContext } from '../context/AppContext'
 import { appointmentType } from '../types/Types';
 import { UserContext } from '../context/UserContext';
+import { DiVim } from 'react-icons/di';
 
 const MyAppointments:React.FC = () => {
   // const {doctors}:{doctors:doctorInfoType[]} = useContext(AppContext);
@@ -38,10 +39,15 @@ const MyAppointments:React.FC = () => {
                 <p className='text-base mt-3'><span className='mr-1 text-base font-semibold'>Date & Time:</span>{item.date.split('T')[0]} | {item.time}</p>
               </div>
               <div></div>
-              <div className='flex flex-col gap-2 justify-end mr-6 '>
-                <button className='bg-primary-blue font-light text-base p-2 text-white text-center sm:min-w-48 border rounded-md' onClick={payOnline}>Pay Online</button>
+              {item.isPending?<div className='flex flex-col gap-2 justify-end mr-6 '>
+                <button className='bg-primary-blue font-light text-base p-2 text-white text-center sm:min-w-48 border rounded-md' onClick={() => { payOnline(item._id,item.doctorId.fees) }}>Pay Online</button>
                 <button className='bg-red-500 font-light text-base p-2 text-white text-center sm:min-w-48 border rounded-md' onClick={() => { cancelAppointment(item._id) }}>Cancel</button>
+              </div>:
+              <div className='self-end  mr-6'>{item.isCompleted?<button className=' font-light text-base p-2 text-green-500 border-green-500 text-center sm:min-w-48 border rounded-md'>Completed</button>:
+              <button className=' border-red-500 font-light text-base p-2 text-red-500 text-center sm:min-w-48 border rounded-md'>Cancelled</button>
+                }
               </div>
+              }
             </div>
           ))}
         </div>

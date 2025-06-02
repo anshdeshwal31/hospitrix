@@ -267,9 +267,9 @@ const Appointment:React.FC = () => {
 
           <div className="flex flex-wrap gap-6  w-full ml-28 mt-8">
             {
-              doctorList.map((doctorItem) => { 
+              doctorList.map((doctorItem:any) => { 
                 return (
-                  (doctorItem.speciality === docInfo?.speciality && doctorItem._id != docInfo._id) && (
+                  (doctorItem.speciality === docInfo?.speciality && doctorItem._id != docInfo?._id) && (
                     <DoctorCard name={doctorItem.name} image={doctorItem.image} speciality={doctorItem.speciality} _id = {doctorItem._id}/>
                   )
                 )

@@ -181,23 +181,86 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
         }
     }
     
-    const payOnline = async () => { 
+
+    const payOnline = async (appointmentId:string,amount:number) => { 
         try {
             if(!uToken){
                 throw new Error("No authentication token")
             } 
-            const response = await axios.post(backendUrl+"/api/user/payOnline")
-            if (response.data.success) {
-                toast.success(response.data.message,{
-                    className:"bg-green-400 text-white"
-                })
-            } else {
-                toast.error(response.data.message,{
+            
+            const orderResponse = await axios.post(backendUrl+"/api/user/payOnline",{appointmentId,amount},
+                {
+                    headers:{
+                        Authorization: `Bearer ${uToken}`
+                    }
+                }
+            )
+            
+            if (!orderResponse.data.success){
+                console.log("the request to make an order for the payment was unsuccessfull")
+                toast.error(orderResponse.data.message,{
                     className:"bg-red-400 text-white"
                 })
+                return ;
             }
-        } catch (error) {
+            console.log("the request to make an order was successfull")
+            const {orderId,amount:orderAmount,currency,key} = orderResponse.data
             
+            const options = {
+                key,
+                amount:orderAmount,
+                currency,
+                name:"Prescripto",
+                description:"Appointment Payment",
+                order_id:orderId,
+                handler: async (response:any) => { 
+                    try {
+                        const verifyResponse = await axios.post(backendUrl+"/api/user/verifyPayment",
+                            {
+                                razorpay_order_id:response.razorpay_order_id,
+                                razorpay_payment_id:response.razorpay_payment_id,
+                                razorpay_signature:response.razorpay_signature,
+                                appointmentId
+                            },
+                            {headers:{
+                                Authorization:`Bearer ${uToken}`
+                            }}
+                        )
+                        
+                        if(verifyResponse.data.success){
+                            toast.success(response.data.message,{
+                                className:"bg-green-400 text-white"
+                            })
+                        }
+                        else{
+                            toast.error(response.data.message,{
+                                className:"bg-red-400 text-white"
+                            })
+                        }
+                        
+                    } catch (error) {
+                        toast.error(response.data.message,{
+                            className:"bg-red-400 text-white"
+                        })
+                        console.log("error: ",error)
+                    }
+                },
+                 prefill: {
+                    name: "User Name",
+                    email: "user@example.com",
+                    contact: "9999999999"
+                },
+                theme: {
+                    color: "#3399cc"
+                }
+            }
+
+            const rzp = new (window as any).Razorpay(options);
+            rzp.open();
+            
+            
+        } catch(error){
+            console.log("error: ",error)
             toast.error((error as Error).message,{
                 className:"bg-red-400 text-white"
             })
@@ -205,6 +268,8 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
         
     }
     
+
+
     const cancelAppointment = async (appointmentId:string) => { 
         try {
             if(!uToken){

@@ -16,20 +16,20 @@ const Home = () => {
     
   return (
     <div className='w-full flex flex-col items-center mt-2 p-3 h-full'>
-        <div className='w-[80%] bg-primary-blue rounded-xl flex px-12 justify-between text-white'>
-            <div className='flex flex-col justify-center gap-4 mt-14 '>
-                <div className='text-5xl  mb-4 font-semibold'>
+        <div className='w-[80%] bg-primary-blue rounded-xl flex flex-col md:flex-row  px-3 lg:px-12 md:justify-around text-white'>
+            <div className='flex flex-col justify-center gap-4 mt-8 md:mt-14 '>
+                <div className='text-3xl md:text-4xl xl:text-5xl  mb-4 font-semibold'>
                     Book Appointment <br />With Trusted Doctors
                 </div>
 
-                <div className='flex font-light justify-center'>
-                    <img src={assets.group_profiles} alt="" className='mr-3' />
+                <div className='flex font-light justify-center text-sm md:text-md'>
+                    <img src={assets.group_profiles} alt="" className='mr-3 h-[30px] sm:h-[40px] md:h-[50px]' />
                     Simply browse through our extensive list of trusted doctors,<br /> schedule your appointment hassle-free.
                 </div>
 
                 <div>
                     <Link to = "/"  >
-                        <button className='bg-primary-pink text-white rounded-full flex gap-2 py-4 px-7 hover:bg-black transition duration-500 mt-3 text-lg' >
+                        <button className='bg-primary-pink text-white rounded-full flex gap-2 py-4 px-7 hover:bg-black transition duration-500 mt-1 mb-2 md:mt-3 text-lg' >
                             Book appointment 
                             <img src={assets.arrow_icon} alt="" className='self-center' />
                         </button>
@@ -38,20 +38,20 @@ const Home = () => {
 
             </div>
 
-            <div className='w-[50%] mt-24'>
-                <img src={assets.header_img} alt=""  className='w-full'/>
+            <div className='w-[300px] sm:w-[400px] md:w-[600px] mt-24 md:justify-start mx-auto flex items-center justify-center '>
+                <img src={assets.header_img} alt=""  className='w-[300px] sm:w-[500px] md:w-[600px]  md:self-end self-center -mx-2'/>
             </div>
         </div>
 
         <div className='text-4xl font-medium mt-16 '>Find by speciality</div>
         <div className='mt-4 text-center font-light'>Simply browse through our extensive list of trusted doctors, <br />schedule your appointment hassle-free.</div>
 
-        <div className='flex justify-center gap-8 mt-10 font-light text-sm'>
+        <div className='flex justify-center gap-8 mt-10 font-light text-sm overflow-x-auto w-screen scrollbar-hide px-1 overflow-y-visible pt-2'>
             {specialityData.map((specialityItem: SpecialityType ) => { 
                 return (
-                    <div key = {uuidv4()} className='flex flex-col transform hover:-translate-y-2 transition duration-500 '>
-                        <Link to={`doctors/${specialityItem.speciality}`}>
-                            <img src={specialityItem.image} alt="" className='w-[110px]' />
+                    <div key = {uuidv4()} className='flex flex-col transform hover:-translate-y-2 transition duration-500  relative z-10 '>
+                        <Link to={`doctors/${specialityItem.speciality}`} className='self-center'>
+                            <img src={specialityItem.image} alt="" className='w-[60px] sm:w-[70px] md:w-[90px] lg:w-[110px] self-center ' />
                         </Link>
                          <span className='self-center'>{specialityItem.speciality}</span>
                     </div>
@@ -76,18 +76,18 @@ const Home = () => {
 
         <Link to="/doctors"><button className='border rounded-full bg-blue-100 text-gray-600 py-3 px-12 text-lg my-12'>more</button></Link >
 
-        <div className='flex bg-primary-blue w-[80%] text-white  justify-around rounded-xl mt-14'>
-            <div className='flex flex-col justify-center gap-5'>
-                <div className='text-6xl font-medium'>
+        <div className='flex gap-10 sm:gap-0 sm:flex-row flex-col bg-primary-blue w-[80%] text-white  justify-around rounded-xl mt-14'>
+            <div className='flex flex-col justify-center items-center sm:items-start gap-5 px-2  '>
+                <div className='text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-medium'>
                     Book Appointment <br /> With 100+ Trusted Doctors
                 </div>
                 <div>
-                    <button className='bg-primary-pink rounded-full px-8 py-3 text-lg transform hover:scale-110 transition duration-300'>Create account</button>
+                    <button className=' bg-primary-pink rounded-full px-8 py-3 text-sm sm:text-lg transform hover:scale-110 transition duration-300'>Create account</button>
                 </div>
             </div>
 
-            <div>
-                <img src={assets.appointment_img} alt="" className='h-[450px] -mt-8' />
+            <div className='sm:flex justify-center hidden sm:visible'>
+                <img src={assets.appointment_img} alt="" className=' h-[200px] w-[200px] sm:h-[250px] sm:w-[250px] md:h-[350px] md:w-[350px] lg:h-[450px] lg:w-[450px] -mt-8' />
             </div>
         </div>
     </div>
