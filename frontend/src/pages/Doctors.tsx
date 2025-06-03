@@ -3,12 +3,13 @@ import { NavLink, useParams, useNavigate } from "react-router-dom"
 import { specialityData } from "../assets/frontend/assets"
 import { v4 as uuidv4 } from 'uuid';
 import DoctorCard from "../components/DoctorCard";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
 
 const Doctors = () => {
 
     const {doctorList, getDoctorList} = useContext(UserContext)
+    const [showFilter , setShowFilter] = useState<boolean>(false)
     
     const navigate = useNavigate()
 
@@ -34,10 +35,12 @@ const Doctors = () => {
     return (
     <div className="flex flex-col ">
 
-        <div className="ml-[168px] mt-4 mb-6  text-lg text-slate-600">Browse through the doctors specialist.</div>
+        <button className={`text-lg self-center w-fit ${showFilter?"bg-primary-blue text-white":"border-black border "} px-4 p-1 rounded-lg sm:hidden `} onClick={() => { setShowFilter(!showFilter) }}>Filters</button>
+
+        <div className="lg:ml-[108px] self-center mt-4 mb-6  text-lg text-slate-600">Browse through the doctors specialist.</div>
         
-        <div className="flex gap-8  w-[80%] self-center">
-            <div className="flex flex-col gap-5 text-slate-500 ">
+        <div className="sm:flex-row flex flex-col gap-8 w-[95%] lg:w-[90%] xl:w-[85%] self-center">
+            <div className={`flex sm:opacity-100 sm:h-[350px] flex-col gap-5 text-slate-500 duration-300 transition-size ${showFilter?"opacity-100 h-[350px]":"opacity-0 h-0"}  items-center `} >
                 {
                     specialityData.map((specialityItem ) => { 
                         return (
@@ -53,7 +56,7 @@ const Doctors = () => {
                 }
             </div>
 
-            <div className="flex flex-wrap gap-x-6 gap-y-7">
+            <div className="flex flex-wrap gap-x-6 gap-y-7 justify-center">
                 {
                     doctorList.filter((doctorItem:any) => speciality? doctorItem.speciality.toLowerCase() === speciality.toLowerCase():true).map((doctorItem:any) => { 
                     return (
