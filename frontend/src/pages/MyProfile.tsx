@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 
 const MyProfile = () => {
 
-    const{ editUser, userId , isHover , setIsHover ,userProfile , name , email , password , uToken , getUserProfile}  = useContext(UserContext)
+    const{ editUser, userId  ,userProfile , name , email , password }  = useContext(UserContext)
     const {assets} = useContext(AppContext)
     const [imageToUpload , setImageToUpload] = useState<string>("")
     const [isEdit, setIsEdit] = useState(false)

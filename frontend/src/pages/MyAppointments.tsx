@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from 'react'
 // import { AppContext } from '../context/AppContext'
 import { appointmentType } from '../types/Types';
 import { UserContext } from '../context/UserContext';
-import { DiVim } from 'react-icons/di';
 
 const MyAppointments:React.FC = () => {
   // const {doctors}:{doctors:doctorInfoType[]} = useContext(AppContext);

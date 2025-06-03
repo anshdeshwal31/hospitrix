@@ -54,10 +54,10 @@ const Login = () => {
           <p>Email</p>
           <input onChange={(e) => setEmail(e.target.value)} value={email} className='border border-[#DADADA] rounded w-full p-2 mt-1' type="email" required />
         </div>
-        <div className='w-full '>
+        <div className='w-full relative'>
           <p>Password</p>
-          <input onChange={(e) => setPassword(e.target.value)} value={password} className='border border-[#DADADA] rounded w-full p-2 mt-1' type={passwordVisible?"text":"password"} required />
-          <span className='relative -top-8 left-[290px]' onClick={() => { setPasswordVisible(!passwordVisible) }}>{passwordVisible?<MdVisibilityOff size={20}/>:<MdVisibility size={20}/>}</span>
+          <input onChange={(e) => setPassword(e.target.value)} value={password} className='border border-[#DADADA] rounded w-full p-2 mt-1 pr-10' type={passwordVisible?"text":"password"} required />
+          <span className='absolute right-3 top-10 cursor-pointer' onClick={() => { setPasswordVisible(!passwordVisible) }}>{passwordVisible?<MdVisibilityOff size={20}/>:<MdVisibility size={20}/>}</span>
         </div>
         <button className='bg-primary-blue text-white w-full py-2 my-2 rounded-md text-base hover:bg-primary-pink transition duration-500' type='submit'>{state === 'Sign Up' ? 'Create account' : 'Login'}</button>
         {state === 'Sign Up'
