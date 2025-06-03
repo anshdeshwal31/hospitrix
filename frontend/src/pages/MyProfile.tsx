@@ -85,9 +85,9 @@ const MyProfile = () => {
      }
 
     return userData ? (
-        <div className='max-w-lg flex flex-col gap-2 pt-5 ml-44'>
+        <div className='max-w-lg flex flex-col gap-2 pt-5 sm:ml-28 ml-16 md:ml-44'>
 
-            <img className='w-36 rounded' src={imageToUpload?imageToUpload:userProfile.image?userProfile.image:assets.upload_area} alt="" />
+            <img className='w-36 rounded-lg' src={imageToUpload?imageToUpload:userProfile.image?userProfile.image:assets.upload_area} alt="" />
             
             {isEdit?<input type="file" onChange={handleImageUpload}/>:null}
             {isEdit
@@ -95,7 +95,7 @@ const MyProfile = () => {
                 : <p className='font-medium text-3xl text-[#262626] mt-4'>{userProfile.name}</p>
             }
 
-            <hr className='bg-[#ADADAD] h-[1px] border-none' />
+            <hr className='bg-[#ADADAD] h-[1px] w-[300px] sm:w-[500px] md:w-[700px]  lg:w-[900px] border-none' />
 
             <div>
                 <p className='text-gray-600 underline mt-3'>CONTACT INFORMATION</p>

@@ -7,7 +7,7 @@ const Footer = () => {
 
         <div className="w-full flex-col sm:flex-row flex gap-16 items-center md:gap-0 md:justify-around ">
             <div className=" w-[300px] sm:w-[30%] flex flex-col gap-5">
-                <img src={assets.logo} alt="" className="h-[40px] self-center sm:self-start"/>
+                <img src={assets.logo} alt="" className="h-[40px] self-start sm:self-start"/>
                 <span className=" font-light ">
                 Lorem Ipsum is simply dummy text of the printing and typesetting <br /> industry. Lorem Ipsum has been the industry's standard dummy <br /> text ever since the 1500s, when an unknown printer took a galley of <br /> type and scrambled it to make a type specimen book.
                 </span>
