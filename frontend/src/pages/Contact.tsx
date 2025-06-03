@@ -6,8 +6,8 @@ const Contact = () => {
       
       <div className="text-3xl mt-8 font-medium text-slate-200]">CONTACT <span className="text-slate-600 mx-1"> US</span></div>
       
-      <div className="flex gap-12">
-        <div className=""> <img src={assets.contact_image} className="w-[400px]" /></div>
+      <div className="flex md:flex-row flex-col gap-12">
+        <div className=""> <img src={assets.contact_image} className="w-[350px] sm:w-[400px]" /></div>
 
         <div className="flex flex-col gap-8 p-3 text-slate-600 ">
           <div className="text-xl text-slate-600 font-semibold">OUR OFFICE</div>
