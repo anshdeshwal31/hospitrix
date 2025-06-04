@@ -81,7 +81,7 @@ export const AddDoctor = () => {
   
   return (
 
-    <div className="w-[325px] sm:w-[500px] md:w-[600px] xl:w-[800px] lg:w-[700px] h-fit sm:mt-8 sm:ml-8 mt-4 ml-2 bg-blue-50 border border-slate-400 rounded-lg mb-6 ">
+    <div className=" w-[325px] sm:w-[500px] md:w-[600px] xl:w-[800px] lg:w-[700px] h-fit sm:mt-8 sm:ml-8 mt-4 ml-8 bg-blue-50 border border-slate-400 rounded-lg mb-6 ">
 
       
       <div className="text-2xl font-medium m-5 text-slate-700">Add Doctor </div>
