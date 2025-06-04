@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import { MdVisibility } from "react-icons/md";
 import { MdVisibilityOff } from "react-icons/md";
+import { assets } from "../assets/admin/assets";
 
 export const AdminLogin = () => {
     const[email,setEmail] = useState("")
@@ -44,36 +45,51 @@ export const AdminLogin = () => {
        
     }
     return (
-    <div className="flex items-center flex-col justify-center h-screen w-screen ">
-        <form onSubmit={onLogin} className='py-6 px-16 border border-slate-400 text-slate-700 h-fit w-fit rounded-md gap-5 flex flex-col'>
+    <div>
 
-            <div className="text-2xl font-semibold text-black text-center">
-                Login
-            </div>
+        <div className="flex justify-around m-3">
+            <img src={assets.admin_logo} className="scale-90 transition-all sm:scale-100" alt="" />
+            <button className="rounded-full border border-slate-300 text-slate-700 font-light py-0 px-2">Admin panel</button>
+        </div>
 
-            <div className="">
-                Please login to book your appointment
-            </div>
-            
-            <div className="flex flex-col">
-                Email
-                <label className=''>
-                    <input type="text" className="border border-slate-300 rounded-md w-[270px] h-[35px] p-2" onChange={(e) => { setEmail(e.target.value) }}/>
-                </label>
-            </div>
-            <div className="flex flex-col">
-                Password
-                <label className=''>
-                    <input type={passwordVisible?"text":"password"} className="border border-slate-300 rounded-md w-[270px] h-[35px] p-2" onChange={(e) => { setPassword(e.target.value) }}/> 
-                    <span className= " relative bottom-6 left-[245px] hover:cursor-pointer" onClick={() => {setPasswordVisible(!passwordVisible) }}>{passwordVisible?<MdVisibilityOff size="18px" />:<MdVisibility size="18px"/>
-                    }</span>
-                </label>
-            </div>
+        <hr />
+        
+        <div className="flex items-center flex-col pt-[175px] h-screen w-full ">
+            <form onSubmit={onLogin} className='py-6 px-5 sm:px-12 border border-slate-200 text-slate-700 h-fit w-fit rounded-md gap-5 flex flex-col shadow-slate-300 shadow-lg'>
 
-            <div className="">
-                <button type="submit" className="border rounded-md bg-primary-blue transition-all duration-300 my-5   hover:bg-black py-2 px-[115px] text-white" >Login</button>
+                <div className="text-2xl font-semibold text-black text-center">
+                    Login
+                </div>
+
+                <div className="">
+                    Please login to book your appointment
+                </div>
+                
+                <div className="flex flex-col">
+                    Email
+                    <label className=''>
+                        <input type="text" className="border border-slate-300 rounded-md w-[270px] h-[35px] p-2" onChange={(e) => { setEmail(e.target.value) }}/>
+                    </label>
+                </div>
+                <div className="flex flex-col">
+                    Password
+                    <label className='relative'>
+                        <input type={passwordVisible?"text":"password"} className="border border-slate-300 rounded-md w-[270px] h-[35px] p-2" onChange={(e) => { setPassword(e.target.value) }}/> 
+                        <span className= " absolute top-[9px] right-3 hover:cursor-pointer" onClick={() => {setPasswordVisible(!passwordVisible) }}>{passwordVisible?<MdVisibilityOff size="18px" />:<MdVisibility size="18px"/>
+                        }</span>
+                    </label>
+                </div>
+
+                <div className="">
+                    <button type="submit" className="border rounded-md bg-primary-blue transition-all duration-300 my-5   hover:bg-black py-2 px-[115px] text-white" >Login</button>
+                </div>
+            </form>
+
+            <div className='flex gap-3 mt-5'>
+                <a href="http://localhost:5175/login"><button className='border rounded-lg px-8 py-3  text-slate-400 bg-black'>Doctor Login</button></a>
+                <a href="http://localhost:5173/login"><button className='border rounded-lg px-8 py-3  text-slate-400 bg-black'>User Login</button></a>
             </div>
-        </form>
+        </div>
     </div>
   )
 }
