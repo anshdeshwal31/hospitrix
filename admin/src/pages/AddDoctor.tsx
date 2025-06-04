@@ -80,21 +80,22 @@ export const AddDoctor = () => {
    }
   
   return (
-    <div className="w-fit m-8">
+
+    <div className="w-[325px] sm:w-[500px] md:w-[600px] xl:w-[800px] lg:w-[700px] h-fit sm:mt-8 sm:ml-8 mt-4 ml-2 bg-blue-50 border border-slate-400 rounded-lg mb-6 ">
 
       
-      <div className="text-xl font-medium mb-6">Add Doctor </div>
-      <form action="" className="border rounded-md p-4 text-lg text-slate-600 w-[800px]" onSubmit={handleSubmit}>
+      <div className="text-2xl font-medium m-5 text-slate-700">Add Doctor </div>
+      <form action="" className=" w-full border rounded-md p-4 text-lg text-slate-600  border-none " onSubmit={handleSubmit}>
         <div className="mb-5">
           <label>
             <img src={postImage?postImage:assets.upload_area} className="h-[70px] my-2 ml-3" />
             {/* <img src={imageRef?.current?.value?imageRef.current.value:assets.upload_area} className="h-[70px] my-2 ml-3" /> */}
-            <input type="file" ref={imageRef} onChange={handleImageUpload} className="ml-4"/>
+            <input type="file" ref={imageRef} onChange={handleImageUpload} className="ml-4 w-[100%]"/>
           </label>
         </div>
 
-        <div className=" flex gap-6 w-full justify-around">
-          <div className="flex flex-col gap-4 w-[45%]">
+        <div className=" flex gap-6 w-full justify-around sm:flex-row flex-col">
+          <div className="flex flex-col gap-4 w-[85%] sm:w-[45%]">
 
             <label htmlFor="" className="flex flex-col">
               Your name
@@ -106,10 +107,15 @@ export const AddDoctor = () => {
               <input required type="text" className="border rounded-md px-3 py-2" placeholder="Email" id="doctoremail" onChange={(e) => setEmail(e.target.value) }/>
             </label>
 
-            <label htmlFor="" className="flex flex-col">
+            <label htmlFor="" className="flex flex-col relative">
               Set Password 
-              <input required type={passwordVisible?"text":"password"} className="border rounded-md px-3 py-2" id="password" placeholder="Password" onChange={(e) => setPassword(e.target.value) }/>
-              <span className="relative bottom-[32px] left-[315px] hover:cursor-pointer" onClick={() => { setPasswordVisible(!passwordVisible) }}>{passwordVisible?<MdVisibilityOff size={22}/>:<MdVisibility size={22}/>}</span>
+              <input required type={passwordVisible?"text":"password"} className="border rounded-md px-3 py-2 pr-10" id="password" placeholder="Password" onChange={(e) => setPassword(e.target.value) }/>
+              <span 
+                className="absolute right-3 top-[40px] hover:cursor-pointer" 
+                onClick={() => { setPasswordVisible(!passwordVisible) }}
+              >
+                {passwordVisible ? <MdVisibilityOff size={22}/> : <MdVisibility size={22}/>}
+              </span>
             </label>
 
             <label htmlFor="" className="flex flex-col">
@@ -136,7 +142,7 @@ export const AddDoctor = () => {
 
           </div>
 
-          <div className="w-[45%] flex flex-col gap-4">
+          <div className="w-[85%] sm:w-[45%] flex flex-col gap-4">
 
             <label htmlFor="" className="flex flex-col">
               Speciality
@@ -164,18 +170,18 @@ export const AddDoctor = () => {
           </div>
         </div>
 
-        <div className=" mt-4">
+        <div className=" mt-4 mb-3">
           <label htmlFor="" className="flex flex-col ml-3 gap-2">
             About Doctor
-            <textarea name="about" id="about" rows={6} cols={10} placeholder="Write  about the doctor" className="border rounded-md p-3" required onChange={(e) => setAbout(e.target.value)}></textarea>
+            <textarea name="about" id="about" rows={6} cols={9} placeholder="Write  about the doctor" className="border rounded-md pb-0 p-3 mb-3" required onChange={(e) => setAbout(e.target.value)}></textarea>
           </label>
         </div>
 
-        <div className="ml-3 mt-6">
+        <div className="ml-3 mt-6 mb-2">
           <button type="submit" className="bg-primary-blue py-3 px-9 text-white hover:bg-black transition-all duration-500 rounded-full" >Add Doctor</button>
         </div>
 
-      </form>
+      </form >
     </div>
   )
 }

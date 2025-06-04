@@ -10,7 +10,7 @@ export const AppointmentList =  () => {
   },[])
   console.log("appointments list on the admin panel: ",allAppointment)
   return (
-    <div className="w-[400px] sm:w-[500px] md:w-[600px] lg:w-[750px] xl:w-[900px] 2xl:w-[1100px] flex flex-col sm:ml-4 xl:ml-10 2xl:ml-16 mt-5 pr-2 mb-5">
+    <div className="w-[372px] sm:w-[500px] md:w-[600px] lg:w-[750px] xl:w-[900px] 2xl:w-[1100px] flex flex-col sm:ml-4 xl:ml-10 2xl:ml-16 mt-5 pr-2 mb-5">
       <div className="text-2xl font-medium my-3">All Apppointments</div>
 
       <div className=' bg-slate-100  font-medium text-md '>
