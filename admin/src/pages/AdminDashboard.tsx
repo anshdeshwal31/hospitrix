@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import { AdminContext} from "../context/AdminContext"
 import { assets } from "../assets/admin/assets"
+
 let count:number  = 0;
 
 export const AdminDashboard = () => {
@@ -33,11 +34,11 @@ export const AdminDashboard = () => {
      if (!adminDashData) return <div className="p-6 text-center">No dashboard data available</div>
      
     return (
-      <div className="">
-        <div className="flex gap-4 m-7">
+      <div className=" w-screen">
+        <div className="flex sm:flex-row flex-col gap-4 m-7 ">
         
           
-          <div className="flex rounded-md w-[220px] p-5 bg-blue-100 gap-3">
+          <div className="flex  rounded-md w-[200px] sm:w-[193px] lg:w-[220px] p-5 bg-blue-100 gap-3">
             <span className=""><img src={assets.doctor_icon} alt="" /></span>
             <span className="">
               <div className="text-2xl">{adminDashData.doctors}</div>
@@ -46,7 +47,7 @@ export const AdminDashboard = () => {
           </div>
 
   
-          <div className="flex rounded-md w-[220px] p-5 bg-blue-100 gap-3">
+          <div className="flex rounded-md w-[200px] sm:w-[213px] lg:w-[220px] lg:p-5 py-5 pl-5 pr-2 bg-blue-100 gap-3">
             <span className=""><img src={assets.appointments_icon} alt="" /></span>
             <span className="">
               <div className="text-2xl">{adminDashData.appointments}</div>
@@ -55,7 +56,7 @@ export const AdminDashboard = () => {
           </div>
 
 
-          <div className="flex rounded-md w-[220px] p-5 bg-blue-100 gap-3">
+          <div className="flex rounded-md w-[200px] sm:w-[193px] lg:w-[220px] p-5 bg-blue-100 gap-3">
             <span className=""><img src={assets.patients_icon} alt="" /></span>
             <span className="">
               <div className="text-2xl">{adminDashData.patients}</div>
@@ -65,21 +66,20 @@ export const AdminDashboard = () => {
 
         </div>
 
-        <div className=" ml-7 mt-3">
+        <div className=" ml-7 mt-3 pb-4 pr-6 w-[94%] sm:w-[85%] lg:w-[75%] xl:w-[70%]">
           <div className="flex text-xl font-medium mb-3 "><img src={assets.list_icon} className="mr-2"  />Latest Appointments</div>
           <div className="flex flex-col gap-3 ">
             {adminDashData.latestAppointments.map((appointment:any) => { 
               return(
-                <div className="flex justify-between bg-blue-100 rounded-md border" key={appointment._id}>
+                <div className="flex justify-between   bg-blue-100 rounded-md border" key={appointment._id}>
 
                 <div className="flex">
 
-                  <div className=""><img src={appointment.doctorId.image} className="w-10 border rounded-l-md mr-2"/></div>
+                  <div className=""><img src={appointment.doctorId.image} className="w-10 border rounded-l-md mr-2 h-14 object-cover"/></div>
 
                   <div className="">
                     <div className="">Dr. {appointment.doctorId.name}</div>
-                    {/* console.log(Booking on {appointment.doctorId[`slots_booked${appointment._id}`].time}) */}
-                    {/* <div className="">Booking on {appointment.doctorId[`slots_booked.${appointment._id}`].time} </div> */}
+           
                     <div className="">Booking on {appointment.doctorId.slots_booked?.[appointment._id]?.time || 'No time available'}, {appointment.doctorId.slots_booked?.[appointment._id]?.date.split("T")[0]}</div>
                   </div>
                 </div>
