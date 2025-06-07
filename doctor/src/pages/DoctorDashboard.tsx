@@ -17,43 +17,43 @@ export const DoctorDashboard = () => {
     <div>
     {doctorDashboardData?(
     <div>
-      <div className="flex gap-3 m-6  ">
+      <div className="flex sm:flex-row flex-col gap-3 sm:m-6 my-2 ">
 
 
-        <div className="flex bg-blue-100 w-[220px] p-4 gap-4 rounded-lg">
+        <div className="flex bg-blue-100 h-[90px] sm:h-fit w-[220px] sm:w-[180px] lg:w-[220px] p-2 sm:p-4 gap-4 rounded-lg">
           <img src={assets.earning_icon} className="h-[70px]" alt="" />
           <span className="flex flex-col gap-1">
-            <p className="text-2xl">${doctorDashboardData.earnings}</p>
+            <p className="text-2xl">${doctorDashboardData.earnings?doctorDashboardData.earnings:0}</p>
             <p>Earnings</p>
           </span>
         </div>
 
 
-        <div className="flex bg-blue-100 w-[220px] p-4 gap-4 rounded-lg">
+        <div className="flex bg-blue-100 h-[90px] sm:h-fit w-[220px]  gap-4 p-2 sm:p-4 rounded-lg">
           <img src={assets.appointments_icon} className="h-[70px]" alt="" />
           <span className="flex flex-col gap-1">
-            <p className="text-2xl">{doctorDashboardData.appointmentInfo} </p>
+            <p className="text-2xl">{doctorDashboardData.appointmentInfo?doctorDashboardData.appointmentInfo:0} </p>
             <p>Appointments </p>
           </span>
         </div>
 
-        <div className="flex bg-blue-100 w-[220px] p-4 gap-4 rounded-lg">
+        <div className="flex bg-blue-100 h-[90px] sm:h-fit w-[220px] sm:w-[180px] lg:w-[220px] p-2 sm:p-4 gap-4 rounded-lg">
           <img src={assets.patients_icon} className="h-[70px]" alt="" />
           <span className="flex flex-col gap-1">
-            <p className="text-2xl">{doctorDashboardData.patients}</p>
+            <p className="text-2xl">{doctorDashboardData.patients?doctorDashboardData.patients:0}</p>
             <p>Patients</p>
           </span>
         </div>
       </div>
 
 
-      <div className="ml-6 border-slate-200 rounded-t-lg border w-fit">
+      <div className="sm:ml-6 border-slate-200 rounded-t-lg border w-fit mt-4 mb-5">
         <div className="flex font-medium text-lg gap-3 bg-blue-100 border border-slate-200 rounded-t-md p-2">
           <img src={assets.list_icon} alt="" />
           Latest Bookings
         </div>
 
-        <div className="w-fit">
+        <div className="w-fit ">
           {
             doctorDashboardData.latestAppointments.map((appointment:appointmentType) => { 
               return (
@@ -65,7 +65,7 @@ export const DoctorDashboard = () => {
                     <p className="text-slate-500">Booking on {appointment.date.split('T')[0]}</p>
                   </span>
 
-                  <span className="ml-[270px] lg:ml-[330px] xl:ml-[380px]">
+                  <span className="ml-[10px] sm:ml-[270px] lg:ml-[330px] xl:ml-[380px]">
                     {
                       appointment.isPending?(
                         <div className="flex gap-3">
