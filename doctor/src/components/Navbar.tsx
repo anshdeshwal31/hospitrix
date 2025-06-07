@@ -14,7 +14,7 @@ export const Navbar = () => {
                 <div className="text-slate-600"><button className="border rounded-full px-3 py-1 sm:ml-3 mr-3 border-slate-400 ">Doctor</button></div>
             </div>
             <div className="">
-                <button className=" bg-primary-blue rounded-full py-2 px-5 sm:py-3 sm:px-11 text-white text-lg hover:cursor-pointer">Logout</button>
+                <button className=" bg-primary-blue rounded-full py-2 px-5 sm:py-3 sm:px-11 text-white text-lg hover:cursor-pointer self-end">Logout</button>
             </div>
 
         </div>

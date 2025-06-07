@@ -66,7 +66,7 @@ export const DoctorProfile = () => {
       <img src={imageBase64} alt="" className="border rounded-lg h-[300px] my-3 w-[250px] object-cover" />
       {isEdit && <input type="file" accept="image/*" onChange={handleImage}/>}
       
-      <div className="bg-blue-50 w-[50vw] p-5 border rounded-lg">
+      <div className="bg-blue-50 w-[70vw] md:w-[60vw] xl:w-[50vw] p-5 border rounded-lg">
         <p className="text-3xl text-slate-700">Dr. {doctorProfileData?.name}</p>
         <div className="flex text-slate-600 mb-2">
           <p className="text-md">{doctorProfileData?.degree} -  </p>
