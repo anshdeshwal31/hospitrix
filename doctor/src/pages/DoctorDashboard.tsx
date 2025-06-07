@@ -47,13 +47,13 @@ export const DoctorDashboard = () => {
       </div>
 
 
-      <div className="ml-6 border-slate-200 rounded-t-lg border">
+      <div className="ml-6 border-slate-200 rounded-t-lg border w-fit">
         <div className="flex font-medium text-lg gap-3 bg-blue-100 border border-slate-200 rounded-t-md p-2">
           <img src={assets.list_icon} alt="" />
           Latest Bookings
         </div>
 
-        <div >
+        <div className="w-fit">
           {
             doctorDashboardData.latestAppointments.map((appointment:appointmentType) => { 
               return (
@@ -65,7 +65,7 @@ export const DoctorDashboard = () => {
                     <p className="text-slate-500">Booking on {appointment.date.split('T')[0]}</p>
                   </span>
 
-                  <span className="ml-[380px]">
+                  <span className="ml-[270px] lg:ml-[330px] xl:ml-[380px]">
                     {
                       appointment.isPending?(
                         <div className="flex gap-3">
