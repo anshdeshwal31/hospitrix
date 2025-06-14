@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import DoctorCard from "../components/DoctorCard";
 import { UserContext } from "../context/UserContext";
 import {toast} from 'react-toastify'
+import { DNA } from "react-loader-spinner";
 
 
 
@@ -28,113 +29,124 @@ const Appointment:React.FC = () => {
       // Add these new state variables to track selected date and time strings
       const [selectedDate, setSelectedDate] = useState<string>("");
       const [selectedTime, setSelectedTime] = useState<string>("");
+      const [loading , setLoading] = useState<boolean>(true)
 
       useEffect(() => { 
+  const getDocInfo = async () => { 
+    try {
+      await getDoctorList(); // Wait for doctor list to be fetched
+      const foundDoc = doctorList.find((doctorItem : doctorInfoType) => doctorItem._id === docId )
+      setDocInfo(foundDoc);
+      
+      // Set loading to false if doctor not found or not available
+      if (!foundDoc || !foundDoc.available) {
+        setDateTimeArray([]);
+        setLoading(false);
+        return;
+      }
+
+      // Generate time slots only if doctor is available
+      const today: Date = new Date()
+      const tempDateTimeArray:DateItemType[] = [];
+
+      const currentDate:Date = new Date()
+      for (let i = 0 ; i<7; i++){
         
-        const getDocInfo = () => { 
-          getDoctorList();
-          const foundDoc = doctorList.find((doctorItem : doctorInfoType) => doctorItem._id === docId )
-          setDocInfo(foundDoc);
+        currentDate.setDate(today.getDate() + i);
+
+        const date:number = currentDate.getDate()
+        const day:string = currentDate.toLocaleString('en-US', { weekday: 'short' })
+        const currentYear = new Date().getFullYear();
+        const currentMonth = (new Date().getMonth() + 1).toString().padStart(2, '0');
+        const formattedDate = date.toString().padStart(2, '0');
+        const fullDateString = `${currentYear}-${currentMonth}-${formattedDate}`;
+
+        const time:timeSlotType[] = []
+        
+        let currentHour:number = currentDate.getHours()+1
+
+        if(currentDate.toDateString() === today.toDateString()){
+          currentHour<10 ? currentHour = 10: currentHour + 1
+        }
+        else{
+          currentHour =10
         }
 
-        getDocInfo()
-
-        // Only generate slots if the doctor is available
-        if (!docInfo?.available) {
-          setDateTimeArray([]);
-          return;
-        }
-
-        const today: Date = new Date()
-        const tempDateTimeArray:DateItemType[] = [];
-
-        const currentDate:Date = new Date()
-        for (let i = 0 ; i<7; i++){
+        let completeHour:boolean = true 
+        while(currentHour<20){
+          const timeString = currentHour.toString()+(completeHour?":00":":30");
           
-          currentDate.setDate(today.getDate() + i);
+          // Check if this slot is already booked
+          const isSlotBooked = Object.values(foundDoc?.slots_booked || {}).some(
+            slot => slot.date.split('T')[0] === fullDateString && slot.time === timeString
+          );
 
-          const date:number = currentDate.getDate()
-          const day:string = currentDate.toLocaleString('en-US', { weekday: 'short' })
-          const currentYear = new Date().getFullYear();
-          const currentMonth = (new Date().getMonth() + 1).toString().padStart(2, '0');
-          const formattedDate = date.toString().padStart(2, '0');
-          const fullDateString = `${currentYear}-${currentMonth}-${formattedDate}`;
-
-          const time:timeSlotType[] = []
+          // Only add the time slot if it's not already booked
+          if (!isSlotBooked) {
+            time.push({
+              time: timeString,
+              id: uuidv4()
+            });
+          }
           
-          let currentHour:number = currentDate.getHours()+1
+          completeHour = !completeHour;
 
-          if(currentDate.toDateString() === today.toDateString()){
-            currentHour<10 ? currentHour = 10: currentHour + 1
-          }
-          else{
-            currentHour =10
-          }
-
-          let completeHour:boolean = true 
-          while(currentHour<20){
-            const timeString = currentHour.toString()+(completeHour?":00":":30");
+          // Check the next half-hour slot
+          if (!completeHour) {
+            const nextTimeString = currentHour.toString()+(completeHour?":00":":30");
             
             // Check if this slot is already booked
-            const isSlotBooked = Object.values(docInfo?.slots_booked || {}).some(
-              slot => slot.date.split('T')[0] === fullDateString && slot.time === timeString
+            const isNextSlotBooked = Object.values(foundDoc?.slots_booked || {}).some(
+              slot => slot.date.split('T')[0] === fullDateString && slot.time === nextTimeString
             );
 
             // Only add the time slot if it's not already booked
-            if (!isSlotBooked) {
+            if (!isNextSlotBooked) {
               time.push({
-                time: timeString,
+                time: nextTimeString,
                 id: uuidv4()
               });
             }
             
             completeHour = !completeHour;
-
-            // Check the next half-hour slot
-            if (!completeHour) {
-              const nextTimeString = currentHour.toString()+(completeHour?":00":":30");
-              
-              // Check if this slot is already booked
-              const isNextSlotBooked = Object.values(docInfo?.slots_booked || {}).some(
-                slot => slot.date.split('T')[0] === fullDateString && slot.time === nextTimeString
-              );
-
-              // Only add the time slot if it's not already booked
-              if (!isNextSlotBooked) {
-                time.push({
-                  time: nextTimeString,
-                  id: uuidv4()
-                });
-              }
-              
-              completeHour = !completeHour;
-            }
-
-            currentHour+=1;
           }
 
-          // Only add dates that have available time slots
-          if (time.length > 0) {
-            tempDateTimeArray.push({
-              date, 
-              time,
-              day,
-              id: dateId
-            });
-          }
-          dateId = uuidv4();
+          currentHour+=1;
         }
 
-        setDateTimeArray(tempDateTimeArray);
-        
-      }, [docId, docInfo])
+        // Only add dates that have available time slots
+        if (time.length > 0) {
+          tempDateTimeArray.push({
+            date, 
+            time,
+            day,
+            id: dateId
+          });
+        }
+        dateId = uuidv4();
+      }
+
+      setDateTimeArray(tempDateTimeArray);
+      setLoading(false); // Always set loading to false at the end
+      
+    } catch (error) {
+      console.error("Error fetching doctor info:", error);
+      setLoading(false); // Set loading to false even on error
+    }
+  }
+
+  getDocInfo()
+  
+}, [docId, doctorList.length]) // Remove docInfo from dependencies, use doctorList.length instead
 
 
       console.log(dateTimeArray);
       console.log("count", {count})
 
       return (
-      <div className="w-full flex flex-col items-center"> 
+        <div>
+
+      {loading?<div className="flex justify-center items-center pt-16"><DNA/></div>:<div className="w-full flex flex-col items-center"> 
 
 
         <div className="flex w-full justify-center gap-8 mt-3">
@@ -277,10 +289,10 @@ const Appointment:React.FC = () => {
             }
           </div>
         </div>
+}
 
 
-
-      // </div>
+            </div>
       )
 
 }

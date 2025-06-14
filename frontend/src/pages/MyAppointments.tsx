@@ -1,25 +1,29 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 // import { AppContext } from '../context/AppContext'
 import { appointmentType } from '../types/Types';
 import { UserContext } from '../context/UserContext';
+import { DNA } from 'react-loader-spinner';
 
 const MyAppointments:React.FC = () => {
   // const {doctors}:{doctors:doctorInfoType[]} = useContext(AppContext);
   const {appointmentList , getAppointmentList , userId , cancelAppointment , payOnline} = useContext(UserContext)
+  const [loading , setLoading] = useState<boolean>(true);
+
   console.log("inside the MyAppointments component")
   useEffect(() => { 
-    console.log("inside the useEffect of the myAppointments page");
-    if (userId && userId.trim() !== "") {
-        getAppointmentList(userId.toString());
-    }
+      const useEffectFunction = async () => {
+        console.log("inside the useEffect of the myAppointments page");
+        if (userId && userId.trim() !== "") {
+            await getAppointmentList(userId.toString());
+            setLoading(false);
+          }}
+        useEffectFunction();
   }, [userId]);
-  
-
 
 
   return (
-
-      <div className='w-full flex justify-center'>
+      <div>
+      {loading?<div className='flex justify-center pt-12'><DNA/></div>:<div className='w-full flex justify-center'>
         <div className='sm:p-0 pl-3 w-[100%] sm:w-[70%] lg:w-[65%] flex flex-col gap-6 '>
           <div className="self-start font-medium text-slate-600 text-xl mt-8">My appointments</div>
           <hr  className='my-2'/>
@@ -51,6 +55,7 @@ const MyAppointments:React.FC = () => {
             </div>
           ))}
         </div>
+      </div>}
       </div>
   )
 }

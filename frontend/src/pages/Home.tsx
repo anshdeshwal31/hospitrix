@@ -87,7 +87,7 @@ const Home = () => {
             </div>
 
             <div className='sm:flex justify-center hidden sm:visible'>
-                <img src={assets.appointment_img} alt="" className=' h-[200px] w-[200px] sm:h-[250px] sm:w-[250px] md:h-[350px] md:w-[350px] lg:h-[450px] lg:w-[450px] -mt-8' />
+                <img src={assets.appointment_img} alt="" className=' h-[200px] w-[200px] sm:h-[250px] sm:w-[250px] md:h-[350px] md:w-[350px] lg:h-[400px] xl:h-[480px] lg:w-[450px] -mt-8' />
             </div>
         </div>
     </div>

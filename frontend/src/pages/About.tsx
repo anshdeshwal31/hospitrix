@@ -35,17 +35,17 @@ const About = () => {
       
       <div className="lg:flex-row flex flex-col w-full items-center">
 
-        <div className="sm:w-[65%] w-[90%] lg:w-1/3 border border-black p-[70px] flex flex-col hover:cursor-pointer hover:border-white hover:text-white  hover:bg-primary-pink transition duration-500 text-slate-700">
+        <div className="xl:py-[82px] h-[253px] sm:w-[65%] w-[90%] lg:w-1/3 border border-black p-[70px] flex flex-col hover:cursor-pointer hover:border-white hover:text-white  hover:bg-primary-pink transition duration-500 text-slate-700">
           <div className="mb-4 font-semibold ">EFFICIENCY:</div>
           <div className="">Streamlined appointment scheduling <br />that fits into your busy lifestyle.</div>
         </div>
 
-        <div className="sm:w-[65%] w-[90%] lg:w-1/3 border border-black p-[70px] flex flex-col hover:cursor-pointer hover:border-white hover:text-white  hover:bg-primary-pink transition duration-500 text-slate-700">
+        <div className="sm:w-[65%] h-[253px] w-[90%] lg:w-1/3 border border-black p-[70px] flex flex-col hover:cursor-pointer hover:border-white hover:text-white  hover:bg-primary-pink transition duration-500 text-slate-700">
           <div className="mb-4 font-semibold">CONVENIENCE:</div>
           <div className="">Access to a network of trusted <br /> healthcare professionals in your area.</div>
         </div>
 
-        <div className="sm:w-[65%] w-[90%] lg:w-1/3 border border-black p-[70px] flex flex-col hover:cursor-pointer hover:border-white hover:text-white  hover:bg-primary-pink transition duration-500 text-slate-700">
+        <div className="sm:w-[65%] h-[253px] w-[90%] lg:w-1/3 border border-black p-[70px] flex flex-col hover:cursor-pointer hover:border-white hover:text-white  hover:bg-primary-pink transition duration-500 text-slate-700">
           <div className="mb-4 font-semibold">PERSONALIZATION:</div>
           <div className="">Tailored recommendations and reminders to <br />help you stay on top of your health.</div>
         </div>
