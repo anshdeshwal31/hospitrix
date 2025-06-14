@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import { AdminContext} from "../context/AdminContext"
 import { assets } from "../assets/admin/assets"
+import { DNA } from "react-loader-spinner";
 
 let count:number  = 0;
 
@@ -29,7 +30,7 @@ export const AdminDashboard = () => {
       fetchData()
     }, [])
 
-     if (loading) return <div className="p-6 text-center">Loading dashboard data...</div>
+     if (loading) return <div className="pt-10 w-screen flex justify-center "><DNA/></div>
      if (error) return <div className="p-6 text-center text-red-400">Error loading dashboard data</div>
      if (!adminDashData) return <div className="p-6 text-center">No dashboard data available</div>
      

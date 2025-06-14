@@ -13,7 +13,7 @@ export const DoctorCard = ({ name, image , speciality,_id , availablity}:DoctorC
     <div className="border border-blue-200 rounded-lg  ">
         {/* <Link to = {`/appointment/${_id}`}> */}
         <div className="overflow-hidden w-[250px] h-fit rounded-t-lg ">
-            <img src={image} alt="" className="object-cover object-top h-[280px] w-full hover:scale-110 transition-all duration-500 rounded-t-lg"/>
+            <img src={image} alt="" className="object-cover object-top h-[260px] w-full hover:scale-110 transition-all duration-500 rounded-t-lg"/>
         </div>
 
         <div className="py-4 px-4">
