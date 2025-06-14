@@ -61,7 +61,7 @@ export interface DateItemType{
 export interface editUserType{
     userId:string ,
     name:string ,
-    password:string,
+    // password:string,
     image:string ,
     address:{
         line1:string ,

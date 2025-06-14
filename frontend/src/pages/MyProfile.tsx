@@ -11,11 +11,10 @@ const MyProfile = () => {
     const {assets} = useContext(AppContext)
     const [imageToUpload , setImageToUpload] = useState<string>("")
     const [isEdit, setIsEdit] = useState(false)
-
     
     const [userData, setUserData] = useState({
         name:userProfile.name?userProfile.name:name,
-        password,
+        // password,
         image: imageToUpload?imageToUpload:"",
         address: {
             // line1: "",
@@ -37,6 +36,8 @@ const MyProfile = () => {
     //  }
 
     useEffect(() => {
+        console.log("user profile data fromm the backend: ",userProfile)
+        console.log("user data in the state: ", userData)
         if (imageToUpload) {
             setUserData({...userData, image: imageToUpload})
             // setUserData(prev => ({...prev, image: imageToUpload}))
@@ -44,6 +45,22 @@ const MyProfile = () => {
 
     }, [imageToUpload])
 
+    useEffect(() => {
+        if (userProfile && Object.keys(userProfile).length > 0) {
+            setUserData(prev => ({
+                ...prev,
+                name: userProfile.name || name,
+                address: {
+                    line1: userProfile.address?.line1 || "",
+                    line2: userProfile.address?.line2 || ""
+                },
+                phoneNumber: userProfile.phoneNumber || '0000000000',
+                gender: userProfile.gender || 'Male',
+                dateOfBirth: userProfile.dateOfBirth || new Date().toISOString()
+            }))
+        }
+        console.log("user profile from backend",userProfile)
+    }, [userProfile])
     // useEffect(() => { 
     //     if(uToken){
     //         getUserProfile()
@@ -56,6 +73,7 @@ const MyProfile = () => {
         // console.log("image the user uploaded: ", imageToUpload)
 
         await editUser({userId,...userData})
+        console.log({userId,...userData});
         setIsEdit(false)
      } 
 
@@ -87,15 +105,15 @@ const MyProfile = () => {
     return userData ? (
         <div className='max-w-lg flex flex-col gap-2 pt-5 sm:ml-28 ml-16 md:ml-44'>
 
-            <img className='w-36 rounded-lg' src={imageToUpload?imageToUpload:userProfile.image?userProfile.image:assets.upload_area} alt="" />
+            <img className='w-36 h-[170px] object-cover object-top rounded-lg' src={imageToUpload?imageToUpload:userProfile.image?userProfile.image:assets.upload_area} alt="" />
             
             {isEdit?<input type="file" onChange={handleImageUpload}/>:null}
             {isEdit
-                ? <input className='bg-blue-100 text-3xl font-medium max-w-60' type="text" onChange={(e) => setUserData(prev => ({ ...prev, name: e.target.value }))} value={userProfile.name}/>
+                ? <input className='bg-blue-100 text-3xl font-medium max-w-60' type="text" onChange={(e) => setUserData(prev => ({ ...prev, name: e.target.value }))} value={userData?.name}/>
                 : <p className='font-medium text-3xl text-[#262626] mt-4'>{userProfile.name}</p>
             }
 
-            <hr className='bg-[#ADADAD] h-[1px] w-[300px] sm:w-[500px] md:w-[700px]  lg:w-[900px] border-none' />
+            <hr className='bg-[#ADADAD] h-[1px] w-[250px] sm:w-[300px] md:w-[350px]  lg:w-[400px] border-none' />
 
             <div>
                 <p className='text-gray-600 underline mt-3'>CONTACT INFORMATION</p>
@@ -113,9 +131,9 @@ const MyProfile = () => {
 
                     {isEdit
                         ? <p>
-                            <input className='bg-blue-100 pt-1 px-2 border rounded-t-lg' type="text" onChange={(e) => setUserData(prev => ({ ...prev, address: { ...prev.address, line1: e.target.value } }))} value={userProfile.address?.line1||""} />
+                            <input className='bg-blue-100 pt-1 px-2 border rounded-t-lg' type="text" onChange={(e) => setUserData(prev => ({ ...prev, address: { ...prev.address, line1: e.target.value } }))} value={userData.address?.line1||""} />
                             <br />
-                            <input className='bg-blue-100 pb-1 px-2 border rounded-b-lg' type="text" onChange={(e) => setUserData(prev => ({ ...prev, address: { ...prev.address, line2: e.target.value } }))} value={userProfile.address?.line2 || ""} /></p>
+                            <input className='bg-blue-100 pb-1 px-2 border rounded-b-lg' type="text" onChange={(e) => setUserData(prev => ({ ...prev, address: { ...prev.address, line2: e.target.value } }))} value={userData.address?.line2 || ""} /></p>
                         : <p className='text-gray-500'>{userProfile.address?.line1 || ""} <br /> {userProfile.address?.line2 || ""}</p>
                     }
 
@@ -145,7 +163,7 @@ const MyProfile = () => {
                         })
                             
                          }} value={userData.dateOfBirth.split('T')[0]} />
-                        : <p className='text-gray-500'>{userData.dateOfBirth}</p>
+                        : <p className='text-gray-500'>{userData.dateOfBirth.split('T')[0]}</p>
                     }
 
                 </div>

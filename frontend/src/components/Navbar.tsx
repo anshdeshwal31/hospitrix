@@ -1,4 +1,4 @@
-import { NavLink , Outlet} from 'react-router-dom';
+import { NavLink , Outlet, useLocation} from 'react-router-dom';
 import { assets } from '../assets/frontend/assets'
 import Footer from './Footer';
 import { useContext,useState } from 'react';
@@ -8,6 +8,7 @@ import { Dropdown } from './Dropdown';
 const Navbar = () => {
     const {isLoggedIn , setIsHover , userProfile} = useContext(UserContext)
     const [showMenu , setShowMenu] = useState<boolean>(false);
+    const path = useLocation().pathname;
     
     console.log("user profile from the backend", userProfile)
     // console.log("user profile image from the backend",userProfile.image)
@@ -43,7 +44,7 @@ const Navbar = () => {
         <div className='flex gap-4'>
 
         {
-            isLoggedIn && (
+            (isLoggedIn && path!="/login") && (
                 <div 
                 className="self-end"
                 onMouseEnter={() => { setIsHover(true) }} 
@@ -51,7 +52,7 @@ const Navbar = () => {
                 >
                     <img 
                         src={userProfile.image?userProfile.image:assets.upload_area} 
-                        className='rounded-full w-[50px] hover:cursor-pointer' 
+                        className='rounded-full w-[50px] hover:cursor-pointer h-[50px] object-cover object-top' 
                         alt="" 
                     />
                     

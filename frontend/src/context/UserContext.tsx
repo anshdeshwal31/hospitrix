@@ -326,11 +326,13 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
                 toast.error(response.data.message,{
                     className:"bg-red-400 text-white"
                 })
+                console.log("response: ",response)
             }
         } catch (error) {
             toast.error((error as Error).message,{
                 className:"bg-red-400 text-white"
             })
+            console.log("error: ",error)
             
         }
         
@@ -351,6 +353,7 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
                 toast.success(response.data.message,{
                     className:"bg-green-400 text-white"
                 })
+                console.log("user profile inside the get user profile function: ",response.data)
                 setUserProfile(response.data.userInfo)
             } else {
                 toast.error(response.data.message,{
