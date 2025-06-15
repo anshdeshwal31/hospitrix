@@ -48,7 +48,7 @@ export const AdminLogin = () => {
     <div>
 
         <div className="flex justify-around m-3">
-            <img src={assets.admin_logo} className="scale-90 transition-all sm:scale-100" alt="" />
+            <img src={assets.admin_logo} className="scale-90 h-14 transition-all sm:scale-100" alt="" />
             <button className="rounded-full border border-slate-300 text-slate-700 font-light py-0 px-2">Admin panel</button>
         </div>
 

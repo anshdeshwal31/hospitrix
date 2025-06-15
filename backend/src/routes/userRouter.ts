@@ -27,7 +27,7 @@ userRouter.post("/bookAppointment",BookAppointmentController);
 
 userRouter.post("/payOnline",PayOnlineController);
 
-userRouter.post("verifyPayment",verifyPayment)
+userRouter.post("/verifyPayment",verifyPayment)
 
 userRouter.post("/cancelAppointment",CancelAppointmentController );
 

@@ -19,7 +19,7 @@ export const AppointmentList =  () => {
   console.log("appointments list on the admin panel: ",allAppointment)
   return (
     <div >
-      {loading?<div className='flex justify-center w-[75vw] pt-9'><DNA/></div>:
+      {loading?<div className='flex justify-center w-[75vw] pt-8'><DNA/></div>:
 
     <div className="w-[372px] sm:w-[500px] md:w-[600px] lg:w-[750px] xl:w-[900px] 2xl:w-[1100px] flex flex-col sm:ml-4 xl:ml-10 2xl:ml-16 mt-5 pr-2 mb-5">
       <div className="text-2xl font-medium my-3">All Apppointments</div>
@@ -41,7 +41,7 @@ export const AppointmentList =  () => {
                 <div className="flex border justify-between border-slate-300 gap-1 md:gap-2 pl-2 py-2 items-center" key={appointment._id}>
 
                   <div className=" w-[30px] sm:w-[50px] sm:pl-2">{index+1}</div>
-                  <div className="w-[220px] flex items-center gap-1 text-lg"><img src={appointment.userId.image} className='w-[45px]  rounded-full ' alt="" />{appointment.userId.name}</div>
+                  <div className="w-[220px] flex items-center gap-1 text-lg"><img src={appointment.userId.image} className='w-[45px] h-[45px] object-cover object-top  rounded-full ' alt="" />{appointment.userId.name}</div>
                   <div className="w-[220px] lg:block hidden ">{appointment.doctorId.speciality}</div>
                   <div className="w-[100px] md:w-[220px]">{appointment.time} | {appointment.date.split("T")[0]}</div>
                   <div className="w-[170px] text-center">Dr. {appointment.doctorId.name}</div>

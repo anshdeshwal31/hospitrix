@@ -8,7 +8,7 @@ export const Navbar = () => {
       <div>
 
           <div className="flex justify-between">
-              <div className="flex sm:px-10 pl-3 pr-7  py-2 gap-x-3">
+              <div className="flex sm:px-10 pl-3 pr-7  py-2 pt-4 gap-x-3">
                   <NavLink to="/admin-dashboard"><img src={assets.admin_logo} className="h-[45px]" /></NavLink>
                   <button className="px-3 h-6 text-sm border border-slate-500 rounded-full self-center text-slate-500">Admin</button>
               </div>

@@ -210,7 +210,7 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
                 key,
                 amount:orderAmount,
                 currency,
-                name:"Prescripto",
+                name:"Hospitrix",
                 description:"Appointment Payment",
                 order_id:orderId,
                 handler: async (response:any) => { 
@@ -285,8 +285,9 @@ export const UserContextProvider = ({children}:{children:ReactNode}) => {
                 toast.success(response.data.message,{
                     className:"bg-green-400 text-white"
                 })
-                setAppointmentList(appointmentList.filter((item:appointmentType) =>  item._id != appointmentId ))
+                // setAppointmentList(appointmentList.filter((item:appointmentType) =>  item._id != appointmentId ))
             } else {
+                getAppointmentList(userId)
                 toast.error(response.data.message,{
                     className:"bg-red-400 text-white"
                 })

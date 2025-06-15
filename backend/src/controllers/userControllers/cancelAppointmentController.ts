@@ -13,9 +13,16 @@ export const CancelAppointmentController = async (req:Request , res:Response , n
 
     if(parsedDataWithSuccess.success){
         try {
-            await AppointmentModel.deleteOne({
+            await AppointmentModel.updateOne({
                 _id : new Types.ObjectId(parsedDataWithSuccess.data.appointmentId)
-            })
+            },
+            {
+                $set:{
+                    isPending:false,
+                    isCancelled:true
+                }
+            }
+        )
 
             await DoctorModel.updateOne(
                 {_id: parsedDataWithSuccess.data.appointmentId},

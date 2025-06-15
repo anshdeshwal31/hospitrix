@@ -9,7 +9,7 @@ export const Navbar = () => {
         <div className="flex  sm:justify-between items-center pl-6 mx-2 sm:mx-8 my-4">
 
             <div className="flex gap-3 items-center">
-                <NavLink to="/doctor-dashboard"><img src={assets.admin_logo} alt="" className="self-start" /></NavLink>
+                <NavLink to="/doctor-dashboard"><img src={assets.admin_logo} alt="" className="self-start h-12" /></NavLink>
 
                 <div className="text-slate-600"><button className="border rounded-full px-3 py-1 sm:ml-3 mr-3 border-slate-400 ">Doctor</button></div>
             </div>

@@ -1,29 +1,36 @@
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import { DoctorContext } from "../context/DoctorContext"
 import { assets } from "../assets/assets"
 import type { appointmentType } from "../types/Types"
+import { DNA } from "react-loader-spinner"
 
 export const DoctorDashboard = () => {
   const {doctorDashboardData, getDoctorDashData, doctorId, cancelAppointment , completeAppointment} = useContext(DoctorContext)
+  const [loading , setLoading] = useState<boolean>(true)
+  
   console.log("dashboard data: ", doctorDashboardData);
   console.log("inside doctor dashboard")
   useEffect(() => { 
-    getDoctorDashData(doctorId)
-    console.log("inside use effect")
+    const useEffectFunction  = async () => {
+      await getDoctorDashData(doctorId);
+      console.log("inside use effect")
+      setLoading(false)
+    }
+
+    useEffectFunction()
    },[])
   
   return (
     // <div>ansh</div>
-    <div>
-    {doctorDashboardData?(
-    <div>
+    <div>{loading ? <div className="flex justify-center w-[75vw] pt-8"><DNA/></div>:
+      <div>
       <div className="flex sm:flex-row flex-col gap-3 sm:m-6 my-2 ">
 
 
         <div className="flex bg-blue-100 h-[90px] sm:h-fit w-[220px] sm:w-[180px] lg:w-[220px] p-2 sm:p-4 gap-4 rounded-lg">
           <img src={assets.earning_icon} className="h-[70px]" alt="" />
           <span className="flex flex-col gap-1">
-            <p className="text-2xl">${doctorDashboardData.earnings?doctorDashboardData.earnings:0}</p>
+            <p className="text-2xl">₹{doctorDashboardData.earnings?doctorDashboardData.earnings:0}</p>
             <p>Earnings</p>
           </span>
         </div>
@@ -59,7 +66,7 @@ export const DoctorDashboard = () => {
               return (
                 <div key={appointment._id} className="flex gap-3 w-full p-3 border border-b-slate-200 ">
 
-                  <img src={appointment.userId.image} className="h-[45px] rounded-full" alt="" />
+                  <img src={appointment.userId.image} className="h-[45px] w-[45px] object-cover object-top rounded-full" alt="" />
                   <span>
                     <p>{appointment.userId.name}</p>
                     <p className="text-slate-500">Booking on {appointment.date.split('T')[0]}</p>
@@ -83,16 +90,14 @@ export const DoctorDashboard = () => {
                   </span>
                 </div>
               )
-             })
+            })
           }
         </div>
       </div>
 
 
     </div>
-    ):(
-      <p>loading dashboard data...</p>
-    )}
+  }
     </div>
   )
 }

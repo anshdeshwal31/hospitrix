@@ -116,7 +116,7 @@ export const AdminContextProvider:React.FC<{children:React.ReactNode}> = ({child
                 }
             })
             console.log("after making a call to the backend")
-            console.log("Response", response)
+            // console.log("Response", response)
             if (response.data.success) {
                 toast.success(response.data.message,{
                     className:"bg-green-500 text-white"

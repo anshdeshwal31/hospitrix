@@ -11,9 +11,9 @@ export const AddDoctor = () => {
   const [Email , setEmail] = useState<string>("");
   const [Name  , setName] = useState<string>("");
   const [Password, setPassword] = useState<string>("");
-  const [experience , setExperience] = useState<string>("")
+  const [experience , setExperience] = useState<string>("1 year")
   const [fees , setFees] = useState<number| null>(null);
-  const [speciality , setSpeciality] = useState<string>("");
+  const [speciality , setSpeciality] = useState<string>("General Physician");
   const[about , setAbout] = useState<string>("");
   const [ degree , setDegree] = useState<string>("")
   const [address1 , setAddress1] = useState<string>("")
@@ -77,6 +77,7 @@ export const AddDoctor = () => {
     console.log("preventing the window from reloading 2")
     await addDoctor(doc)
     console.log("preventing the window from reloading 3")
+    window.location.reload()
    }
   
   return (
@@ -88,7 +89,7 @@ export const AddDoctor = () => {
       <form action="" className=" w-full border rounded-md p-4 text-lg text-slate-600  border-none " onSubmit={handleSubmit}>
         <div className="mb-5">
           <label>
-            <img src={postImage?postImage:assets.upload_area} className="h-[70px] my-2 ml-3" />
+            <img src={postImage?postImage:assets.upload_area} className="h-[90px] my-2 ml-3" />
             {/* <img src={imageRef?.current?.value?imageRef.current.value:assets.upload_area} className="h-[70px] my-2 ml-3" /> */}
             <input type="file" ref={imageRef} onChange={handleImageUpload} className="ml-4 w-[100%]"/>
           </label>

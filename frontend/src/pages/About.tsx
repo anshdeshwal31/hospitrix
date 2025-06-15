@@ -14,17 +14,17 @@ const About = () => {
 
         <div className="md:w-1/2 sm:w-[500px] w-[390px] pl-3 flex flex-col gap-6 text-slate-500 self-center md:self-start">
           <div className="self-center">
-            Welcome to Prescripto, your trusted partner in managing your healthcare needs conveniently and efficiently. At Prescripto, we understand the challenges individuals face when it comes to scheduling doctor appointments and managing their health records.
+            Welcome to Hospitrix, your trusted partner in managing your healthcare needs conveniently and efficiently. At Hospitrix, we understand the challenges individuals face when it comes to scheduling doctor appointments and managing their health records.
           </div>
 
           <div className="">
-            Prescripto is committed to excellence in healthcare technology. We continuously strive to enhance our platform, integrating the latest advancements to improve user experience and deliver superior service. Whether you're booking your first appointment or managing ongoing care, Prescripto is here to support you every step of the way.
+            Hospitrix is committed to excellence in healthcare technology. We continuously strive to enhance our platform, integrating the latest advancements to improve user experience and deliver superior service. Whether you're booking your first appointment or managing ongoing care, Hospitrix is here to support you every step of the way.
           </div>
 
           <div className="text-black font-semibold">Our Vision</div>
 
           <div className="">
-            Our vision at Prescripto is to create a seamless healthcare experience for every user. We aim to bridge the gap between patients and healthcare providers, making it easier for you to access the care you need, when you need it.
+            Our vision at Hospitrix is to create a seamless healthcare experience for every user. We aim to bridge the gap between patients and healthcare providers, making it easier for you to access the care you need, when you need it.
           </div>
 
         </div>

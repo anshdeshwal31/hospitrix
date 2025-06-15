@@ -1,17 +1,24 @@
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import { DoctorContext } from "../context/DoctorContext"
 import type { appointmentType } from "../types/Types";
 import { assets } from "../assets/assets";
-
+import { DNA } from "react-loader-spinner";
 
 export const AppointmentList = () => {
   const {appointments, completeAppointment, cancelAppointment, getAppointments,doctorId} =  useContext(DoctorContext);
 
+  const[loading,setLoading] = useState<boolean>(true);
+
   useEffect(() => { 
-    getAppointments(doctorId)
+    const useEffectFunction =async () => {
+      await getAppointments(doctorId)
+      setLoading(false);
+    }
+    useEffectFunction()
    },[])
   return (
-    <div className="w-full px-4 sm:px-6 lg:ml-5 xl:ml-20 lg:w-[1100px] flex flex-col gap-3" >
+    <div>{loading?<div className="flex justify-center w-[75vw] pt-8"><DNA/></div>:
+      <div className="w-full px-4 sm:px-6 lg:ml-5 xl:ml-10 lg:w-[1100px] flex flex-col gap-3" >
       <div className="text-xl sm:text-2xl font-medium text-slate-800 mt-5">All Appointments</div>
 
       <div className="bg-slate-100 w-full lg:w-fit xl:w-[95%]">
@@ -35,7 +42,7 @@ export const AppointmentList = () => {
               return (
                 <div key={appointment._id} className="border border-slate-300 p-4 lg:p-0">
                   {/* Mobile Layout */}
-                  <div className="lg:hidden space-y-3">
+                  <div className="lg:hidden space-y-3 mx-8">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <span className="text-sm text-slate-600">#{index+1}</span>
@@ -47,7 +54,7 @@ export const AppointmentList = () => {
                       </div>
                     </div>
                     
-                    <div className="flex justify-between items-center text-sm">
+                    <div className="flex justify-between gap-8 items-center text-sm">
                       <div>
                         <p className="text-slate-600">Date & Time</p>
                         <p className="font-medium">{appointment.date.split("T")[0]}, {appointment.time}</p>
@@ -78,11 +85,11 @@ export const AppointmentList = () => {
                         </div>
                       ) : (
                         appointment.isCompleted ? (
-                          <div className="text-green-500 font-medium px-3 py-2 bg-green-50 rounded-lg">
+                          <div className="text-green-500 font-medium px-3  bg-green-50 rounded-lg">
                             Completed
                           </div>
                         ) : (
-                          <div className="text-red-600 font-medium px-3 py-2 bg-red-50 rounded-lg">
+                          <div className="text-red-600 font-medium px-3  bg-red-50 rounded-lg">
                              Cancelled
                           </div>
                         )
@@ -123,6 +130,7 @@ export const AppointmentList = () => {
       </div>
 
     </div>
+  }</div>
 
   )
 }

@@ -10,14 +10,14 @@ interface AppContextType{
 }
 export const AppContext = createContext<AppContextType  >(  
     {doctors: [],
-    currencySymbol: "$",
+    currencySymbol: "₹",
     assets,
     specialityData,
 });
 
 
 export const AppContextProvider:React.FC<{children: ReactNode}> = ({ children })  => {
-    const currencySymbol:string = "$";
+    const currencySymbol:string = "₹";
     const value = {
         doctors,
         currencySymbol,

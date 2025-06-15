@@ -3,15 +3,21 @@ import { Link } from 'react-router-dom'
 import { SpecialityType } from '../types/Types'
 import { v4 as uuidv4 } from 'uuid'
 import DoctorCard from '../components/DoctorCard'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../context/UserContext'
+import { DNA } from 'react-loader-spinner'
 
 const Home = () => {
 
     const {doctorList , getDoctorList} = useContext(UserContext)
+    const [loading , setLoading ] = useState<boolean>(true)
 
     useEffect(() => { 
-        getDoctorList()
+        const useEffectFunction = async() => {
+            await getDoctorList();
+            setLoading(false)
+        }
+        useEffectFunction()
      },[])
     
   return (
@@ -62,17 +68,18 @@ const Home = () => {
         <div className='text-4xl mt-24 font-medium'>Top Doctors to Book</div>
         <div className='mt-4'>Simply browse through our extensive list of trusted doctors.</div>
         
-
-        <div className='flex gap-x-4 gap-y-8 flex-wrap justify-center w-[82%] mt-7 '>
+        {loading?<div className='flex justify-center pt-9'><DNA/></div>:
+            <div className='flex gap-x-4 gap-y-8 flex-wrap justify-center w-[82%] mt-7 '>
             {doctorList.slice(0,10).map((doctorItem:any) => { 
                 return (
                 <div key={doctorItem._id}>
                     <DoctorCard name = {doctorItem.name} image = {doctorItem.image} speciality={doctorItem.speciality} _id = {doctorItem._id}/>
                 </div>
                 )
-                })
+            })
             }
         </div>
+        }
 
         <Link to="/doctors"><button className='border rounded-full bg-blue-100 text-gray-600 py-3 px-12 text-lg my-12'>more</button></Link >
 

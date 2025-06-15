@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import { DoctorContext } from "../context/DoctorContext";
 import { ImageUpload } from "../utils/ImageUpload";
+import { DNA } from "react-loader-spinner";
 
 export const DoctorProfile = () => {
   const{doctorProfileData , doctorId , editDoctor , getDoctorProfileData} = useContext(DoctorContext)
@@ -12,6 +13,7 @@ export const DoctorProfile = () => {
   const [aboutMessage , setAboutMessage] = useState<string>("")
   const [isAvailable , setIsAvailable] = useState<boolean>(true)
   const [ isEdit , setIsEdit] = useState<boolean>(false)
+  const[loading , setLoading] = useState<boolean>(true)
   
   const saveHandler = async () => { 
     if(!isEdit){
@@ -55,18 +57,19 @@ export const DoctorProfile = () => {
       setAddressLine2(doctorProfileData?.address?.line2 || "")
       setAboutMessage(doctorProfileData?.about || "")
       console.log("doctor profile data: ", doctorProfileData)
+      setLoading(false)
     }
   }, [doctorProfileData]) // This will only run when doctorProfileData actually changes
 
   return (
-    <div className=" w-[80vw]">
+    <div>{loading?<div className="flex justify-center w-[75vw] pt-8"><DNA/></div>:
+      <div className=" w-[80vw] text-md ">
 
-    {doctorProfileData?
     <div className="ml-5 mt-5 bg-white">
-      <img src={imageBase64} alt="" className="border rounded-lg h-[300px] my-3 w-[250px] object-cover" />
+      <img src={imageBase64} alt="" className="border rounded-lg h-[250px] my-3 w-[200px] object-cover" />
       {isEdit && <input type="file" accept="image/*" onChange={handleImage}/>}
       
-      <div className="bg-blue-50 w-[70vw] md:w-[60vw] xl:w-[50vw] p-5 border rounded-lg">
+      <div className="bg-blue-50 w-[60vw] md:w-[60vw] xl:w-[40vw] p-5 border rounded-lg">
         <p className="text-3xl text-slate-700">Dr. {doctorProfileData?.name}</p>
         <div className="flex text-slate-600 mb-2">
           <p className="text-md">{doctorProfileData?.degree} -  </p>
@@ -74,12 +77,12 @@ export const DoctorProfile = () => {
           <button className="border border-slate-400 rounded-full px-1 ml-2 text-sm">{doctorProfileData?.experience}</button>
         </div>
 
-        <div>About: </div>
+        <div className="text-lg font-medium">About: </div>
           {
             isEdit?<textarea  value={aboutMessage} onChange={(e) => { setAboutMessage(e.target.value) }} className= "rounded-md border-blue-400 border-2 outline-none px-1 w-[500px] h-[200px] text-slate-800" />:<p className="w-[600px] text-slate-800">{aboutMessage}</p>
           }
 
-        <p className="my-2 text-md font-medium text-slate-600">Appointment Fee: ${isEdit?<input className="border-2 outline-none rounded-md border-blue-400" type="number" value={fees} onChange={(e) => { setFees(Number(e.target.value)) }}/>:<span>{fees}</span>}</p>
+        <p className="my-2 text-md text-lg font-medium text-slate-600">Appointment Fee: ₹{isEdit?<input className="border-2 outline-none rounded-md border-blue-400" type="number" value={fees} onChange={(e) => { setFees(Number(e.target.value)) }}/>:<span>{fees}</span>}</p>
         <div className="flex text-slate-800 mb-2">
           <span>Address: </span>
           <span className="ml-1">
@@ -88,7 +91,7 @@ export const DoctorProfile = () => {
                 <input type="text" value={addressLine1} className="border-2 border-blue-400 rounded-lg outline-none" onChange={(e)  => { setAddressLine1(e.target.value) }}/>
                 <input type="text" value={addressLine2} className="border-2 border-blue-400 rounded-lg outline-none" onChange={(e)=> { setAddressLine2(e.target.value) }}/>
               </div>:
-              <div>
+              <div className=" text-md">
                 <p>{addressLine1}</p>
                 <p>{addressLine2}</p>
               </div>
@@ -107,10 +110,11 @@ export const DoctorProfile = () => {
             </label>
         }
         <div>
-        <button className="p-1 px-5 border rounded-full border-slate-800 text-slate-800 mt-6" onClick={saveHandler}>{isEdit?"Save":"Edit"}</button>
+        <button className="p-3 px-7 bg-black text-white border rounded-full border-slate-800 text-slate-800 mt-6" onClick={saveHandler}>{isEdit?"Save":"Edit"}</button>
         </div>
       </div>
-    </div>:<div>fetching data from the backend...</div>}
+    </div>
   </div>
+    }</div>
   )
 }

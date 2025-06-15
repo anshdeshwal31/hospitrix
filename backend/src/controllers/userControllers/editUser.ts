@@ -6,7 +6,7 @@ export const EditUserController = async (req:Request, res:Response, next:NextFun
     const userAccountInfoFormat = z.object({
             userId: z.string().regex(/^[0-9a-fA-F]{24}$/),
             name: z.string().min(3),
-            password: z.string().min(3),
+            // password: z.string().min(3),
             image: z.string(),
             address:z.object({
                 line1:z.string(),
@@ -30,10 +30,15 @@ export const EditUserController = async (req:Request, res:Response, next:NextFun
                     name, image , address , gender , dateOfBirth: new Date(dateOfBirth) , phoneNumber
                 }}
             )
+
+            const userInfo = await UserModel.findOne({_id:parsedDataWithSuccess.data.userId});
+            
             res.status(200).json({
                 success: true,
-                message: "User profile updated successfully"
+                message: "User profile updated successfully",
+                // userInfo    
             })
+
 
         } catch (error) {
             res.json({
@@ -43,7 +48,7 @@ export const EditUserController = async (req:Request, res:Response, next:NextFun
             
         }
     } else {
-        res.status(400).json({
+        res.json({
             success: false,
             error:parsedDataWithSuccess.error.errors,
             message: "the format of the info was incorrect, try again with the correct format"

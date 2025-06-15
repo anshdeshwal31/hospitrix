@@ -22,7 +22,7 @@ const Contact = () => {
             Email: greatstackdev@gmail.com
           </div>
           
-          <div className="font-semibold text-xl">CAREERS AT PRESCRIPTO</div>
+          <div className="font-semibold text-xl">CAREERS AT HOSPITRIX</div>
           <div className="">Learn more about our teams and job openings.</div>
 
           <div className="">

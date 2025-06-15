@@ -16,7 +16,7 @@ const Navbar = () => {
     <div className='flex flex-col'>
     <div className='flex gap-x-6 md:justify-around justify-between mt-5  px-4'>
         <div className='self-start'>
-            <NavLink to="/"><img src={assets.logo} alt="" /></NavLink>
+            <NavLink to="/"><img src={assets.logo} className='h-12' alt="" /></NavLink>
         </div>
 
         <div className='md:flex gap-x-8 text-md font-medium self-center md:visible hidden'>
