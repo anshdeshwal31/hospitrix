@@ -16,7 +16,7 @@ export const GetDoctorDashboard = async (req:Request , res:Response , next:NextF
             let earnings:number = 0
             appointmentInfo.forEach((value) => { 
                 if(value.isPaid){
-                    earnings+=value?.doctorId?.fees
+                    earnings+=(value.doctorId as any)?.fees
                 }
             //    if(value.isCompleted) earnings+=value.feesPaid;
             })
