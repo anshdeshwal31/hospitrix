@@ -11,11 +11,14 @@ export const GetDoctorDashboard = async (req:Request , res:Response , next:NextF
         try {
             const appointmentInfo = await AppointmentModel.find(
                 {doctorId:parsedDataWithSuccess.data.doctorId}
-            ).populate("userId")
+            ).populate("userId").populate("doctorId")
 
             let earnings:number = 0
             appointmentInfo.forEach((value) => { 
-               if(value.isCompleted) earnings+=value.feesPaid;
+                if(value.isPaid){
+                    earnings+=value?.doctorId?.fees
+                }
+            //    if(value.isCompleted) earnings+=value.feesPaid;
             })
 
             let patients:string[] = []
