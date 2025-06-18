@@ -149,14 +149,14 @@ const Appointment:React.FC = () => {
       {loading?<div className="flex justify-center items-center pt-16"><DNA/></div>:<div className="w-full flex flex-col items-center"> 
 
 
-        <div className="flex w-full justify-center gap-8 mt-3">
+        <div className="flex w-full justify-center md:flex-row flex-col gap-8 mt-3">
 
-          <div className="w-[20.8%]">
-            <img src={docInfo?.image} className = "bg-primary-blue rounded-lg w-full" alt="" />
+          <div className=" pl-4 flex justify-center">
+            <img src={docInfo?.image} className = " bg-primary-blue rounded-lg w-[300px] h-[350px] object-cover object-top" alt="" />
           </div>
 
-          <div className="flex flex-col w-[60%] gap-4"> 
-            <div className="w-full border border-slate-400 rounded-lg justify-center  flex flex-col gap-2 px-10 py-8">
+          <div className="flex flex-col w-[60%] gap-4  "> 
+            <div className="w-[70vw] md:w-full border border-slate-400 rounded-lg justify-center  flex flex-col gap-2 px-2 md:pl-6 lg:px-10 py-8 md:ml-0 sm:ml-[100px] ml-[60px]">
 
               <div className="flex text-4xl gap-3 text-slate-700 font-medium">{docInfo?.name}  <img src={assets.verified_icon} alt="" /></div> 
 
@@ -167,22 +167,22 @@ const Appointment:React.FC = () => {
 
               <div className="flex gap-1 mt-2">About <img src={assets.info_icon} className="w-[13px]" /></div>  
 
-              <div className="w-[80%] text-slate-600">{docInfo?.about}</div>  
+              <div className=" md:w-[95%] lg:w-[95%] text-slate-600">{docInfo?.about}</div>  
 
               <div className=" flex my-4 text-lg font-medium text-slate-600 gap-2">Appointment fee: <span className="text-black">{currencySymbol}{docInfo?.fees}</span></div>  
 
             </div>
 
-            <div className="mt-4 text-slate-600 font-medium text-lg">Booking slots</div>
+            <div className="mt-4 text-slate-600 font-medium text-lg md:ml-0 ml-[60px]">Booking slots</div>
             {docInfo && !docInfo.available ? (
               <div className="text-red-500 text-lg">This doctor is currently not available for appointments.</div>
             ) : (
               <>
-                <div className="flex gap-5 w-full ">
+                <div className="flex gap-5 w-[90vw] sm:w-full lg:m-0 md:-ml-[200px] ml-5 overflow-auto">
                   {
                     dateTimeArray.map((dateTimeItem) => { 
                       return (
-                        <div className={`flex flex-col hover:cursor-pointer transition duration-500 gap-1 py-6  px-4 border rounded-full w-[70px] text-xl justify-center items-center ${dateTimeItem.id === activeDateId?"bg-primary-blue text-white border-none":""}`} onClick={() => { 
+                        <div key={dateTimeItem.id} className={`flex flex-col hover:cursor-pointer transition duration-500 gap-1 py-6  px-4 border rounded-full w-[70px] text-xl justify-center items-center ${dateTimeItem.id === activeDateId?"bg-primary-blue text-white border-none":""}`} onClick={() => { 
                           setActiveDateId(dateTimeItem.id);
                           
                           // Format the date as YYYY-MM-DD for backend
@@ -192,7 +192,7 @@ const Appointment:React.FC = () => {
                           setSelectedDate(`${currentYear}-${currentMonth}-${formattedDate}`);
                         }}>
 
-                          <div className="">{dateTimeItem.day}</div>
+                          <div className="w-9">{dateTimeItem.day}</div>
                           <div className="">{dateTimeItem.date}</div>
 
                         </div>
@@ -207,7 +207,7 @@ const Appointment:React.FC = () => {
                     dateTimeArray.map((dateTimeItem) => { 
                       return (
                         dateTimeItem.id === activeDateId && (
-                          <div className="flex gap-5 w-full overflow-auto [&::-webkit-scrollbar]:hidden">
+                          <div className="flex lg:m-0 md:-ml-[170px] ml-[50px] gap-5 w-full overflow-auto [&::-webkit-scrollbar]:hidden">
                             {
                               dateTimeItem.time.map((timeItem) => { 
                                 return(
@@ -229,7 +229,7 @@ const Appointment:React.FC = () => {
 
                 <div>
                   <button 
-                    className="text-lg py-4 px-14 bg-primary-pink rounded-full text-white hover:scale-110 transition duration-700 hover:cursor-pointer" 
+                    className="text-lg py-3 px-14 bg-primary-blue rounded-full text-white hover:scale-110 transition duration-700 hover:cursor-pointer md:ml-0 ml-12" 
                     onClick={async () => { 
                       if(!selectedDate || !selectedTime) {
                         toast.error("Please select date and time!", {
@@ -277,12 +277,12 @@ const Appointment:React.FC = () => {
           <div className="text-center w-full text-4xl font-medium">Related Doctors</div>
           <div className="text-center w-full">Simply browse through our extensive list of trusted doctors.</div>
 
-          <div className="flex flex-wrap gap-6  w-full ml-28 mt-8">
+          <div className="flex flex-wrap gap-6 w-[88%] lg:w-[94%] ml-20 sm:ml-24 lg:ml-28 mt-8">
             {
               doctorList.map((doctorItem:any) => { 
                 return (
                   (doctorItem.speciality === docInfo?.speciality && doctorItem._id != docInfo?._id) && (
-                    <DoctorCard name={doctorItem.name} image={doctorItem.image} speciality={doctorItem.speciality} _id = {doctorItem._id}/>
+                    <DoctorCard name={doctorItem.name} key={doctorItem.id} image={doctorItem.image} speciality={doctorItem.speciality} _id = {doctorItem._id}/>
                   )
                 )
               })
