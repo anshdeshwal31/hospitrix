@@ -1,6 +1,6 @@
 import { createContext, ReactNode} from "react";
-import { doctors, assets, specialityData } from "../assets/frontend/assets";
-import { doctorInfoType, SpecialityType } from "../types/Types";
+import { assets } from "../assets/frontend/assets";
+// import { doctorInfoType, SpecialityType } from "../types/Types";
 
 interface AppContextType{
     // doctors:doctorInfoType[],
