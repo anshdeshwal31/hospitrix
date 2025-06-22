@@ -3,26 +3,26 @@ import { doctors, assets, specialityData } from "../assets/frontend/assets";
 import { doctorInfoType, SpecialityType } from "../types/Types";
 
 interface AppContextType{
-    doctors:doctorInfoType[],
+    // doctors:doctorInfoType[],
     currencySymbol: string ,
     assets:Record<string , string >,
-    specialityData: SpecialityType[]
+    // specialityData: SpecialityType[]
 }
-export const AppContext = createContext<AppContextType  >(  
-    {doctors: [],
+export const AppContext = createContext<AppContextType  >( { 
+    // {doctors: [],
     currencySymbol: "₹",
     assets,
-    specialityData,
+    // specialityData,
 });
 
 
 export const AppContextProvider:React.FC<{children: ReactNode}> = ({ children })  => {
     const currencySymbol:string = "₹";
     const value = {
-        doctors,
+        // doctors,
         currencySymbol,
         assets, 
-        specialityData
+        // specialityData
     }
 
     return (
