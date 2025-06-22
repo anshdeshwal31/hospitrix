@@ -1,7 +1,7 @@
 import { createContext, useState } from "react";
 import axios  from "axios";
 import { toast } from "react-toastify";
-import { appointmentType, doctorDashboardDataType, doctorProfileType } from "../types/Types.ts";
+import { appointmentType, doctorDashboardDataType, doctorProfileType } from "../types/Types";
 
 export const DoctorContext =  createContext<any>(undefined) 
 
