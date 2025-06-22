@@ -16,6 +16,7 @@ const Home = () => {
         const useEffectFunction = async() => {
             await getDoctorList();
             setLoading(false)
+            console.log("doctor list in home page: ", doctorList)
         }
         useEffectFunction()
      },[])
