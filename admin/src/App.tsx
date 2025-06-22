@@ -5,8 +5,6 @@ import { AddDoctor } from './pages/AddDoctor'
 import { DoctorList } from './pages/DoctorList'
 import { AppointmentList } from './pages/AppointmentList'
 import { AdminLogin } from './pages/AdminLogin'
-import { ReactNode, useContext } from 'react'
-import { AdminContext } from './context/AdminContext'
 import { ToastContainer } from 'react-toastify'
 
 // const ProtectedRoute = ({children}:{children:ReactNode}) => { 

@@ -5,12 +5,12 @@ import { toast } from "react-toastify"
 import { MdVisibility } from "react-icons/md";
 import { MdVisibilityOff } from "react-icons/md";
 import { assets } from "../assets/admin/assets";
+import { DNA } from "react-loader-spinner"
 
 export const AdminLogin = () => {
     const[email,setEmail] = useState("")
     const [loading , setLoading ] = useState(false)
     const {adminLogin} = useContext(AdminContext)
-    const [error, setError] = useState("")
     const[password, setPassword] = useState("")
     const[passwordVisible , setPasswordVisible] = useState(false)
     const navigate = useNavigate();
@@ -19,7 +19,6 @@ export const AdminLogin = () => {
         e.preventDefault()
         if(!email || !password){
             const errorMessage = "Email and password are required"
-            setError(errorMessage)
             toast.error(errorMessage,{
                 className:"bg-red-300 text-white"
             })
@@ -44,6 +43,20 @@ export const AdminLogin = () => {
         }
        
     }
+
+    if(loading) {
+        return(
+
+            <div className="flex items-center justify-center h-screen w-screen">
+            <DNA
+                visible={true}
+                height="100"
+                width="100"
+                />
+            </div>
+         )
+    }
+    
     return (
     <div>
 

@@ -2,7 +2,7 @@ import { useContext, useState } from "react"
 import { DoctorCardType } from "../types/Types"
 import { AdminContext } from "../context/AdminContext"
 
-export const DoctorCard = ({ name, image , speciality,_id , availablity}:DoctorCardType) => {
+export const DoctorCard = ({ name, image , speciality,_id }:DoctorCardType) => {
   const {changeDoctorAvailablity} = useContext(AdminContext)
   const [isChecked , setIsChecked] = useState(true);
   const changeDoctorAvailablityFuntion = () => { 
