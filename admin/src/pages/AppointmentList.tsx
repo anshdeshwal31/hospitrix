@@ -1,6 +1,6 @@
 import  { useContext, useEffect, useState } from 'react'
 import { AdminContext } from '../context/AdminContext'
-import { appointmentType } from '../types/Types.ts'
+import { appointmentType } from '../types/Types'
 import { DNA } from 'react-loader-spinner'
 
 export const AppointmentList =  () => {

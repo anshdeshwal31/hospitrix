@@ -1,5 +1,5 @@
 import { useContext, useState } from "react"
-import { DoctorCardType } from "../types/Types.ts"
+import { DoctorCardType } from "../types/Types"
 import { AdminContext } from "../context/AdminContext"
 
 export const DoctorCard = ({ name, image , speciality,_id }:DoctorCardType) => {
