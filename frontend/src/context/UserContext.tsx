@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { editUserType, appointmentType } from "../types/Types";
+import { editUserType } from "../types/Types";
 
 export const UserContext = createContext<any>(null)
 

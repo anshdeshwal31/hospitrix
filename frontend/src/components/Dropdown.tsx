@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react'
+import  { useContext} from 'react'
 import { UserContext } from '../context/UserContext'
 import {Link} from "react-router-dom"
 
 export const Dropdown = () => {
-    const {isHover, setUToken , setIsLoggedIn , userProfile}  = useContext(UserContext)   
+    const {isHover, setUToken , setIsLoggedIn }  = useContext(UserContext)   
 
     const logoutUser = () => { 
         localStorage.removeItem("uToken")

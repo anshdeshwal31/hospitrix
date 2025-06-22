@@ -78,7 +78,7 @@ const Appointment:React.FC = () => {
           
           // Check if this slot is already booked
           const isSlotBooked = Object.values(foundDoc?.slots_booked || {}).some(
-            slot => slot.date.split('T')[0] === fullDateString && slot.time === timeString
+            slot => (slot as any).date.split('T')[0] === fullDateString && (slot as any).time === timeString
           );
 
           // Only add the time slot if it's not already booked
@@ -97,7 +97,7 @@ const Appointment:React.FC = () => {
             
             // Check if this slot is already booked
             const isNextSlotBooked = Object.values(foundDoc?.slots_booked || {}).some(
-              slot => slot.date.split('T')[0] === fullDateString && slot.time === nextTimeString
+              slot => (slot as any).date.split('T')[0] === fullDateString && (slot as any).time === nextTimeString
             );
 
             // Only add the time slot if it's not already booked

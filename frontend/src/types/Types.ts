@@ -27,7 +27,8 @@ export interface doctorInfoType{
     experience:string,
     about:string,
     fees:number,
-    address:doctorsAddressType
+    address:doctorsAddressType,
+    available:boolean
 }
 
 
