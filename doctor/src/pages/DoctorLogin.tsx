@@ -5,12 +5,12 @@ import { MdVisibility } from "react-icons/md";
 import { MdVisibilityOff } from "react-icons/md";
 import { DoctorContext } from "../context/DoctorContext";
 import { assets } from "../assets/assets";
+import {DNA} from "react-loader-spinner"
 
 export const DoctorLogin = () => {
     const[email,setEmail] = useState("")
     const [loading , setLoading ] = useState(false)
     const {doctorLogin} = useContext(DoctorContext)
-    const [error, setError] = useState("")
     const[password, setPassword] = useState("")
     const[passwordVisible , setPasswordVisible] = useState(false)
     const navigate = useNavigate();
@@ -44,9 +44,20 @@ export const DoctorLogin = () => {
         }
        
     }
+    if(loading) {
+        return(
+
+            <div className="flex items-center justify-center h-screen w-screen">
+            <DNA
+                visible={true}
+                height="100"
+                width="100"
+                />
+            </div>
+         )
+    }
     return (
         <div>
-
         <div className="flex justify-around m-3">
             <img src={assets.admin_logo} className="scale-90 h-14 transition-all sm:scale-100" alt="" />
             <button className="rounded-full border border-slate-300 text-slate-700 font-light py-0 px-2">Doctor panel</button>
@@ -88,6 +99,6 @@ export const DoctorLogin = () => {
                 <a href="http://localhost:5173/login"><button className='border rounded-lg px-8 py-3  text-slate-400 bg-black'>User Login</button></a>
             </div>
     </div>
-        </div>
+    </div>
     )
 }
