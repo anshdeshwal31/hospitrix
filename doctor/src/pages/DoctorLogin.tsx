@@ -19,7 +19,6 @@ export const DoctorLogin = () => {
         e.preventDefault()
         if(!email || !password){
             const errorMessage = "Email and password are required"
-            setError(errorMessage)
             toast.error(errorMessage,{
                 className:"bg-red-300 text-white"
             })
