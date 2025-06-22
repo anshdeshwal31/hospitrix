@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { adminDashboardDataType, DoctorProfileWithoutId } from "../types/Types";
+import { adminDashboardDataType, DoctorProfileWithoutId } from "../types/Types.ts";
 import {toast} from "react-toastify"
 import axios from "axios"
 
