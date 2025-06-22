@@ -68,8 +68,8 @@ const Login = () => {
     </form>
 
     <div className='flex gap-3'>
-      <a href="http://localhost:5175/login"><button className='border rounded-lg px-8 py-3  text-slate-400 bg-black'>Doctor Login</button></a>
-      <a href="http://localhost:5174/login"><button className='border rounded-lg px-8 py-3  text-slate-400 bg-black'>Admin Login</button></a>
+      <a href="https://hospitrix-doctor.onrender.com/login"><button className='border rounded-lg px-8 py-3  text-slate-400 bg-black'>Doctor Login</button></a>
+      <a href="https://hospitrix-admin.onrender.com/login"><button className='border rounded-lg px-8 py-3  text-slate-400 bg-black'>Admin Login</button></a>
     </div>
     </div>
   )

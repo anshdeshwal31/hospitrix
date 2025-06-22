@@ -36,7 +36,7 @@ const Navbar = () => {
                 CONTACT
             </NavLink>
 
-            <a href="http://localhost:5174/login">
+            <a href="https://hospitrix-admin.onrender.com/login">
                 <button className=' border rounded-2xl px-5 font-normal text-sm py-1'>Admin Panel</button>
             </a>
     
@@ -83,7 +83,7 @@ const Navbar = () => {
 
                     <NavLink onClick={() => { setShowMenu(false) }} to="/contact" className="hover:bg-primary-blue hover:shadow-lg hover:text-white transition-all duration-500 p-2 px-3 rounded-lg">CONTACT</NavLink>
 
-                    <a href="http://localhost:5174/login">
+                    <a href="https://hospitrix-admin.onrender.com/login">
                         <button className=' border-slate-400 border rounded-2xl px-5 font-normal text-sm py-1 mt-1 hover:bg-primary-blue hover:text-white transition-all duration-500'>Admin Panel</button>
                     </a>
                     

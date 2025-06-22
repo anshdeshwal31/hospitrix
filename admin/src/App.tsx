@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider, Navigate} from 'react-router-dom'
+import { createBrowserRouter, RouterProvider} from 'react-router-dom'
 import { Navbar } from './components/Navbar'
 import { AdminDashboard } from './pages/AdminDashboard'
 import { AddDoctor } from './pages/AddDoctor'

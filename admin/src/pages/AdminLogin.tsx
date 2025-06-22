@@ -99,8 +99,8 @@ export const AdminLogin = () => {
             </form>
 
             <div className='flex gap-3 mt-5'>
-                <a href="http://localhost:5175/login"><button className='border rounded-lg px-8 py-3  text-slate-400 bg-black'>Doctor Login</button></a>
-                <a href="http://localhost:5173/login"><button className='border rounded-lg px-8 py-3  text-slate-400 bg-black'>User Login</button></a>
+                <a href="https://hospitrix-doctor.onrender.com/login"><button className='border rounded-lg px-8 py-3  text-slate-400 bg-black'>Doctor Login</button></a>
+                <a href="https://hospitrix-frontend.onrender.com/login"><button className='border rounded-lg px-8 py-3  text-slate-400 bg-black'>User Login</button></a>
             </div>
         </div>
     </div>
