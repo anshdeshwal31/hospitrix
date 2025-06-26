@@ -52,20 +52,21 @@ const Appointment:React.FC = () => {
       const currentDate:Date = new Date()
       for (let i = 0 ; i<7; i++){
         
-        currentDate.setDate(today.getDate() + i);
+        // Create a new date object for each iteration
+        const iterationDate = new Date(today);
+        iterationDate.setDate(today.getDate() + i);
 
-        const date:number = currentDate.getDate()
-        const day:string = currentDate.toLocaleString('en-US', { weekday: 'short' })
-        const currentYear = new Date().getFullYear();
-        const currentMonth = (new Date().getMonth() + 1).toString().padStart(2, '0');
-        const formattedDate = date.toString().padStart(2, '0');
-        const fullDateString = `${currentYear}-${currentMonth}-${formattedDate}`;
+        const date:number = iterationDate.getDate()
+        const day:string = iterationDate.toLocaleString('en-US', { weekday: 'short' })
+        
+        // Use toISOString and split to get YYYY-MM-DD format
+        const fullDateString = iterationDate.toISOString().split('T')[0];
 
         const time:timeSlotType[] = []
         
-        let currentHour:number = currentDate.getHours()+1
+        let currentHour:number = iterationDate.getHours()+1
 
-        if(currentDate.toDateString() === today.toDateString()){
+        if(iterationDate.toDateString() === today.toDateString()){
           currentHour<10 ? currentHour = 10: currentHour + 1
         }
         else{
