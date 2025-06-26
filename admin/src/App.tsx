@@ -7,11 +7,11 @@ import { AppointmentList } from './pages/AppointmentList'
 import { AdminLogin } from './pages/AdminLogin'
 import { ToastContainer } from 'react-toastify'
 import { AdminContext } from './context/AdminContext'
-// import type { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { useContext } from 'react'
 import { Navigate } from 'react-router-dom'
 
-const ProtectedRoute = ({children}:{children:any}) => { 
+const ProtectedRoute = ({children}:{children:ReactNode}) => { 
   const{aToken} = useContext(AdminContext)
   if(!aToken) {
     return <Navigate to="/login" replace/>
