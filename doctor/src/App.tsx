@@ -6,6 +6,20 @@ import { DoctorDashboard } from './pages/DoctorDashboard'
 import { DoctorLogin } from './pages/DoctorLogin'
 import { DoctorProfile } from './pages/DoctorProfile'
 import { ToastContainer } from 'react-toastify'
+import { DoctorContext } from './context/DoctorContext'
+import {ReactNode, useContext} from "react"
+import {Navigate} from 'react-router-dom'
+
+const ProtectedRoute = ({children}:{children:ReactNode}) => { 
+  const {dToken} = useContext(DoctorContext)
+  if(dToken){
+      return <Navigate to="/login"/>
+  }
+  return <>
+    {children}
+  </>
+  
+ }
 
 function App() {
   const router = createBrowserRouter([
@@ -15,7 +29,10 @@ function App() {
     },
     {
     path:'/',
-    element:<Navbar/>,
+    element:
+    <ProtectedRoute>
+      <Navbar/>,
+    </ProtectedRoute>,
     errorElement:<div className='text-center font-semibold text-3xl'>Error loading page</div>,
     children:[
       {
