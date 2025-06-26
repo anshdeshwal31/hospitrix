@@ -13,7 +13,7 @@ import {Navigate} from 'react-router-dom'
 
 const ProtectedRoute = ({children}:{children:any}) => { 
   const {dToken} = useContext(DoctorContext)
-  if(dToken){
+  if(!dToken){
       return <Navigate to="/login"/>
   }
   return <>
