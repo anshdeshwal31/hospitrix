@@ -30,7 +30,7 @@ export const DoctorDashboard = () => {
         <div className="flex bg-blue-100 h-[90px] sm:h-fit w-[220px] sm:w-[180px] lg:w-[220px] p-2 sm:p-4 gap-4 rounded-lg">
           <img src={assets.earning_icon} className="h-[70px]" alt="" />
           <span className="flex flex-col gap-1">
-            <p className="text-2xl">₹{doctorDashboardData.earnings?doctorDashboardData.earnings:0}</p>
+            <p className="text-2xl">₹{doctorDashboardData?.earnings?doctorDashboardData.earnings:0}</p>
             <p>Earnings</p>
           </span>
         </div>
