@@ -6,14 +6,18 @@ import { DoctorList } from './pages/DoctorList'
 import { AppointmentList } from './pages/AppointmentList'
 import { AdminLogin } from './pages/AdminLogin'
 import { ToastContainer } from 'react-toastify'
+import { AdminContext } from './context/AdminContext'
+import { ReactNode } from 'react'
+import { useContext } from 'react'
+import { Navigate } from 'react-router-dom'
 
-// const ProtectedRoute = ({children}:{children:ReactNode}) => { 
-//   const{aToken} = useContext(AdminContext)
-//   if(!aToken) {
-//     return <Navigate to="/login" replace/>
-//   }
-//   return children
-//  }
+const ProtectedRoute = ({children}:{children:ReactNode}) => { 
+  const{aToken} = useContext(AdminContext)
+  if(!aToken) {
+    return <Navigate to="/login" replace/>
+  }
+  return children
+ }
 
 const App = () => {
   const router = createBrowserRouter([
@@ -23,8 +27,8 @@ const App = () => {
     },
     {
       path:"/",
-      // element:<ProtectedRoute><Navbar/></ProtectedRoute>,
-      element:<Navbar/>,
+      element:<ProtectedRoute><Navbar/></ProtectedRoute>,
+      // element:<Navbar/>,
       errorElement: <div className=' text-center font-semibold text-3xl'>
                         Error loading page
                     </div>,
