@@ -8,6 +8,7 @@ import { DoctorProfile } from './pages/DoctorProfile'
 import { ToastContainer } from 'react-toastify'
 import { DoctorContext } from './context/DoctorContext'
 // import {ReactNode, useContext} from "react"
+import {useContext} from "react"
 import {Navigate} from 'react-router-dom'
 
 const ProtectedRoute = ({children}:{children:any}) => { 
