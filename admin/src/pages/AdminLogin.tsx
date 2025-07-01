@@ -26,19 +26,11 @@ export const AdminLogin = () => {
         }
 
         setLoading(true)
-
-        // console.log("loading right now ")
-
         const response = await adminLogin(email, password);
         setLoading(false)
-
-        // console.log("loading completed")
         
-        if(response?.data?.success){
-            // navigate("/admin-dashboard")
-            // setTimeout(() => { 
-            //     navigate("admin-dashboard")  
-            // },500)
+        // Check both the response structure and aToken
+        if(response?.data?.success || localStorage.getItem("aToken")){
             navigate("/admin-dashboard")
         }
        
