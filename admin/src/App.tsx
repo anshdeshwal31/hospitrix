@@ -13,6 +13,8 @@ import { Navigate } from 'react-router-dom'
 
 const ProtectedRoute = ({children}:{children:ReactNode}) => { 
   const{aToken} = useContext(AdminContext)
+  console.log({aToken})
+  console.log(localStorage.getItem("aToken"))
   if(!aToken) {
     return <Navigate to="/login" replace/>
   }
