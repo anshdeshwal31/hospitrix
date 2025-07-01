@@ -173,7 +173,7 @@ export const DoctorContextProvider:React.FC<{children:React.ReactNode}> =   ({ch
                 localStorage.setItem("doctorId", response.data.doctorId)
                 setDToken(localStorage.getItem("dToken"))
                 setDoctorId(response.data.doctorId)
-                toast.success(response.data.message,{
+                toast.success(response?.data?.message,{
                     className:"bg-green-500 text-white"
                 })
                 // navigate("/doctor-dashboard")

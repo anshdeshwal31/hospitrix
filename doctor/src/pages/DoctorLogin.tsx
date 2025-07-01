@@ -39,7 +39,7 @@ export const DoctorLogin = () => {
             // setTimeout(() => { 
             //     navigate("admin-dashboard")  
             // },500)
-            navigate("/doctor-dashboard")
+            navigate("/doctor-dashboard", {replace:true})
         }
        
     }

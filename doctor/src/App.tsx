@@ -6,13 +6,13 @@ import { DoctorDashboard } from './pages/DoctorDashboard'
 import { DoctorLogin } from './pages/DoctorLogin'
 import { DoctorProfile } from './pages/DoctorProfile'
 import { ToastContainer } from 'react-toastify'
-import { DoctorContext } from './context/DoctorContext'
 // import {ReactNode, useContext} from "react"
-import {useContext} from "react"
 import {Navigate} from 'react-router-dom'
 
 const ProtectedRoute = ({children}:{children:any}) => { 
-  const {dToken} = useContext(DoctorContext)
+  // const {dToken} = useContext(DoctorContext)
+  const dToken = localStorage.getItem("dToken")
+  console.log({dToken})
   if(!dToken){
       return <Navigate to="/login"/>
   }
