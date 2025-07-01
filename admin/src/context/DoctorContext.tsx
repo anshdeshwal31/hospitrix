@@ -161,12 +161,12 @@ export const DoctorContextProvider:React.FC<{children:React.ReactNode}> =   ({ch
                 localStorage.setItem("dToken",response.data.token)
                 setDToken(localStorage.getItem("dToken"))
 
-                toast.success(response.data.message,{
+                toast.success(response.data?.message,{
                     className:"bg-green-500 text-white"
                 })
                 
             } else {
-                toast.error(response.data.error.message,{
+                toast.error(response.data?.error?.message,{
                     className:"bg-red-500 text-white"
                 })
             }
