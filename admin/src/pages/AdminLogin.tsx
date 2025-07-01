@@ -26,14 +26,15 @@ export const AdminLogin = () => {
         }
 
         setLoading(true)
+        
         const response = await adminLogin(email, password);
         setLoading(false)
         
-        // Check both the response structure and aToken
-        if(response?.data?.success || localStorage.getItem("aToken")){
+        // Fix: Only check the response success, don't use || with localStorage
+        if(response?.data?.success){
+            console.log({response})
             navigate("/admin-dashboard")
         }
-       
     }
 
     if(loading) {
