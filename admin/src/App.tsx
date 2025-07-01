@@ -16,7 +16,9 @@ const ProtectedRoute = ({children}:{children:ReactNode}) => {
   if(!aToken) {
     return <Navigate to="/login" replace/>
   }
-  return children
+  return <>
+    {children}
+  </>
  }
 
 const App = () => {
