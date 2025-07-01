@@ -13,8 +13,7 @@ export const AdminContextProvider:React.FC<{children:React.ReactNode}> = ({child
     const [doctorList,setDoctorList] = useState([])
     const [allAppointment , setAllAppointment] = useState([])
     const [adminDashData , setAdminDashData] = useState<adminDashboardDataType| undefined>(undefined)
-    const [aToken , setAToken] = useState<string|null>(localStorage.getItem("aToken")?localStorage.getItem("aToken"):"")
-    
+    const [aToken , setAToken] = useState<string|null>(localStorage.getItem("aToken"))
 
 
     const getAllAppointmentList = async () => { 
@@ -65,25 +64,16 @@ export const AdminContextProvider:React.FC<{children:React.ReactNode}> = ({child
         
             if (response.data.success) {
                 localStorage.setItem("aToken",response.data.token)
-                setAToken(localStorage.getItem("aToken"))
-
-                // console.log("before showing the success toast")
-                
+                setAToken(response.data.token) // Set the actual token, not localStorage.getItem()
+    
                 toast.success(response?.data?.message,{
                     className:"bg-green-400 text-white"
                 })
                 
-                // console.log("after showing the success toast")
-                
             } else {
-
-                console.log("before showing the error toast")
-                
                 toast.error(response.data.message,{
                     className:"bg-red-400 text-white"
                 })
-                
-                console.log("after showing the error toast")
             }
             return response;
 
