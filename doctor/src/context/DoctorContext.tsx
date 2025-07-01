@@ -180,7 +180,7 @@ export const DoctorContextProvider:React.FC<{children:React.ReactNode}> =   ({ch
                 
             } else {
                 // Safe access to error message
-                const errorMessage = response.data.error?.message || response.data.message || "Login failed"
+                const errorMessage = response?.data?.error?.message || response?.data?.message || "Login failed"
                 toast.error(errorMessage,{
                     className:"bg-red-500 text-white"
                 })
