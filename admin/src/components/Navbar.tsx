@@ -10,7 +10,7 @@ export const Navbar = () => {
   const logoutAdmin = () => {
     localStorage.removeItem("aToken")
     setAToken("")
-    navigate("/login")
+    navigate("/login",{replace:true})
   }
   return (
     <div className="h-full">
