@@ -10,13 +10,14 @@ import { AdminContext } from './context/AdminContext'
 import type { ReactNode } from 'react'
 import { useContext } from 'react'
 import { Navigate } from 'react-router-dom'
+import { AdminContextProvider } from './context/AdminContext'
 
 const ProtectedRoute = ({children}:{children:ReactNode}) => { 
   const{aToken} = useContext(AdminContext)
   if(!aToken) {
     return <Navigate to="/login" replace/>
   }
-  return children
+  return (<>{children}</>)
  }
 
 const App = () => {
@@ -58,8 +59,11 @@ const App = () => {
   ])
   return (
     <div>
-      <RouterProvider router= {router}/>
-      <ToastContainer position="top-right" autoClose={3000} />
+      <AdminContextProvider>
+        <RouterProvider router= {router}/>
+        <ToastContainer position="top-right" autoClose={3000} />
+
+      </AdminContextProvider>
     </div>
   )
 }
