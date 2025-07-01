@@ -179,7 +179,9 @@ export const DoctorContextProvider:React.FC<{children:React.ReactNode}> =   ({ch
                 // navigate("/doctor-dashboard")
                 
             } else {
-                toast.error(response.data.error.message,{
+                // Safe access to error message
+                const errorMessage = response.data.error?.message || response.data.message || "Login failed"
+                toast.error(errorMessage,{
                     className:"bg-red-500 text-white"
                 })
             }
